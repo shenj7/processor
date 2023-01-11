@@ -18,11 +18,12 @@ def typeswitch(inst):
     ilen = 3
     mlen = 4
     instlen = len(inst)
-    if inst[0] in ["add", "grt", "sub", "eq"]:
+    func = inst[0]
+    if func in ["add", "grt", "sub", "eq"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
-    elif inst[0] in ["addi", "jalr", "lui"]:
+    elif func in ["addi", "jalr", "lui"]:
         return itype_parse(inst) if instlen == ilen else f"malformed instruction, should be length {ilen}"
-    elif inst[0] in ["lwr", "swr", "bne"]:
+    elif func in ["lwr", "swr", "bne"]:
         return mtype_parse(inst) if instlen == mlen else f"malformed instruction, should be length {mlen}"
     else:
         return "incorrect instruction"
@@ -36,10 +37,14 @@ def make_8bin(dec):
 
 
 def rtype_parse(inst):
-    rs2, rs1, rd, op, func2 = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), "00", ""
+    rs2, rs1, rd, op, func2 = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), "", ""
     func = inst[0]
+    if func in ["add", "grt", "sub", "eq"]:
+        op = "00"
+    else:
+        op = "11"
 
-    if func == "add":
+    if func in ["add", "jalr"]:
         func2 = "00"
     elif func == "grt":
         func2 = "01"
@@ -75,9 +80,9 @@ def mtype_parse(inst):
     imm, rs2, rs1, op, func2 = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), "10", ""
     func = inst[0]
 
-    if func == "lwr":
+    if func == "lw":
         func2 = "00"
-    elif func == "swr":
+    elif func == "sw":
         func2 = "01"
     elif func == "bne":
         func2 = "10"
@@ -86,8 +91,34 @@ def mtype_parse(inst):
     return imm + rs2 + rs1 + op + func2
 
 
+def reg_trans(reg):
+    if reg[0] == 'x' or reg[0].isdigit():
+        return reg[1:]
+    elif reg == "zero":
+        return "0"
+    elif reg == "ra":
+        return "1"
+    elif reg == "sp":
+        return "2"
+    elif reg == "at":
+        return "15"
+    elif reg[0] == 't':
+        return f"{int(t[1:])+3}"
+    elif reg[0] == 's':
+        return f"{int(t[1:])+5}"
+    elif reg[0] == 'a':
+        return f"{int(t[1:])+10}"
+    else:
+        return "bad reg"
+
+
 def parse_inst(inst):
-    instruction = inst.replace(",", "").replace("x", "").split(" ")
+    registers = inst.replace(",", "").split(" ")
+    instruction = [registers[0]]
+    registers = registers[1:]
+    for register in registers:
+        instruction.append(reg_trans(register))
+
     return instruction
 
 
