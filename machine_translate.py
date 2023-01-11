@@ -19,11 +19,11 @@ def typeswitch(inst):
     mlen = 4
     instlen = len(inst)
     func = inst[0]
-    if func in ["add", "grt", "sub", "eq"]:
+    if func in ["add", "grt", "sub", "eq", "jalr"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
-    elif func in ["addi", "jalr", "lui"]:
+    elif func in ["lui", "jal"]:
         return itype_parse(inst) if instlen == ilen else f"malformed instruction, should be length {ilen}"
-    elif func in ["lwr", "swr", "bne"]:
+    elif func in ["addi", "lw", "sw", "bne", "wri", "rea"]:
         return mtype_parse(inst) if instlen == mlen else f"malformed instruction, should be length {mlen}"
     else:
         return "incorrect instruction"
@@ -37,58 +37,60 @@ def make_8bin(dec):
 
 
 def rtype_parse(inst):
-    rs2, rs1, rd, op, func2 = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), "", ""
+    rs2, rs1, rd, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
     func = inst[0]
-    if func in ["add", "grt", "sub", "eq"]:
-        op = "00"
-    else:
-        op = "11"
 
-    if func in ["add", "jalr"]:
-        func2 = "00"
+    if func == "add":
+        iid = "0000"
     elif func == "grt":
-        func2 = "01"
+        iid = "0001"
     elif func == "sub":
-        func2 = "10"
+        iid = "0010"
     elif func == "eq":
-        func2 = "11"
+        iid = "0011"
+    elif func == "jalr":
+        iid = "0100"
     else:
         return f"instruction not found: {func}"
 
-    return rs2 + rs1 + rd + op + func2
+    return rs2 + rs1 + rd + iid
 
 
 def itype_parse(inst):
     #TODO: add size checking for immmidiate
-    imm, rd, op, func2 = make_8bin(inst[2]), make_4bin(inst[1]), "01", ""
+    imm, rd, iid = make_8bin(inst[2]), make_4bin(inst[1]), ""
     func = inst[0]
 
-    if func == "addi":
-        func2 = "00"
-    elif func == "jalr":
-        func2 = "01"
-    elif func == "lui":
-        func2 = "10"
+    if func == "lui":
+        iid = "0101"
+    elif func == "jal":
+        iid = "0110"
     else:
         return f"instruction not found: {func}"
 
-    return imm + rd + op + func2
+    return imm + rd + iid
 
 
 def mtype_parse(inst):
     #TODO: add size checking for immmidiate
-    imm, rs2, rs1, op, func2 = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), "10", ""
+    imm, rs2, rs1, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
     func = inst[0]
 
-    if func == "lw":
-        func2 = "00"
+    if func == "addi":
+        iid = "1000"
+    elif func == "lw":
+        iid = "1001"
     elif func == "sw":
-        func2 = "01"
+        iid = "1010"
     elif func == "bne":
-        func2 = "10"
+        iid = "1011"
+    elif func == "wri":
+        iid = "1100"
+    elif func == "rea":
+        iid == "1101"
     else:
         return f"instruction not found: {func}"
-    return imm + rs2 + rs1 + op + func2
+    return imm + rs2 + rs1 + iid
 
 
 def reg_trans(reg):
