@@ -6,8 +6,9 @@ import sys
 def command_line_parser(main_args):
     parser = ArgumentParser(description="translate violet team instructions to machine language. does not check whether an immediate is small enough, or if the register is within range")
     parser.add_argument('-i',
-                        '--instruction',
+                        '--instructions',
                         required=True,
+                        nargs="+",
                         help="instruction to translate, as a string")
     args = parser.parse_args(main_args)
     return args
@@ -29,11 +30,16 @@ def typeswitch(inst):
         return "incorrect instruction"
 
 def make_4bin(dec):
-    return ('{0:04b}').format(int(dec))
+    #does twos complement: https://stackoverflow.com/questions/21871829/twos-complement-of-numbers-in-python
+    num = int(dec)
+    return format(num if num >= 0 else (1 << 4) + num, '04b')
+    #return ('{0:04b}').format(int(dec))
 
 
 def make_8bin(dec):
-    return ('{0:08b}').format(int(dec))
+    num = int(dec)
+    return format(num if num >= 0 else (1 << 8) + num, '08b')
+    #return ('{0:08b}').format(int(dec))
 
 
 def rtype_parse(inst):
@@ -94,7 +100,7 @@ def mtype_parse(inst):
 
 
 def reg_trans(reg):
-    if reg[0] == 'x' or reg[0].isdigit():
+    if reg[0] == 'x':
         return reg[1:]
     elif reg == "zero":
         return "0"
@@ -105,13 +111,13 @@ def reg_trans(reg):
     elif reg == "at":
         return "15"
     elif reg[0] == 't':
-        return f"{int(t[1:])+3}"
+        return f"{int(reg[1:])+3}"
     elif reg[0] == 's':
-        return f"{int(t[1:])+5}"
+        return f"{int(reg[1:])+5}"
     elif reg[0] == 'a':
-        return f"{int(t[1:])+10}"
+        return f"{int(reg[1:])+10}"
     else:
-        return "bad reg"
+        return reg
 
 
 def parse_inst(inst):
@@ -127,9 +133,10 @@ def parse_inst(inst):
 def main(main_args=""):
     #TODO: add aliases for registers (x1 -> ra, etc)
     args = command_line_parser(main_args)
-    instruction = parse_inst(args.instruction)
-    machine_code = typeswitch(instruction)
-    print(machine_code)
+    instructions = args.instructions
+    for instruction in instructions:
+        instruction = parse_inst(instruction)
+        print(typeswitch(instruction))
 
 if __name__ == '__main__':
     main(sys.argv[1:])
