@@ -1,0 +1,12 @@
+bne a0, x0, ENDIF1
+jalr a1, 0(ra)
+ENDIF1:
+addi t0, x0, 1
+LOOP: grt t1, a0, a1
+bne a0, x0, ENDIF2
+sub a0, a0, a1
+bne x0, t0, ENDELSE
+ENDIF2: sub a1, a1, a0
+ENDELSE: bne t0, x0, LOOP
+jalr a0, 0(ra)
+
