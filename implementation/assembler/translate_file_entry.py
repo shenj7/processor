@@ -30,18 +30,18 @@ def get_labels(file, starting_add):
 
 def replace_label(new_inst, labels):
     replaced = ""
-    for label in labels:
-        if label in new_inst:
-            replaced = new_inst.replace(label, str(labels[label]))
-        else:
-            replaced = new_inst
+    split_inst = new_inst.split(" ")
+    if split_inst[-1] in labels:
+        split_inst[-1] = labels[split_inst[-1]]
 
+    replaced = " ".join(split_inst)
     return replaced
 
 
 def make_machine_file(file, labels):
     f = open(file.name + "_machine", "w")
     file.seek(0)
+    print(labels)
     for instruction in file:
         loc = instruction.find(":")
         new_inst = ""
@@ -50,9 +50,11 @@ def make_machine_file(file, labels):
         else:
             new_inst = instruction
         print(new_inst)
-        print(labels)
         new_inst = replace_label(new_inst, labels)
-        new_inst = typeswitch(parse_inst(new_inst))
+        print(new_inst)
+        new_inst = parse_inst(new_inst)
+        print(new_inst)
+        new_inst = typeswitch(new_inst)
         f.write(new_inst)
 
     return f
