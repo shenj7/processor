@@ -109,3 +109,6 @@ work/
 *.done
 *.rpt
 *.summary
+
+# also dont (quartus project open file)
+*.flock
