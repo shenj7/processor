@@ -2,6 +2,5 @@ Put design document and journals in the "design" directory.  Implementation, cod
 
 
 Norfleet, Ethan
-Scheibe, Jacob
 Shen, Jackson
 Strassburger, Jenna
