@@ -112,3 +112,4 @@ work/
 
 # also dont (quartus project open file)
 *.flock
+*.bak

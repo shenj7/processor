@@ -43,3 +43,12 @@ set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:44:24  JANUARY 22, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name VERILOG_FILE two_way_mux_component.v
+set_global_assignment -name VERILOG_FILE four_way_mux_component.v
+set_global_assignment -name VERILOG_FILE alu_component.v
+set_global_assignment -name VERILOG_FILE ir_component.v
+set_global_assignment -name VERILOG_FILE reg_file_component.v
+set_global_assignment -name VERILOG_FILE mem_file_component.v
+set_global_assignment -name VERILOG_FILE imm_gen_component.v
+set_global_assignment -name VERILOG_FILE mdr_component.v
+set_global_assignment -name VERILOG_FILE reg_component.v
