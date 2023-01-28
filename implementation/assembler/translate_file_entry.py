@@ -14,15 +14,18 @@ def command_line_parser(main_args):
     return args
 
 
-def get_labels(file, starting_add):
+def get_labels(f, starting_add):
     labels = dict()
     address = starting_add
-    file.seek(0)
-    for instruction in file:
+    f.seek(0)
+    for instruction in f:
+        if not instruction.strip():
+            continue
         loc = instruction.find(":")
         if loc != -1:
             label = instruction[0:loc]
-            labels[label] = address
+            #should label be address or address/2?
+            labels[label] = str(address)
         address = address + 2
 
     return labels
@@ -31,33 +34,34 @@ def get_labels(file, starting_add):
 def replace_label(new_inst, labels):
     replaced = ""
     split_inst = new_inst.split(" ")
+    split_inst[-1] = split_inst[-1].strip()
     if split_inst[-1] in labels:
         split_inst[-1] = labels[split_inst[-1]]
-
     replaced = " ".join(split_inst)
+    print(replaced)
     return replaced
 
 
-def make_machine_file(file, labels):
-    f = open(file.name + "_machine", "w")
-    file.seek(0)
+def make_machine_file(f, labels):
+    fm = open(f.name + "_machine", "w")
+    f.seek(0)
     print(labels)
-    for instruction in file:
+    for instruction in f:
+        if not instruction.strip():
+            continue
         loc = instruction.find(":")
         new_inst = ""
         if loc != -1:
-            new_inst = instruction[loc+1:]
+            new_inst = instruction[loc+2:]
         else:
             new_inst = instruction
-        print(new_inst)
         new_inst = replace_label(new_inst, labels)
-        print(new_inst)
         new_inst = parse_inst(new_inst)
-        print(new_inst)
         new_inst = typeswitch(new_inst)
-        f.write(new_inst)
+        fm.write(new_inst)
+        fm.write("\n")
 
-    return f
+    return fm
 
 
 
