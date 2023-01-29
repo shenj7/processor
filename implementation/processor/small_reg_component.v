@@ -1,13 +1,13 @@
-// Register
+// Small Register
 
 module REG(clock, in, write, reset, out);
 
 input clock;
-input in[15:0];
+input in[3:0];
 input write;
 input reset;
 
-output reg [15:0] out;
+output reg [3:0] out;
 
 
 always @(posedge clock)
