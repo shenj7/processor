@@ -13,9 +13,9 @@ output reg [15:0] out;
 always @(posedge clock)
 begin
 	if (reset) begin
-		out <= 0
+		out <= 0;
 	end else if (write) begin
-		out <= in
+		out <= in;
 	end
 end
 
