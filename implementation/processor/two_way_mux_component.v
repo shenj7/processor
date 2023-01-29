@@ -3,8 +3,8 @@
 module MUX2(clock, in1, in2, op, reset, out);
 
 input clock;
-input in1[15:0];
-input in2[15:0];
+input [15:0] in1;
+input [15:0] in2;
 input op;
 input reset;
 
