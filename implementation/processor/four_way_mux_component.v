@@ -3,11 +3,11 @@
 module MUX4(clock, in1, in2, in3, in4, op, reset, out);
 
 input clock;
-input in1[15:0];
-input in2[15:0];
-input in3[15:0];
-input in4[15:0];
-input op[1:0];
+input [15:0] in1;
+input [15:0] in2;
+input [15:0] in3;
+input [15:0] in4;
+input [1:0] op;
 input reset;
 
 output reg [15:0] out;

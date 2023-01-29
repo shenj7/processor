@@ -3,7 +3,7 @@
 module REG(clock, in, write, reset, out);
 
 input clock;
-input in[15:0];
+input [15:0] in;
 input write;
 input reset;
 
