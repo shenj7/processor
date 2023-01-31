@@ -1,6 +1,6 @@
 //// Register File
 //
-//module REGFILE(clock, rs1, rs2, rd, writedata, reset, write, reg1, reg2);
+//module reg_file_component(clock, rs1, rs2, rd, writedata, reset, write, reg1, reg2);
 //
 //input clock;
 //input rs1[3:0];

@@ -1,6 +1,5 @@
 // Register
-
-module REG(clock, in, write, reset, out);
+module reg_component(clock, in, write, reset, out);
 
 input clock;
 input [15:0] in;

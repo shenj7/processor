@@ -1,6 +1,6 @@
 // 2 Way Multiplexer
 
-module MUX2(clock, in1, in2, op, reset, out);
+module two_way_mux_component(clock, in1, in2, op, reset, out);
 
 input clock;
 input [15:0] in1;

@@ -1,6 +1,6 @@
 //ALU
 
-module ALU(clock, inst_id, in0, in1, reset, out, zero, pos);
+module alu_component(clock, inst_id, in0, in1, reset, out, zero, pos);
 
 input clock;
 input [3:0] inst_id;
