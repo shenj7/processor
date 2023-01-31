@@ -1,6 +1,6 @@
 // Four way Multiplexer
 
-module MUX4(clock, in1, in2, in3, in4, op, reset, out);
+module four_way_mux_component(clock, in1, in2, in3, in4, op, reset, out);
 
 input clock;
 input [15:0] in1;

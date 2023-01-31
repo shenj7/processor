@@ -1,6 +1,6 @@
 // Instruction register
 
-module IR(clock, in1, reset, rs1, rs2, rd);
+module ir_component(clock, in1, reset, rs1, rs2, rd);
 
 input clock;
 input [15:0] in1;
