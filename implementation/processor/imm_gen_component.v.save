@@ -1,0 +1,31 @@
+// Immediate Generator
+
+module imm_gen_component(clock, reset, inst, imm);
+
+input clock;
+input [15:0] inst;
+input reset;
+
+output reg [15:0] imm;
+
+
+always @(posedge clock)
+begin
+    if (inst[3:0] == 4'b0101) begin
+	 imm[15:0] <= { {8{inst[7]}}, inst[8:15]} << 8;         
+    end else if(inst[3:0] == 4'b0110) begin
+	imm[15:0] <= { {8{inst[7]}}, inst[8:15]} << 1;
+
+ begin
+        //subtract
+        out <= in0 - in1;
+    end
+
+    if (out > 0) begin //zero or positive
+        pos <= 1;
+    end else if (out == 0) begin
+        zero <= 1;
+    end
+end
+
+endmodule
