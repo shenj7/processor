@@ -21,3 +21,4 @@ begin
 			 out <= $signed(inst[8:15]);
 			 end				
 end
+endmodule
