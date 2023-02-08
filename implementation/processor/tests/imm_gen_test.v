@@ -42,7 +42,7 @@ initial begin
 
     //-----TEST 1-----
     //Testing shift by 1 
-    $display("Testing counting up.");
+    $display("Testing shift by 1.");
     rst = 1;
     counter = 0;
     cycle_counter = 0;
@@ -65,18 +65,22 @@ initial begin
 
     //-----TEST 2-----
     //Testing shift by 8
+    $display("Testing.shift by 8");
 
     
     //-----TEST 3-----
     //Testing sign extend positive
+    $display("Testing sign extend positive numbers");
     
 
     //-----TEST 4-----
     //Testing sign extend negative
+    $display("Testing sign extend on negative numbers");
 
 
     //-----TEST 5-----
     //Testing sign extend and shift left
+    $display("Testing sign extend and shift by 1");
 
 
     $display("TESTS COMPLETE. \n Failures = %d", failures);
