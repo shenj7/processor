@@ -51,7 +51,7 @@ initial begin
             failures = failures + 1;
             $display("Test 1 Failed output = %d, expecting = %d", output, 0000000000000000);
         end
-	 //-----TEST 2-----
+	 //------TEST 2-----
     OP = 1;
 	 IN0 = 0000000000000000;
 	 IN1 = 0000000000000001;
@@ -62,6 +62,5 @@ initial begin
     $display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 end
-
 
 endmodule
