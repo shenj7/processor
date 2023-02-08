@@ -12,9 +12,8 @@ reg [15:0] inst;
 wire [15:0] imm;
 
 parameter HALF_PERIOD = 50;
-integer cycle_counter = 0;
-integer counter = 0;
 integer failures = 0;
+integer expected = 0;
 
 initial begin
     clk = 0;
@@ -25,10 +24,11 @@ initial begin
 end
 
 
-IMM_GEN UUT (
+imm_gen_component UUT (
     .clock(clk),
-    .reset(rst),
-    .instr(inst)
+    .reset(reset),
+    .inst(inst),
+    .out(imm)
 );
 
 
@@ -43,21 +43,15 @@ initial begin
     //-----TEST 1-----
     //Testing shift by 1 
     $display("Testing shift by 1.");
-    rst = 1;
-    counter = 0;
-    cycle_counter = 0;
+    rst = 1; //reset imm gen before testing
     #(2*HALF_PERIOD);
     rst = 0;
-    dir = 0; //we are testing counting up
-    repeat (40) begin
-        #(2*HALF_PERIOD);
-        counter = counter + 1;
-        if (cycle_counter == 31)
-            counter = -32;
-        cycle_counter = cycle_counter + 1;
-        if (out != counter) begin
+    inst = 1001011010010110; //whatever instruction we want to test
+    begin
+        expected = 0000000000010110; //whatever is expected
+        if (out != expected) begin
             failures = failures + 1;
-            $display("%t (COUNT UP) Error at cycle %d, output = %d, expecting = %d", $time, cycle_counter, out, counter);
+            $display("%t (Shift by 1) Output = %d, expecting %d" $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
@@ -66,21 +60,54 @@ initial begin
     //-----TEST 2-----
     //Testing shift by 8
     $display("Testing.shift by 8");
+    rst = 1; //reset imm gen before testing
+    #(2*HALF_PERIOD);
+    rst = 0;
+    inst = 0100101101100101; //whatever instruction we want to test
+    begin
+        expected = 0100101100000000; //whatever is expected
+        if (out != expected) begin
+            failures = failures + 1;
+            $display("%t (Shift by 8) Output = %d, expecting %d" $time, out, expected);
+        end
+    end
+    #(100*HALF_PERIOD);
 
     
     //-----TEST 3-----
     //Testing sign extend positive
     $display("Testing sign extend positive numbers");
+    rst = 1; //reset imm gen before testing
+    #(2*HALF_PERIOD);
+    rst = 0;
+    inst = 0010010111111000; //whatever instruction we want to test
+    begin
+        expected = 0000000000100101; //whatever is expected
+        if (out != expected) begin
+            failures = failures + 1;
+            $display("%t (Sign extend positive) Output = %d, expecting %d" $time, out, expected);
+        end
+    end
+    #(100*HALF_PERIOD);
     
 
     //-----TEST 4-----
     //Testing sign extend negative
     $display("Testing sign extend on negative numbers");
+    rst = 1; //reset imm gen before testing
+    #(2*HALF_PERIOD);
+    rst = 0;
+    inst = 1111001101011001; //whatever instruction we want to test
+    begin
+        expected = 1111111111110011; //whatever is expected
+        if (out != expected) begin
+            failures = failures + 1;
+            $display("%t (Sign extend negative) Output = %d, expecting %d" $time, out, expected);
+        end
+    end
+    #(100*HALF_PERIOD);
 
 
-    //-----TEST 5-----
-    //Testing sign extend and shift left
-    $display("Testing sign extend and shift by 1");
 
 
     $display("TESTS COMPLETE. \n Failures = %d", failures);
