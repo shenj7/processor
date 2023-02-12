@@ -118,3 +118,4 @@ db/
 output_files/
 *.qsf
 simulation/
+.incremental_db/
