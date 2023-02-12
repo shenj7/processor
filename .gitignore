@@ -113,3 +113,8 @@ work/
 # also dont (quartus project open file)
 *.flock
 *.bak
+db/
+*.qpf
+output_files/
+*.qsf
+simulation/

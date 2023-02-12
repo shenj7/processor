@@ -2,7 +2,7 @@
 module tb_memory();
 
 reg [15:0] data;
-reg [9:0] addr;
+reg [15:0] addr;
 reg we;
 reg clk;
 
@@ -31,11 +31,22 @@ memory UUT(
 
  initial begin
    clk = 0;
-   addr = 'h000;
+   addr = 'h0000;
    data = 'h1111;
 
-   #HALF_PERIOD;
-   addr = 'h001;
+   #(20*HALF_PERIOD);
+   addr = 'h0001;
+   #(20*HALF_PERIOD);
+   addr = 'h0002;
+   #(20*HALF_PERIOD);
+   addr = 'h0003;
+
+   #(20*HALF_PERIOD);
+   addr = 'h0004;
+
+
+   #(20*HALF_PERIOD);
+   addr = 'h0008;
  end
 	  
 endmodule
