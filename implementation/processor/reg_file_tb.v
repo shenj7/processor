@@ -1,7 +1,7 @@
 //test for imm gen
 `timescale 1 ns/1 ps
 
-module tb_counter();
+module reg_file_tb();
 
 //Inputs
 reg clk;
@@ -29,7 +29,6 @@ initial begin
 end
 
 
-REG
 Counter_E UUT (
     .direction(dir),
     .reset(rst),
@@ -39,22 +38,20 @@ Counter_E UUT (
 
 
 initial begin
-    dir = 0;
-    rst = 1;
+    reset = 1;
     #(100*HALF_PERIOD);
-    rst = 0;
+    reset = 0;
 
-    $display("Testing reg file")
+    $display("Testing reg file");
 
     //-----TEST 1-----
     //Testing counting up 
     $display("Testing counting up.");
-    rst = 1;
+    reset = 1;
     counter = 0;
     cycle_counter = 0;
     #(2*HALF_PERIOD);
-    rst = 0;
-    dir = 0; //we are testing counting up
+    reset = 0;
     repeat (40) begin
         #(2*HALF_PERIOD);
         counter = counter + 1;
