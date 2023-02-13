@@ -1,6 +1,6 @@
 //ALU
 
-module alu_component(clock, inst_id, in0, in1, reset, out, zero, pos);
+module alu_component(inst_id, in0, in1, reset, out, zero, pos);
 
 input [3:0] inst_id;
 input [15:0] in0;
@@ -12,7 +12,7 @@ output reg zero;
 output reg pos;
 
 
-always
+always @(inst_id or in0 or in1 or reset)
 begin
     if (inst_id == 4'b0000 ||
         inst_id == 4'b0100 ||
