@@ -26,8 +26,7 @@ initial begin
     end
 end
 
-two_way_mux UUT (
-    .clk(clk),
+two_way_mux_component UUT (
     .reset(reset),
     .in0(in0),
     .in1(in1),

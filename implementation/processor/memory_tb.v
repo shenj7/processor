@@ -43,10 +43,28 @@ memory UUT(
 
    #(20*HALF_PERIOD);
    addr = 'h0004;
-
+   #(20*HALF_PERIOD);
+   addr = 'h0005;
+   #(20*HALF_PERIOD);
+   addr = 'h0006;
+   #(20*HALF_PERIOD);
+   addr = 'h0007;
 
    #(20*HALF_PERIOD);
    addr = 'h0008;
+   #(20*HALF_PERIOD);
+   addr = 'h0009;
+   #(20*HALF_PERIOD);
+   addr = 'h000a;
+   #(20*HALF_PERIOD);
+   addr = 'h000b;
+
+   #(20*HALF_PERIOD);
+   addr = 'h000c;
+
+
+   #(20*HALF_PERIOD);
+   addr = 'h000d;
  end
 	  
 endmodule
