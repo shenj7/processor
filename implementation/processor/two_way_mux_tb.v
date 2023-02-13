@@ -4,7 +4,6 @@
 module two_way_mux_tb();
 
 //Inputs
-reg clk;
 reg reset;
 reg [15:0] in0;
 reg [15:0] in1;
@@ -27,7 +26,6 @@ initial begin
 end
 
 two_way_mux UUT (
-    .clk(clk),
     .reset(reset),
     .in0(in0),
     .in1(in1),
