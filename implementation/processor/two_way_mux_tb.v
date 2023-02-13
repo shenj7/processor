@@ -8,6 +8,7 @@ reg reset;
 reg [15:0] in0;
 reg [15:0] in1;
 reg op;
+reg clk;
 
 //Outputs
 wire [15:0] out;
