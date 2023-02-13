@@ -4,7 +4,6 @@
 module two_way_mux_tb();
 
 //Inputs
-reg clk;
 reg reset;
 reg [15:0] in0;
 reg [15:0] in1;
