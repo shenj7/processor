@@ -1,5 +1,5 @@
 //ALU test
-module alu_component_tb();
+module alu_tb();
 
 //Inputs
 reg reset;
