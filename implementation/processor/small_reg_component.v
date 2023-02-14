@@ -1,8 +1,8 @@
 // Small Register
 
-module small_reg_component(clk, in, write, reset, out);
+module small_reg_component(clock, in, write, reset, out);
 
-input clk;
+input clock;
 input [3:0] in;
 input write;
 input reset;
@@ -10,7 +10,7 @@ input reset;
 output reg [3:0] out;
 
 
-always @(posedge clk)
+always @(posedge clock)
 begin
 	if (reset) begin
 		out <= 0;

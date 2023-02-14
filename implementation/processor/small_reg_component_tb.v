@@ -1,10 +1,10 @@
 //testing for small register
 `timescale 1 ns/1 ps
 
-module small_reg_tb();
+module small_reg_component_tb();
 
 //Inputs
-reg clk;
+reg clock;
 reg reset;
 reg write;
 reg [3:0] in;
@@ -17,16 +17,16 @@ integer failures = 0;
 integer expected = 0;
 
 initial begin
-    clk = 0;
+    clock = 0;
     forever begin
         #(HALF_PERIOD);
-        clk = ~clk;
+        clock = ~clock;
     end
 end
 
 
 small_reg_component UUT (
-    .clk(clk),
+    .clock(clock),
     .reset(reset),
     .write(write),
     .in(in),
@@ -43,15 +43,15 @@ initial begin
     $display("Testing small reg reset");
     reset = 1; 
     #(2*HALF_PERIOD);
-    reset <= 1;
-    write <= 0;
-    clk <= 1;
-    in = 4'b0110;
+    reset = 1;
+    write = 0;
+    in = 16'b0110;
+    #(2*HALF_PERIOD);
     begin
-        expected = 4'b0000; 
+        expected = 16'b0000; 
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Small Reg reset) Output = %d, expecting %d", $time, out, expected);
+            $display("%t (Small reg reset) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
@@ -61,15 +61,32 @@ initial begin
     $display("Testing small reg");
     reset = 1; 
     #(2*HALF_PERIOD);
-    reset <= 0;
-    write <= 1;
-    clk <= 1;
+    reset = 0;
+    write = 1;
     in = 4'b1111;
+    #(2*HALF_PERIOD);
     begin
         expected = 4'b1111; 
         if (out != expected) begin
             failures = failures + 1;
             $display("%t (Small Reg) Output = %d, expecting %d", $time, out, expected);
+        end
+    end
+    #(100*HALF_PERIOD);
+
+     //-----TEST 3-----
+    $display("Testing small reg write");
+    reset = 1; 
+    #(2*HALF_PERIOD);
+    reset = 0;
+    write = 0;
+    in = 4'b1111;
+    #(2*HALF_PERIOD);
+    begin
+        expected = 4'b0000; 
+        if (out != expected) begin
+            failures = failures + 1;
+            $display("%t (Small Reg write) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
