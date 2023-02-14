@@ -1,7 +1,7 @@
 //test for imm gen
 `timescale 1 ns/1 ps
 
-module tb_counter();
+module imm_gen_tb();
 
 //Inputs
 reg clk;

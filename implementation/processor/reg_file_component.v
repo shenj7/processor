@@ -21,20 +21,20 @@ always @(posedge clock)
 begin
     //get out of rs1
     if (rs1 == 0) begin
-        reg1 <= 4'h0000
+        reg1 <= 4'h0000;
     end else begin
         reg1 <= regs[rs1];
     end
 
     //get out of rs2
     if (rs2 == 0) begin
-        reg1 <= 4'h0000
+        reg1 <= 4'h0000;
     end else begin
         reg2 <= regs[rs2];
     end
 
     //write to register
-    if (write and (rd != 4'b0000)) begin
+    if (write && rd != 4'b0000) begin
         regs[rd] <= writedata;
     end
 
