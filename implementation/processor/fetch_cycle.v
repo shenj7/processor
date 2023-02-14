@@ -1,4 +1,4 @@
-module fetch_cycle();
+module fetch_cycle(pc, pcwrite, clk, rst, ir, currpc);
 
 input [15:0] pc;
 input pcwrite;
