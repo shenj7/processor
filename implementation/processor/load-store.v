@@ -15,6 +15,15 @@ end
 //wires into control
 
 //wires out of control
+wire [1:0] immgenop;
+wire aluop;
+wire aluin1;
+wire [1:0] aluin2;
+wire alusrc; //tf is this doing?
+wire memread;
+wire memwrite;
+wire pcwrite;
+wire regwrite; //why do we not have this?
 
 control_component control (
     //input
@@ -22,14 +31,15 @@ control_component control (
     .reset(),
 
     //output
-    .IMMGENOP(),
-    .ALUOP(),
-    .ALUIN1(),
-    .ALUIN2(),
-    .ALUSRC(),
-    .MEMREAD(),
-    .MEMWRITE(),
-    .PCWRITE()
+    .IMMGENOP(immgenop),
+    .ALUOP(aluop),
+    .ALUIN1(aluin1),
+    .ALUIN2(aluin2),
+    .ALUSRC(alusrc),
+    //.REGWRITE(regwrite),
+    .MEMREAD(memread),
+    .MEMWRITE(memwrite),
+    .PCWRITE(pcwrite)
 );
 
 //wires into fetch
@@ -43,7 +53,7 @@ fetch_cycle fetch (
     
     //from control
     .rst(),
-    .pcwrite(),
+    .pcwrite(pcwrite),
     
     //output
     .ir(),
@@ -63,8 +73,8 @@ decode_cycle decode (
 
     //from control
     .rst(),
-    .regwrite(),
-    .immgenop(),
+    .regwrite(regwrite),
+    .immgenop(immgenop),
 
     //output
     .inst(),
@@ -90,9 +100,9 @@ execute_cycle execute (
 
     //from control
     .rst(),
-    .aluop(),
-    .aluin1(),
-    .aluin2(),
+    .aluop(aluop),
+    .aluin1(aluin1),
+    .aluin2(aluin2),
 
     //outputs
     .newpc(),
@@ -115,7 +125,7 @@ mem_cycle mem (
 
     //from control
     .rst(),
-    .memwrite(),
+    .memwrite(memwrite),
 
     //output
     .memout(),
