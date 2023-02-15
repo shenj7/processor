@@ -11,7 +11,7 @@ output reg ALUIN2;
 output reg ALUSRC;
 output reg MEMREAD;
 output reg MEMWRITE;
-output reg PCWRITE
+output reg PCWRITE;
 
  always @(*)  
  begin  
@@ -26,7 +26,7 @@ output reg PCWRITE
                 PCWRITE <= 1'b0;   
       end  
       else begin  
-      case(opcode)   
+      case(op)   
       4'b0000: begin // add  
                  IMMGENOP <= 2'b00;  
                 ALUOP <= 1'b0;  

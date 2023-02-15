@@ -1,79 +1,246 @@
-// //load-store
-// module load_store();
+//load-store
+module load_store();
 
-// reg clock;
+parameter HALF_PERIOD=50;
+reg clock;
 
-// initial begin
-//     clock = 0;
-//     forever begin
-//         #(HALF_PERIOD);
-//         clock = ~clock;
-//     end
-// end
+initial begin
+    clock = 0;
+    forever begin
+        #(HALF_PERIOD);
+        clock = ~clock;
+    end
+end
 
-// //add in a control unit
+//wires into control
 
-// fetch_cycle fetch (
-//     //from prev cycle
-//     .pc(),
-//     .pcwrite(),
-//     .clk(),
+//wires out of control
+
+control_component control (
+    //input
+    .op(),
+    .reset(),
+
+    //output
+    .IMMGENOP(),
+    .ALUOP(),
+    .ALUIN1(),
+    .ALUIN2(),
+    .ALUSRC(),
+    .MEMREAD(),
+    .MEMWRITE(),
+    .PCWRITE()
+);
+
+//wires into fetch
+
+//wires out of fetch
+
+fetch_cycle fetch (
+    //from prev cycle
+    .pc(),
+    .clk(clock),
     
-//     //from control
-//     .rst(),
+    //from control
+    .rst(),
+    .pcwrite(),
     
-//     //output
-//     .ir(),
-//     .currpc()
-// );
+    //output
+    .ir(),
+    .currpc()
+);
 
-// decode_cycle decode (
-//     //from prev cycle (and writeback)
-//     .ir(),
-//     .pc(),
-//     .clk(),
-//     .writedata(),
-//     .regwrite(),
+//wires into fetch
 
-//     //output
-//     .inst(),
-//     .pcout(),
-//     .a(),
-//     .b(),
-//     .rdout(),
-//     .imm(),
-// );
+//wires out of decode
 
-// execute_cycle execute (
-//     //from the prev cycle
-//     .pc(),
-//     .a(),
-//     .b(),
-//     .rd(),
-//     .imm(),
-//     .inst(),
+decode_cycle decode (
+    //from prev cycle (and writeback)
+    .ir(),
+    .pc(),
+    .clk(clock),
+    .writedata(),
 
-//     //from control
-//     .aluop(),
-//     .aluin1(),
-//     .aluin2(),
+    //from control
+    .rst(),
+    .regwrite(),
+    .immgenop(),
 
-//     //outputs
-//     .newpc(),
-//     .aluout(),
-//     .rdout(),
-//     .zero(),
-//     .pos()
+    //output
+    .inst(),
+    .pcout(),
+    .a(),
+    .b(),
+    .rdout(),
+    .imm()
+);
 
-// );
+//wires into execute
+
+//wires out of execute
+
+execute_cycle execute (
+    //from the prev cycle
+    .clk(clock),
+    .pc(),
+    .a(),
+    .b(),
+    .rd(),
+    .imm(),
+
+    //from control
+    .rst(),
+    .aluop(),
+    .aluin1(),
+    .aluin2(),
+
+    //outputs
+    .newpc(),
+    .aluout(),
+    .rdout(),
+    .zero(),
+    .pos()
+
+);
+
+//wires into mem
+
+//wires out of mem
+
+mem_cycle mem (
+    //input
+    .clk(clock),
+    .b(),
+    .aluout(),
+
+    //from control
+    .rst(),
+    .memwrite(),
+
+    //output
+    .memout(),
+    .addrout()
+);
+
+//in-between registers
+//fetch-decode
+reg_component fd_pc (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component fd_ir (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+//decode-execute
+reg_component de_pc (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component de_a (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component de_b (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+small_reg_component de_rd (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component de_imm (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+//execute-memory
+reg_component em_b (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component em_aluout (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+small_reg_component em_rd (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+//memory-writeback
+reg_component mw_mem (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+reg_component me_addr (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+//writeback cycle items
+two_way_mux_component w_jump (
+    .clock(clock),
+    .in(),
+    .write(),
+    .reset(),
+    .out()
+);
+
+wire [15:0] writedata;
 
 
-// always @(posedge clock)
-// begin
+always @(posedge clock)
+begin
 
 
 
 
-// end
+end
 
-// endmodule
+endmodule
