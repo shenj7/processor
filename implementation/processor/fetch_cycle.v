@@ -5,8 +5,8 @@ input pcwrite;
 input clk;
 input rst;
 
-output [15:0] ir;
-output [15:0] currpc;
+output reg [15:0] ir;
+output reg [15:0] currpc;
 
 wire [15:0] ir;
 wire [15:0] newpc;
@@ -27,7 +27,7 @@ alu_component small_alu (
     .pos()
 );
 
-always @(posedge clock)
+always @(posedge clk)
 begin
     currpc = pc;
     if (pcwrite == 1) begin
