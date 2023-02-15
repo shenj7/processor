@@ -39,7 +39,10 @@ four_way_mux_component aluin2_mux (
     .out(aluin2_wire)
 );
 
-
+always @(posedge clk)
+begin
+    rdout <= rd;
+end
 
 
 

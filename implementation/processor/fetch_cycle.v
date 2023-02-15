@@ -29,9 +29,6 @@ alu_component small_alu (
 
 always @(posedge clock)
 begin
-    if (rst == 0) begin
-        //rst stuff
-    end
     currpc = pc;
     if (pcwrite == 1) begin
         pc = newpc;

@@ -1,12 +1,11 @@
 module decode_cycle(ir, pc, clk, writedata, regwrite, inst, pcout, a, b, rdout, imm);
-
+input rst;
 input [15:0] ir;
 input [15:0] pc;
 input clk;
 input [15:0] writedata;
 input regwrite;
 
-output [15:0] inst;
 output [15:0] pcout;
 output [15:0] a;
 output [15:0] b;
@@ -22,7 +21,7 @@ wire [3:0] rd;
 ir_component ir (
     .clock(clk),
     .in1(ir),
-    .reset(),
+    .reset(rst),
     .rs1(rs1),
     .rs2(rs2),
     .rd(rd)
@@ -35,7 +34,7 @@ reg_file_component rf (
     .rd(rd),
     .writedata(writedata),
     .write(regwrite),
-    .reset(),
+    .reset(rst),
     .reg1(a),
     .reg2(b)
 );
@@ -43,7 +42,7 @@ reg_file_component rf (
 imm_gen_component ig (
     .clock(clk),
     .inst(ir),
-    .reset(),
+    .reset(rst),
     .out(imm)
 );
 
@@ -51,9 +50,6 @@ always @(posedge clock)
 begin
     pcout = pc;
     rdout = rd;
-    inst = ir;
-
-
 end
 
 
