@@ -6,7 +6,7 @@ input clock;
 input [3:0] rs1;
 input [3:0] rs2;
 input [3:0] rd;
-input [3:0] writedata;
+input [15:0] writedata;
 input reset;
 input write;
 
