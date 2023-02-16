@@ -1,5 +1,5 @@
 //control
-module control_component(op, reset, IMMGENOP, ALUOP, ALUIN1, ALUIN2, ALUSRC, MEMREAD, MEMWRITE, PCWRITE);
+module control_component(op, reset, IMMGENOP, ALUOP, ALUIN1, ALUIN2, ALUSRC, MEMREAD, MEMWRITE, PCWRITE, MEM2REG);
 
 input[3:0] op;
 input reset;
@@ -12,6 +12,7 @@ output reg ALUSRC;
 output reg MEMREAD;
 output reg MEMWRITE;
 output reg PCWRITE;
+output reg MEM2REG;
 
  always @(*)  
  begin  
