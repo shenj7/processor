@@ -84,7 +84,7 @@ decode_cycle decode (
     .pc(decode_pc),
     .clk(clock),
     .writedata(decode_writedata),
-    .rd(decode_rd)
+    .rd(decode_rd),
 
     //from control
     .rst(),
@@ -266,8 +266,9 @@ reg_component mw_alufor (
 two_way_mux_component mw_m2r (
     .in0(writeback_memout),
     .in1(writeback_alufor),
-    .op(mem2reg)
-)
+    .op(mem2reg),
+    .out(decode_writedata)
+);
 
 always @(posedge clock)
 begin

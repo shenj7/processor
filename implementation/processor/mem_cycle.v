@@ -6,7 +6,7 @@ input memwrite;
 input rst;
 
 output [15:0] memout;
-output reg [15:0] addrout;
+output reg [15:0] alufor;
 
 data_mem_component dm (
     .writedata(b),

@@ -12,7 +12,7 @@ output reg ALUSRC;
 output reg MEMREAD;
 output reg MEMWRITE;
 output reg PCWRITE;
-output reg MEM2REG
+output reg MEM2REG;
 
  always @(*)  
  begin  
