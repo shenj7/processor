@@ -13,7 +13,7 @@ output reg [3:0] rd;
 
 always @(posedge clock)
 begin
-        if (reset) begin
+        if (reset == 1) begin
                 rs1 <= 4'b0000;
 		rs2 <= 4'b0000;
 		rd <= 4'b0000;

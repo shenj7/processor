@@ -1,4 +1,4 @@
-module decode_cycle(rst, ir, pc, clk, writedata, regwrite, pcout, a, b, rdout, imm);
+module decode_cycle(rst, ir, pc, clk, writedata, regwrite, pcout, a, b, rdout, imm, pcout, a, b, rdout, imm);
 input rst;
 input [15:0] ir;
 input [15:0] pc;
