@@ -47,7 +47,7 @@ wire [15:0] fetch_pc;
 
 //wires out of fetch
 wire [15:0] fetch_ir;
-wire [15:0] fetch_pc;
+wire [15:0] fetch_pcout;
 
 fetch_cycle fetch (
     //from prev cycle
@@ -59,14 +59,15 @@ fetch_cycle fetch (
     .pcwrite(pcwrite),
     
     //output
-    .ir(decode_ir),
-    .currpc(decode_pc)
+    .ir(fetch_ir),
+    .currpc(fetch_pcou)
 );
 
 //wires into decode
 wire [15:0] decode_ir;
 wire [15:0] decode_pc;
-wire [15:0] decode_writedata
+wire [15:0] decode_writedata;
+wire [15:0] decode_rd;
 
 //wires out of decode
 wire [15:0] decode_pcout;
@@ -81,6 +82,7 @@ decode_cycle decode (
     .pc(decode_pc),
     .clk(clock),
     .writedata(decode_writedata),
+    .rd(decode_rd)
 
     //from control
     .rst(),
@@ -103,7 +105,7 @@ wire [3:0] execute_rd;
 wire [15:0] execute_imm;
 
 //wires out of execute
-wire [15:0] execute_pcout;
+wire [15:0] execute_bout;
 wire [15:0] execute_aluout;
 wire [3:0] execute_rdout;
 wire execute_zero;
@@ -125,7 +127,7 @@ execute_cycle execute (
     .aluin2(aluin2),
 
     //outputs
-    .newpc(execute_pcout),
+    .bout(execute_bout),
     .aluout(execute_aluout),
     .rdout(execute_rdout),
     .zero(execute_zero),
@@ -159,114 +161,102 @@ mem_cycle mem (
 //fetch-decode
 reg_component fd_pc (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(fetch_pc),
+    .write(1),
     .reset(),
-    .out()
+    .out(decode_pc)
 );
 
 reg_component fd_ir (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(fetch_ir),
+    .write(1),
     .reset(),
-    .out()
+    .out(decode_ir)
 );
 
 //decode-execute
 reg_component de_pc (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(decode_pcout),
+    .write(1),
     .reset(),
-    .out()
+    .out(execute_pc)
 );
 
 reg_component de_a (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(decode_a),
+    .write(1),
     .reset(),
-    .out()
+    .out(execute_a)
 );
 
 reg_component de_b (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(decode_b),
+    .write(1),
     .reset(),
-    .out()
+    .out(execute_b)
 );
 
 small_reg_component de_rd (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(decode_rdout),
+    .write(1),
     .reset(),
-    .out()
+    .out(execute_rd)
 );
 
 reg_component de_imm (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(decode_imm),
+    .write(1),
     .reset(),
-    .out()
+    .out(execute_imm)
 );
 
 //execute-memory
 reg_component em_b (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(execute_bout),
+    .write(1),
     .reset(),
-    .out()
+    .out(mem_b)
 );
 
 reg_component em_aluout (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(execute_aluout),
+    .write(1),
     .reset(),
-    .out()
+    .out(mem_aluout)
 );
 
 small_reg_component em_rd (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(execute_rd),
+    .write(1),
     .reset(),
-    .out()
+    .out(decode_rd)
 );
 
 //memory-writeback
 reg_component mw_mem (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(mem_memout),
+    .write(1),
     .reset(),
-    .out()
+    .out(decode_rd)
 );
 
-reg_component me_addr (
+reg_component mw_addr (
     .clock(clock),
-    .in(),
-    .write(),
+    .in(mem_addrout),
+    .write(1),
     .reset(),
     .out()
 );
-
-//writeback cycle items
-two_way_mux_component w_jump (
-    .clock(clock),
-    .in(),
-    .write(),
-    .reset(),
-    .out()
-);
-
-wire [15:0] writedata;
-
 
 always @(posedge clock)
 begin

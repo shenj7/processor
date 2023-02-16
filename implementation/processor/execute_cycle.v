@@ -1,4 +1,4 @@
-module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, newpc, aluout, rdout, zero, pos);
+module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos);
 //inputs
 input clk;
 input [15:0] pc;
@@ -14,7 +14,7 @@ input aluin1;
 input [1:0] aluin2;
 
 //outputs
-output [15:0] newpc;
+output [15:0] bout;
 output [15:0] aluout;
 output reg [3:0] rdout;
 output zero;
@@ -45,6 +45,7 @@ four_way_mux_component aluin2_mux (
 always @(posedge clk)
 begin
     rdout <= rd;
+    bout <= b;
 end
 
 
