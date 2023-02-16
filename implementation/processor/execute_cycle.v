@@ -14,7 +14,7 @@ input aluin1;
 input [1:0] aluin2;
 
 //outputs
-output [15:0] bout;
+output reg [15:0] bout;
 output [15:0] aluout;
 output reg [3:0] rdout;
 output zero;

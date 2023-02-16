@@ -82,7 +82,7 @@ decode_cycle decode (
     .pc(decode_pc),
     .clk(clock),
     .writedata(decode_writedata),
-    .rd(decode_rd)
+    .rd(decode_rd),
 
     //from control
     .rst(),
