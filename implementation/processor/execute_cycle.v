@@ -16,7 +16,7 @@ input [1:0] aluin2;
 //outputs
 output [15:0] newpc;
 output [15:0] aluout;
-output reg rdout;
+output reg [3:0] rdout;
 output zero;
 output pos;
 
