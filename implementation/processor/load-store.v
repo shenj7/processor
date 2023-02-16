@@ -1,79 +1,269 @@
-// //load-store
-// module load_store();
+//load-store
+module load_store();
 
-// reg clock;
+parameter HALF_PERIOD=50;
+reg clock;
 
-// initial begin
-//     clock = 0;
-//     forever begin
-//         #(HALF_PERIOD);
-//         clock = ~clock;
-//     end
-// end
+initial begin
+    clock = 0;
+    forever begin
+        #(HALF_PERIOD);
+        clock = ~clock;
+    end
+end
 
-// //add in a control unit
+//wires into control
 
-// fetch_cycle fetch (
-//     //from prev cycle
-//     .pc(),
-//     .pcwrite(),
-//     .clk(),
+//wires out of control
+wire [1:0] immgenop;
+wire aluop;
+wire aluin1;
+wire [1:0] aluin2;
+wire alusrc; //tf is this doing?
+wire memread;
+wire memwrite;
+wire pcwrite;
+wire regwrite; //why do we not have this?
+
+control_component control (
+    //input
+    .op(),
+    .reset(),
+
+    //output
+    .IMMGENOP(immgenop),
+    .ALUOP(aluop),
+    .ALUIN1(aluin1),
+    .ALUIN2(aluin2),
+    .ALUSRC(alusrc),
+    //.REGWRITE(regwrite),
+    .MEMREAD(memread),
+    .MEMWRITE(memwrite),
+    .PCWRITE(pcwrite)
+);
+
+//wires into fetch
+wire [15:0] fetch_pc;
+
+//wires out of fetch
+wire [15:0] fetch_ir;
+wire [15:0] fetch_pcout;
+
+fetch_cycle fetch (
+    //from prev cycle
+    .pc(fetch_pc),
+    .clk(clock),
     
-//     //from control
-//     .rst(),
+    //from control
+    .rst(),
+    .pcwrite(pcwrite),
     
-//     //output
-//     .ir(),
-//     .currpc()
-// );
+    //output
+    .ir(fetch_ir),
+    .currpc(fetch_pcou)
+);
 
-// decode_cycle decode (
-//     //from prev cycle (and writeback)
-//     .ir(),
-//     .pc(),
-//     .clk(),
-//     .writedata(),
-//     .regwrite(),
+//wires into decode
+wire [15:0] decode_ir;
+wire [15:0] decode_pc;
+wire [15:0] decode_writedata;
+wire [15:0] decode_rd;
 
-//     //output
-//     .inst(),
-//     .pcout(),
-//     .a(),
-//     .b(),
-//     .rdout(),
-//     .imm(),
-// );
+//wires out of decode
+wire [15:0] decode_pcout;
+wire [15:0] decode_a;
+wire [15:0] decode_b;
+wire [3:0] decode_rdout;
+wire [15:0] decode_imm;
 
-// execute_cycle execute (
-//     //from the prev cycle
-//     .pc(),
-//     .a(),
-//     .b(),
-//     .rd(),
-//     .imm(),
-//     .inst(),
+decode_cycle decode (
+    //from prev cycle (and writeback)
+    .ir(decode_ir),
+    .pc(decode_pc),
+    .clk(clock),
+    .writedata(decode_writedata),
+    .rd(decode_rd)
 
-//     //from control
-//     .aluop(),
-//     .aluin1(),
-//     .aluin2(),
+    //from control
+    .rst(),
+    .regwrite(regwrite),
+    .immgenop(immgenop),
 
-//     //outputs
-//     .newpc(),
-//     .aluout(),
-//     .rdout(),
-//     .zero(),
-//     .pos()
+    //output
+    .pcout(decode_pcout),
+    .a(decode_a),
+    .b(decode_b),
+    .rdout(decode_rdout),
+    .imm(decode_imm)
+);
 
-// );
+//wires into execute
+wire [15:0] execute_pc;
+wire [15:0] execute_a;
+wire [15:0] execute_b;
+wire [3:0] execute_rd;
+wire [15:0] execute_imm;
+
+//wires out of execute
+wire [15:0] execute_bout;
+wire [15:0] execute_aluout;
+wire [3:0] execute_rdout;
+wire execute_zero;
+wire execute_pos;
+
+execute_cycle execute (
+    //from the prev cycle
+    .clk(clock),
+    .pc(execute_pc),
+    .a(execute_a),
+    .b(execute_b),
+    .rd(execute_rd),
+    .imm(execute_imm),
+
+    //from control
+    .rst(),
+    .aluop(aluop),
+    .aluin1(aluin1),
+    .aluin2(aluin2),
+
+    //outputs
+    .bout(execute_bout),
+    .aluout(execute_aluout),
+    .rdout(execute_rdout),
+    .zero(execute_zero),
+    .pos(execute_pos)
+);
+
+//wires into mem
+wire [15:0] mem_b;
+wire [15:0] mem_aluout;
+
+//wires out of mem
+wire [15:0] mem_memout;
+wire [15:0] mem_addrout;
+
+mem_cycle mem (
+    //input
+    .clk(clock),
+    .b(mem_b),
+    .aluout(mem_aluout),
+
+    //from control
+    .rst(),
+    .memwrite(memwrite),
+
+    //output
+    .memout(mem_memout),
+    .addrout(mem_addrout)
+);
+
+//in-between registers
+//fetch-decode
+reg_component fd_pc (
+    .clock(clock),
+    .in(fetch_pc),
+    .write(1),
+    .reset(),
+    .out(decode_pc)
+);
+
+reg_component fd_ir (
+    .clock(clock),
+    .in(fetch_ir),
+    .write(1),
+    .reset(),
+    .out(decode_ir)
+);
+
+//decode-execute
+reg_component de_pc (
+    .clock(clock),
+    .in(decode_pcout),
+    .write(1),
+    .reset(),
+    .out(execute_pc)
+);
+
+reg_component de_a (
+    .clock(clock),
+    .in(decode_a),
+    .write(1),
+    .reset(),
+    .out(execute_a)
+);
+
+reg_component de_b (
+    .clock(clock),
+    .in(decode_b),
+    .write(1),
+    .reset(),
+    .out(execute_b)
+);
+
+small_reg_component de_rd (
+    .clock(clock),
+    .in(decode_rdout),
+    .write(1),
+    .reset(),
+    .out(execute_rd)
+);
+
+reg_component de_imm (
+    .clock(clock),
+    .in(decode_imm),
+    .write(1),
+    .reset(),
+    .out(execute_imm)
+);
+
+//execute-memory
+reg_component em_b (
+    .clock(clock),
+    .in(execute_bout),
+    .write(1),
+    .reset(),
+    .out(mem_b)
+);
+
+reg_component em_aluout (
+    .clock(clock),
+    .in(execute_aluout),
+    .write(1),
+    .reset(),
+    .out(mem_aluout)
+);
+
+small_reg_component em_rd (
+    .clock(clock),
+    .in(execute_rd),
+    .write(1),
+    .reset(),
+    .out(decode_rd)
+);
+
+//memory-writeback
+reg_component mw_mem (
+    .clock(clock),
+    .in(mem_memout),
+    .write(1),
+    .reset(),
+    .out(decode_rd)
+);
+
+reg_component mw_addr (
+    .clock(clock),
+    .in(mem_addrout),
+    .write(1),
+    .reset(),
+    .out()
+);
+
+always @(posedge clock)
+begin
 
 
-// always @(posedge clock)
-// begin
 
 
+end
 
-
-// end
-
-// endmodule
+endmodule
