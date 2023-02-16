@@ -41,8 +41,8 @@ reg_file_component rf (
 
 imm_gen_component ig (
     .clock(clk),
-    .inst(ir),
     .reset(rst),
+    .inst(ir),
     .out(imm)
 );
 

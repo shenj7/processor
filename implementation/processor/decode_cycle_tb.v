@@ -144,13 +144,13 @@ initial begin
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
-    ir = 16'b0010000101100101;
+    ir = 16'b0010000101100110;
    
     regwrite = 1;
 
     #(4*HALF_PERIOD);
-    begin
-        expected = 8'b00100001; 
+       begin
+        expected = {{8{ir[16]}},ir[15:8]} <<1; 
         if (imm != expected) begin
             failures = failures + 1;
             $display("%t (imm) Output = %d, expecting %d", $time, imm, expected);
