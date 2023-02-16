@@ -46,6 +46,7 @@ integer expected = 0;
     #(2*HALF_PERIOD);
     reset = 0;
     in1 = 16'b1111111111111111;
+    #(4*HALF_PERIOD);
     $display(in1[15:12]);
     expected = 4'b1111; 
     if (rs2 != expected) begin
