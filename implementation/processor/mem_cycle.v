@@ -1,4 +1,4 @@
-module mem_cycle(clk, b, aluout, memwrite, rst, memout, addrout);
+module mem_cycle(clk, b, aluout, memwrite, rst, memout, alufor);
 input clk;
 input [15:0] b;
 input [15:0] aluout;
@@ -18,7 +18,7 @@ data_mem_component dm (
 
 always @(posedge clk)
 begin
-    addrout <= aluout;
+    alufor <= aluout;
 end
 
 endmodule

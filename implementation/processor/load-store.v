@@ -24,6 +24,7 @@ wire memread;
 wire memwrite;
 wire pcwrite;
 wire regwrite; //why do we not have this?
+wire mem2reg; //we still need to put docs for this
 
 control_component control (
     //input
@@ -39,7 +40,8 @@ control_component control (
     //.REGWRITE(regwrite),
     .MEMREAD(memread),
     .MEMWRITE(memwrite),
-    .PCWRITE(pcwrite)
+    .PCWRITE(pcwrite),
+    .MEM2REG(mem2reg)
 );
 
 //wires into fetch
@@ -140,7 +142,7 @@ wire [15:0] mem_aluout;
 
 //wires out of mem
 wire [15:0] mem_memout;
-wire [15:0] mem_addrout;
+wire [15:0] mem_alufor;
 
 mem_cycle mem (
     //input
@@ -154,7 +156,7 @@ mem_cycle mem (
 
     //output
     .memout(mem_memout),
-    .addrout(mem_addrout)
+    .alufor(mem_alufor)
 );
 
 //in-between registers
@@ -242,21 +244,30 @@ small_reg_component em_rd (
 );
 
 //memory-writeback
+wire [15:0] writeback_memout;
+wire [15:0] writeback_alufor;
+
 reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
     .reset(),
-    .out(decode_rd)
+    .out(writeback_memout)
 );
 
-reg_component mw_addr (
+reg_component mw_alufor (
     .clock(clock),
-    .in(mem_addrout),
+    .in(mem_alufor),
     .write(1),
     .reset(),
-    .out()
+    .out(writeback_alufor)
 );
+
+two_way_mux_component mw_m2r (
+    .in0(writeback_memout),
+    .in1(writeback_alufor),
+    .op(mem2reg)
+)
 
 always @(posedge clock)
 begin
