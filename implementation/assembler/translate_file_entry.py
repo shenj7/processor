@@ -31,12 +31,12 @@ def get_labels(f, starting_add):
     return labels
 
 
-def replace_label(new_inst, labels):
+def replace_label(new_inst, labels, curr):
     replaced = ""
     split_inst = new_inst.split(" ")
     split_inst[-1] = split_inst[-1].strip()
     if split_inst[-1] in labels:
-        split_inst[-1] = labels[split_inst[-1]]
+        split_inst[-1] = str(int(labels[split_inst[-1]]) - curr)
     replaced = " ".join(split_inst)
     print(replaced)
     return replaced
@@ -46,6 +46,7 @@ def make_machine_file(f, labels):
     fm = open(f.name + "_machine", "w")
     f.seek(0)
     print(labels)
+    counter = 0;
     for instruction in f:
         if not instruction.strip():
             continue
@@ -55,11 +56,12 @@ def make_machine_file(f, labels):
             new_inst = instruction[loc+2:]
         else:
             new_inst = instruction
-        new_inst = replace_label(new_inst, labels)
+        new_inst = replace_label(new_inst, labels, counter)
         new_inst = parse_inst(new_inst)
         new_inst = typeswitch(new_inst)
         fm.write(new_inst)
         fm.write("\n")
+        counter = counter + 2
 
     return fm
 
