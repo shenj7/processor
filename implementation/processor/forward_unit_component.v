@@ -1,20 +1,35 @@
-// module forward_unit_component();
+module forward_unit_component(rs1, rs2, rd, oldalusrc0, oldalusrc1, alusrc0, alusrc1, shouldb, originalb, newb);
+//remove clock from loadstorej
+input rs1;
+input rs2;
+input rd;
+input oldalusrc0;
+input oldalusrc1;
+input shouldb;
+input originalb;
 
-// input clock;
-// input memread;
+output reg alusrc0;
+output reg alusrc1;
+output reg newb;
 
-// output reg write;
+always @(*)
+begin
+    if (rd == rs1) begin
+        alusrc0 <= 2'b10;
+    end else begin
+        alusrc0 <= oldalusrc0;
+    end
+    if (rd == rs2) begin
+        alusrc1 <= 2'b11;
+        newb <= shouldb;
+    end else begin
+        alusrc1 <= oldalusrc1;
+        newb <= originalb;
+    end
 
-// always @(posedge clock)
-// begin
-//     //0 if we want to stall otherwise 1 (should mostly be 1)
-//     if (memread == 1) begin
-//         stall = 0;
-//     end else begin
-//         stall = 1;
-//     end
-// end
+    //also need a case for b - may need to forward b into memory
+end
 
 
 
-// endmodule
+endmodule

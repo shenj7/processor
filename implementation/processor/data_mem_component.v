@@ -7,7 +7,9 @@ module memory
 	input [(DATA_WIDTH-1):0] writedata,
 	input [(ADDR_WIDTH-1):0] addr,
 	input write, clk,
-	output [(DATA_WIDTH-1):0] out
+	input [15:0] read_in,
+	output reg [15:0] write_out,
+	output reg [(DATA_WIDTH-1):0] out
 );
 
 	// Declare the RAM variable
@@ -22,16 +24,21 @@ module memory
 
 	always @ (posedge clk)
 	begin
+		addr_reg <= addr-4'h03ff;
 		// Write
 		if (write)
-			ram[addr] <= writedata;
+			if (addr == 0'hf69f) begin
+				ram[addr] <= writedata;
+			end else begin
+				write_out <= out;
+			end
+			
 
-		addr_reg <= addr;
+		if (addr == 0'h69f) begin
+			out <= read_in;
+		end
+		else begin
+			out <= ram[addr_reg >>1];
+		end
 	end
-
-	// Continuous assignment implies read returns NEW data.
-	// This is the natural behavior of the TriMatrix memory
-	// blocks in Single Port mode.  
-	assign out = ram[addr_reg];
-
 endmodule

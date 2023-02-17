@@ -1,16 +1,13 @@
 //load-store
 module load_store();
+// make input, output, clocki, rest
+input clock;
+input [15:0] read_in;
+input rst;
+
+output [15:0] write_out;
 
 parameter HALF_PERIOD=50;
-reg clock;
-
-initial begin
-    clock = 0;
-    forever begin
-        #(HALF_PERIOD);
-        clock = ~clock;
-    end
-end
 
 //wires out of control
 wire [1:0] immgenop;
@@ -26,6 +23,7 @@ wire mem2reg; //we still need to put docs for this
 
 //wires for hazards and forwarding
 wire stall;
+wire flush;
 
 control_component control (
     //input
@@ -147,9 +145,8 @@ execute_cycle execute (
     //from control
     .rst(branch_taken),
     .aluop(aluop),
-    .aluin1(aluin1),
-    .aluin2(aluin2),
-    .alusrc(alusrc),
+    .aluin1(forwarded_alusrc0),
+    .aluin2(forwarded_alusrc1),
 
     //outputs
     .bout(execute_bout),
@@ -172,6 +169,12 @@ mem_cycle mem (
     .clk(clock),
     .b(mem_b),
     .aluout(mem_aluout),
+
+    //outside input
+    .read_in(read_in),
+
+    //outside output
+    .write_out(write_out),
 
     //from control
     .rst(branch_taken),
@@ -244,9 +247,9 @@ reg_component de_imm (
 //execute-memory
 reg_component em_b (
     .clock(clock),
-    .in(execute_bout),
+    .in(newb),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(mem_b)
 );
 
@@ -254,7 +257,7 @@ reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(mem_aluout)
 );
 
@@ -262,7 +265,7 @@ small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(decode_rd)
 );
 
@@ -274,7 +277,7 @@ reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
-    .reset(branch_taken),
+    .reset(0),
     .out(writeback_memout)
 );
 
@@ -282,7 +285,7 @@ reg_component mw_alufor (
     .clock(clock),
     .in(mem_alufor),
     .write(1),
-    .reset(branch_taken),
+    .reset(0),
     .out(writeback_alufor)
 );
 
@@ -295,7 +298,7 @@ two_way_mux_component mw_m2r (
 
 //branch logic
 always @(*) begin
-    branch_taken <= pcwrite && (execute_zero || execute_pos);
+    branch_taken <= pcwrite && flush;
 end
 
 
@@ -303,8 +306,27 @@ end
 hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
-    .write(stall)
+    .write(stall),
+    .flush(flush)
 );
+
+forward_unit_component fw (
+    .clock(clock),
+    .rs1(decode_ir[11:8]),
+    .rs2(decode_ir[15:12]),
+    .rd(decode_ir[7:4]),
+    .oldalusrc0(aluin1),
+    .oldalusrc1(aluin2),
+    .alusrc0(forwarded_alusrc0),
+    .alusrc1(forwarded_alusrc1),
+    .newb(newb),
+    .shouldb(mem_aluout),
+    .originalb(execute_bout)
+);
+
+wire [15:0] newb;
+wire [1:0] forwarded_alusrc0;
+wire [1:0] forwarded_alusrc1;
 
 always @(posedge clock)
 begin
