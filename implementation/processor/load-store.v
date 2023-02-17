@@ -55,7 +55,7 @@ two_way_mux_component pcsrc (
     .in0(next_pc),
     .in1(execute_aluout),
     .op(branch_taken),
-    .reset(),
+    .reset(branch_taken),
     .out(chosen_pc)
 );
 
@@ -78,7 +78,7 @@ fetch_cycle fetch (
     .clk(clock),
     
     //from control
-    .rst(),
+    .rst(branch_taken),
     .pcwrite(stall),
     
     //output
@@ -109,7 +109,7 @@ decode_cycle decode (
     .rd(decode_rd),
 
     //from control
-    .rst(),
+    .rst(branch_taken),
     .regwrite(regwrite),
     .immgenop(immgenop),
 
@@ -145,7 +145,7 @@ execute_cycle execute (
     .imm(execute_imm),
 
     //from control
-    .rst(),
+    .rst(branch_taken),
     .aluop(aluop),
     .aluin1(aluin1),
     .aluin2(aluin2),
@@ -174,7 +174,7 @@ mem_cycle mem (
     .aluout(mem_aluout),
 
     //from control
-    .rst(),
+    .rst(branch_taken),
     .memwrite(memwrite),
 
     //output
@@ -188,7 +188,7 @@ reg_component fd_pc (
     .clock(clock),
     .in(fetch_pc),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(decode_pc)
 );
 
@@ -196,7 +196,7 @@ reg_component fd_ir (
     .clock(clock),
     .in(fetch_ir),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(decode_ir)
 );
 
@@ -205,7 +205,7 @@ reg_component de_pc (
     .clock(clock),
     .in(decode_pcout),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(execute_pc)
 );
 
@@ -213,7 +213,7 @@ reg_component de_a (
     .clock(clock),
     .in(decode_a),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(execute_a)
 );
 
@@ -221,7 +221,7 @@ reg_component de_b (
     .clock(clock),
     .in(decode_b),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(execute_b)
 );
 
@@ -229,7 +229,7 @@ small_reg_component de_rd (
     .clock(clock),
     .in(decode_rdout),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(execute_rd)
 );
 
@@ -237,7 +237,7 @@ reg_component de_imm (
     .clock(clock),
     .in(decode_imm),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(execute_imm)
 );
 
@@ -246,7 +246,7 @@ reg_component em_b (
     .clock(clock),
     .in(execute_bout),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(mem_b)
 );
 
@@ -254,7 +254,7 @@ reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(mem_aluout)
 );
 
@@ -262,7 +262,7 @@ small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
     .write(stall),
-    .reset(),
+    .reset(branch_taken),
     .out(decode_rd)
 );
 
@@ -274,7 +274,7 @@ reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
-    .reset(),
+    .reset(branch_taken),
     .out(writeback_memout)
 );
 
@@ -282,7 +282,7 @@ reg_component mw_alufor (
     .clock(clock),
     .in(mem_alufor),
     .write(1),
-    .reset(),
+    .reset(branch_taken),
     .out(writeback_alufor)
 );
 
