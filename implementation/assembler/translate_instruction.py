@@ -4,11 +4,11 @@ def typeswitch(inst):
     mlen = 4
     instlen = len(inst)
     func = inst[0]
-    if func in ["add", "grt", "sub", "eq", "jalr"]:
+    if func in ["add", "grt", "sub", "eq", "jalr", "bne"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
     elif func in ["lui", "jal"]:
         return itype_parse(inst) if instlen == ilen else f"malformed instruction, should be length {ilen}"
-    elif func in ["addi", "lw", "sw", "bne", "wri", "rea"]:
+    elif func in ["addi", "lw", "sw", "wri", "rea"]:
         return mtype_parse(inst) if instlen == mlen else f"malformed instruction, should be length {mlen}"
     else:
         return "incorrect instruction"
@@ -40,6 +40,8 @@ def rtype_parse(inst):
         iid = "0011"
     elif func == "jalr":
         iid = "0100"
+    elif func == "bne":
+        iid = "1011"
     else:
         return f"instruction not found: {func}"
 
@@ -72,8 +74,6 @@ def mtype_parse(inst):
         iid = "1001"
     elif func == "sw":
         iid = "1010"
-    elif func == "bne":
-        iid = "1011"
     elif func == "wri":
         iid = "1100"
     elif func == "rea":
