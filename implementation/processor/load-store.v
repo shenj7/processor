@@ -1,6 +1,6 @@
 //load-store
 module load_store();
-
+// make input, output, clocki, rest
 parameter HALF_PERIOD=50;
 reg clock;
 
@@ -26,6 +26,7 @@ wire mem2reg; //we still need to put docs for this
 
 //wires for hazards and forwarding
 wire stall;
+wire flush;
 
 control_component control (
     //input
@@ -147,9 +148,8 @@ execute_cycle execute (
     //from control
     .rst(branch_taken),
     .aluop(aluop),
-    .aluin1(aluin1),
-    .aluin2(aluin2),
-    .alusrc(alusrc),
+    .aluin1(forwarded_alusrc0),
+    .aluin2(forwarded_alusrc1),
 
     //outputs
     .bout(execute_bout),
@@ -246,7 +246,7 @@ reg_component em_b (
     .clock(clock),
     .in(execute_bout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(mem_b)
 );
 
@@ -254,7 +254,7 @@ reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(mem_aluout)
 );
 
@@ -262,7 +262,7 @@ small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
     .write(stall),
-    .reset(branch_taken),
+    .reset(0),
     .out(decode_rd)
 );
 
@@ -274,7 +274,7 @@ reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
-    .reset(branch_taken),
+    .reset(0),
     .out(writeback_memout)
 );
 
@@ -282,7 +282,7 @@ reg_component mw_alufor (
     .clock(clock),
     .in(mem_alufor),
     .write(1),
-    .reset(branch_taken),
+    .reset(0),
     .out(writeback_alufor)
 );
 
@@ -295,7 +295,7 @@ two_way_mux_component mw_m2r (
 
 //branch logic
 always @(*) begin
-    branch_taken <= pcwrite && (execute_zero || execute_pos);
+    branch_taken <= pcwrite && flush;
 end
 
 
@@ -303,8 +303,24 @@ end
 hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
-    .write(stall)
+    .write(stall),
+    .flush(flush)
 );
+
+forward_unit_component fw (
+    .clock(clock),
+    .rs1(),
+    .rs2(),
+    .rd(),
+    .oldalusrc0(aluin1),
+    .oldalusrc1(aluin2),
+    .alusrc0(forwarded_alusrc0),
+    .alusrc1(forwarded_alusrc1)
+);
+
+
+wire [1:0] forwarded_alusrc0;
+wire [1:0] forwarded_alusrc1;
 
 always @(posedge clock)
 begin

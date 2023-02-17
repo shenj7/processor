@@ -19,6 +19,11 @@ reg [15:0] regs[NUM_REG-1:0];
 
 always @(posedge clock)
 begin
+    //write to register
+    if (write && rd != 4'b0000) begin
+        regs[rd] = writedata;
+    end
+
     //get out of rs1
     if (rs1 == 0) begin
         reg1 <= 4'h0000;
@@ -33,10 +38,6 @@ begin
         reg2 <= regs[rs2];
     end
 
-    //write to register
-    if (write && rd != 4'b0000) begin
-        regs[rd] <= writedata;
-    end
 
     //reset
     if (reset) begin

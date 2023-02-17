@@ -7,6 +7,7 @@ module memory
 	input [(DATA_WIDTH-1):0] writedata,
 	input [(ADDR_WIDTH-1):0] addr,
 	input write, clk,
+	input [15:0] read_in,
 	output [(DATA_WIDTH-1):0] out
 );
 
@@ -26,12 +27,12 @@ module memory
 		if (write)
 			ram[addr] <= writedata;
 
-		addr_reg <= addr;
+		addr_reg <= addr-4'h03ff;
+		if (addr = *special*) begin
+			out = read_in;
+		end
+		else begin
+			out = ram[adrr_reg >>1];
+		end
 	end
-
-	// Continuous assignment implies read returns NEW data.
-	// This is the natural behavior of the TriMatrix memory
-	// blocks in Single Port mode.  
-	assign out = ram[addr_reg];
-
 endmodule

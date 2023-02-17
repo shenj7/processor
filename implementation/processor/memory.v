@@ -2,7 +2,7 @@
 // Single port RAM with single read/write address 
 
 module memory 
-#(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=16)
+#(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
 (
 	input [(DATA_WIDTH-1):0] data,
 	input [(ADDR_WIDTH-1):0] addr,
@@ -23,8 +23,13 @@ module memory
 	always @ (posedge clk)
 	begin
 		// Write
-		if (we)
+		if (we) begin
+			if (<spec mem address) begin //do this in wrapper, also make sure to keep track of offsets
+				q = input; //wont work, need to make sep wrapper for inst mem and data mem
+			end else begin
 			ram[addr<<1] <= data;
+			end
+		end
 
 		addr_reg <= addr;
 	end
