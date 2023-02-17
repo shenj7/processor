@@ -49,10 +49,12 @@ control_component control (
 wire [15:0] next_pc;
 wire [15:0] chosen_pc;
 
+reg branch_taken;
+
 two_way_mux_component pcsrc (
     .in0(next_pc),
     .in1(execute_aluout),
-    .op(pcwrite && (execute_zero || execute_pos)),
+    .op(branch_taken),
     .reset(),
     .out(chosen_pc)
 );
@@ -290,6 +292,11 @@ two_way_mux_component mw_m2r (
     .op(mem2reg),
     .out(decode_writedata)
 );
+
+//branch logic
+always @(*) begin
+    branch_taken <= pcwrite && (execute_zero || execute_pos);
+end
 
 
 //hazards and forwarding
