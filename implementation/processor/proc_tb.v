@@ -8,13 +8,6 @@ reg [15:0] IN;
 //outputs
 wire [15:0]  OUT;
 
-load_store UUT (
-    .rst(rst),
-    .read_in(IN),
-    .write_out(OUT),
-    .clock(clk)
-);
-
 parameter HALF_PERIOD = 50;
 integer cycle_counter = 0;
 integer counter = 0;
@@ -28,6 +21,13 @@ initial begin
         clk = ~clk;
     end
 end
+
+load_store UUT (
+    .clock(clk),
+    .read_in(IN),
+    .rst(rst),    
+    .write_out(OUT)    
+);
 
 
 //block to run the clock
