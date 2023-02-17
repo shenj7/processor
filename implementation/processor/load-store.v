@@ -12,8 +12,6 @@ initial begin
     end
 end
 
-//wires into control
-
 //wires out of control
 wire [1:0] immgenop;
 wire aluop;
@@ -26,9 +24,12 @@ wire pcwrite;
 wire regwrite; //why do we not have this?
 wire mem2reg; //we still need to put docs for this
 
+//wires for hazards and forwarding
+wire stall;
+
 control_component control (
     //input
-    .op(),
+    .op(fetch_ir),
     .reset(),
 
     //output
@@ -42,6 +43,24 @@ control_component control (
     .MEMWRITE(memwrite),
     .PCWRITE(pcwrite),
     .MEM2REG(mem2reg)
+);
+
+//pc main stuff
+wire [15:0] next_pc;
+wire [15:0] chosen_pc;
+
+two_way_mux_component pcsrc (
+    .in0(next_pc),
+    .in1(execute_aluout),
+    .op(pcwrite && (execute_zero || execute_pos)),
+    .reset(),
+    .out(chosen_pc)
+);
+
+reg_component pcmain (
+    .in(chosen_pc), //mux (pcsrc)
+    .out(fetch_pc),
+    .write(stall)
 );
 
 //wires into fetch
@@ -58,11 +77,12 @@ fetch_cycle fetch (
     
     //from control
     .rst(),
-    .pcwrite(pcwrite),
+    .pcwrite(stall),
     
     //output
     .ir(fetch_ir),
-    .currpc(fetch_pcou)
+    .currpc(fetch_pcout),
+    .newpc(next_pc)
 );
 
 //wires into decode
@@ -127,6 +147,7 @@ execute_cycle execute (
     .aluop(aluop),
     .aluin1(aluin1),
     .aluin2(aluin2),
+    .alusrc(alusrc),
 
     //outputs
     .bout(execute_bout),
@@ -164,7 +185,7 @@ mem_cycle mem (
 reg_component fd_pc (
     .clock(clock),
     .in(fetch_pc),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(decode_pc)
 );
@@ -172,7 +193,7 @@ reg_component fd_pc (
 reg_component fd_ir (
     .clock(clock),
     .in(fetch_ir),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(decode_ir)
 );
@@ -181,7 +202,7 @@ reg_component fd_ir (
 reg_component de_pc (
     .clock(clock),
     .in(decode_pcout),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(execute_pc)
 );
@@ -189,7 +210,7 @@ reg_component de_pc (
 reg_component de_a (
     .clock(clock),
     .in(decode_a),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(execute_a)
 );
@@ -197,7 +218,7 @@ reg_component de_a (
 reg_component de_b (
     .clock(clock),
     .in(decode_b),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(execute_b)
 );
@@ -205,7 +226,7 @@ reg_component de_b (
 small_reg_component de_rd (
     .clock(clock),
     .in(decode_rdout),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(execute_rd)
 );
@@ -213,7 +234,7 @@ small_reg_component de_rd (
 reg_component de_imm (
     .clock(clock),
     .in(decode_imm),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(execute_imm)
 );
@@ -222,7 +243,7 @@ reg_component de_imm (
 reg_component em_b (
     .clock(clock),
     .in(execute_bout),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(mem_b)
 );
@@ -230,7 +251,7 @@ reg_component em_b (
 reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(mem_aluout)
 );
@@ -238,7 +259,7 @@ reg_component em_aluout (
 small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
-    .write(1),
+    .write(stall),
     .reset(),
     .out(decode_rd)
 );
@@ -268,6 +289,14 @@ two_way_mux_component mw_m2r (
     .in1(writeback_alufor),
     .op(mem2reg),
     .out(decode_writedata)
+);
+
+
+//hazards and forwarding
+hazard_detection_unit_component hazard (
+    .clock(clock),
+    .memread(memread),
+    .write(stall)
 );
 
 always @(posedge clock)
