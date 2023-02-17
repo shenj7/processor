@@ -1,4 +1,4 @@
-module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos);
+module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, alusrc, bout, aluout, rdout, zero, pos);
 //inputs
 input clk;
 input [15:0] pc;
@@ -12,6 +12,7 @@ input rst;
 input aluop;
 input aluin1;
 input [1:0] aluin2;
+input [1:0] alusrc;
 
 //outputs
 output reg [15:0] bout;
@@ -23,6 +24,15 @@ output pos;
 wire [15:0] aluin1_wire;
 wire [15:0] aluin2_wire;
 
+alu_component alu (
+    .inst_id(aluop),
+    .in0(aluin1_wire),
+    .in1(aluin2_wire),
+    .reset(rst),
+    .out(aluout),
+    .zero(zero),
+    .pos(pos)
+);
 
 two_way_mux_component aluin1_mux (
     .in0(pc),

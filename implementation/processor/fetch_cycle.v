@@ -7,9 +7,9 @@ input rst;
 
 output reg [15:0] ir;
 output reg [15:0] currpc;
+output [15:0] newpc;
 
 wire [15:0] ir;
-wire [15:0] newpc;
 
 inst_mem_component im (
     .addr(pc),
@@ -30,10 +30,6 @@ alu_component small_alu (
 always @(posedge clk)
 begin
     currpc = pc;
-    if (pcwrite == 1) begin
-        pc = newpc;
-    end
-
 end
 
 

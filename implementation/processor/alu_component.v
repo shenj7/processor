@@ -11,7 +11,6 @@ output reg [15:0] out;
 output reg zero;
 output reg pos;
 
-
 always @(inst_id or in0 or in1 or reset)
 begin
     if (inst_id == 4'b0000 ||

@@ -24,7 +24,7 @@ module memory
 	begin
 		// Write
 		if (we)
-			ram[addr] <= data;
+			ram[addr<<1] <= data;
 
 		addr_reg <= addr;
 	end
