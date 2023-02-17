@@ -8,7 +8,8 @@ module memory
 	input [(ADDR_WIDTH-1):0] addr,
 	input write, clk,
 	input [15:0] read_in,
-	output [(DATA_WIDTH-1):0] out
+	output reg [15:0] write_out,
+	output reg [(DATA_WIDTH-1):0] out
 );
 
 	// Declare the RAM variable
@@ -23,16 +24,21 @@ module memory
 
 	always @ (posedge clk)
 	begin
+		addr_reg <= addr-4'h03ff;
 		// Write
 		if (write)
-			ram[addr] <= writedata;
+			if (addr == 0'hf69f) begin
+				ram[addr] <= writedata;
+			end else begin
+				write_out <= out;
+			end
+			
 
-		addr_reg <= addr-4'h03ff;
-		if (addr = *special*) begin
-			out = read_in;
+		if (addr == 0'h69f) begin
+			out <= read_in;
 		end
 		else begin
-			out = ram[adrr_reg >>1];
+			out <= ram[addr_reg >>1];
 		end
 	end
 endmodule

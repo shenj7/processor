@@ -1,4 +1,4 @@
-module hazard_detection_unit_component(clock, memread, stall, flush);
+module hazard_detection_unit_component(clock, memread, instop, zero, stall, flush);
 
 input clock;
 input memread;

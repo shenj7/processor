@@ -1,16 +1,13 @@
 //load-store
 module load_store();
 // make input, output, clocki, rest
-parameter HALF_PERIOD=50;
-reg clock;
+input clock;
+input [15:0] read_in;
+input rst;
 
-initial begin
-    clock = 0;
-    forever begin
-        #(HALF_PERIOD);
-        clock = ~clock;
-    end
-end
+output [15:0] write_out;
+
+parameter HALF_PERIOD=50;
 
 //wires out of control
 wire [1:0] immgenop;
@@ -173,6 +170,12 @@ mem_cycle mem (
     .b(mem_b),
     .aluout(mem_aluout),
 
+    //outside input
+    .read_in(read_in),
+
+    //outside output
+    .write_out(write_out),
+
     //from control
     .rst(branch_taken),
     .memwrite(memwrite),
@@ -244,7 +247,7 @@ reg_component de_imm (
 //execute-memory
 reg_component em_b (
     .clock(clock),
-    .in(execute_bout),
+    .in(newb),
     .write(stall),
     .reset(0),
     .out(mem_b)
@@ -309,16 +312,19 @@ hazard_detection_unit_component hazard (
 
 forward_unit_component fw (
     .clock(clock),
-    .rs1(),
-    .rs2(),
-    .rd(),
+    .rs1(decode_ir[11:8]),
+    .rs2(decode_ir[15:12]),
+    .rd(decode_ir[7:4]),
     .oldalusrc0(aluin1),
     .oldalusrc1(aluin2),
     .alusrc0(forwarded_alusrc0),
-    .alusrc1(forwarded_alusrc1)
+    .alusrc1(forwarded_alusrc1),
+    .newb(newb),
+    .shouldb(mem_aluout),
+    .originalb(execute_bout)
 );
 
-
+wire [15:0] newb;
 wire [1:0] forwarded_alusrc0;
 wire [1:0] forwarded_alusrc1;
 

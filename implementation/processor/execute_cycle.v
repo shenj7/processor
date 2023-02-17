@@ -37,7 +37,7 @@ two_way_mux_component aluin1_mux (
     .in0(pc),
     .in1(a),
     .in2(forwarded_aluout),
-    .in3(0)
+    .in3(0),
     .op(aluin_2),
     .reset(rst),
     .out(aluin1_wire)
