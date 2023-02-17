@@ -1,7 +1,7 @@
 // Quartus Prime Verilog Template
 // Single port RAM with single read/write address 
 
-module memory 
+module inst_mem_component 
 #(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
 (
 	input [(ADDR_WIDTH-1):0] addr,

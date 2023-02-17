@@ -1,5 +1,5 @@
 //load-store
-module load_store();
+module load_store(clock, read_in, rst, write_out);
 // make input, output, clocki, rest
 input clock;
 input [15:0] read_in;
