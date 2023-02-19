@@ -33,7 +33,7 @@ alu_component alu (
     .pos(pos)
 );
 
-two_way_mux_component aluin1_mux (
+four_way_mux_component aluin1_mux (
     .in0(pc),
     .in1(a),
     .in2(forwarded_aluout),

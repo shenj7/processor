@@ -25,6 +25,28 @@ wire mem2reg; //we still need to put docs for this
 wire stall;
 wire flush;
 
+
+//pc main stuff
+wire [15:0] next_pc;
+wire [15:0] chosen_pc;
+
+reg branch_taken;
+
+
+//wires into fetch
+wire [15:0] fetch_pc; //error
+
+reg_component pcmain (
+    .in(chosen_pc), //mux (pcsrc)
+    .out(fetch_pc),
+    .write(stall)
+);
+
+//wires out of fetch
+wire [15:0] fetch_ir;
+wire [15:0] fetch_pcout;
+
+//control
 control_component control (
     //input
     .op(fetch_ir),
@@ -43,33 +65,7 @@ control_component control (
     .MEM2REG(mem2reg)
 );
 
-//pc main stuff
-wire [15:0] next_pc;
-wire [15:0] chosen_pc;
-
-reg branch_taken;
-
-two_way_mux_component pcsrc (
-    .in0(next_pc),
-    .in1(execute_aluout),
-    .op(branch_taken),
-    .reset(branch_taken),
-    .out(chosen_pc)
-);
-
-reg_component pcmain (
-    .in(chosen_pc), //mux (pcsrc)
-    .out(fetch_pc),
-    .write(stall)
-);
-
-//wires into fetch
-wire [15:0] fetch_pc; //error
-
-//wires out of fetch
-wire [15:0] fetch_ir;
-wire [15:0] fetch_pcout;
-
+//fetch cycle
 fetch_cycle fetch (
     //from prev cycle
     .pc(fetch_pc),
@@ -154,6 +150,14 @@ execute_cycle execute (
     .rdout(execute_rdout),
     .zero(execute_zero),
     .pos(execute_pos)
+);
+
+two_way_mux_component pcsrc (
+    .in0(next_pc),
+    .in1(execute_aluout),
+    .op(branch_taken),
+    .reset(branch_taken),
+    .out(chosen_pc)
 );
 
 //wires into mem
@@ -306,12 +310,13 @@ end
 hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
-    .write(stall),
+    .instop(decode_ir),
+    .zero(execute_zero),
+    .stall(stall),
     .flush(flush)
 );
 
 forward_unit_component fw (
-    .clock(clock),
     .rs1(decode_ir[11:8]),
     .rs2(decode_ir[15:12]),
     .rd(decode_ir[7:4]),

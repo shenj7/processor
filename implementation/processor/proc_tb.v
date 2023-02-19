@@ -9,7 +9,6 @@ reg [15:0] IN;
 wire [15:0]  OUT;
 
 parameter HALF_PERIOD = 50;
-integer cycle_counter = 0;
 integer counter = 0;
 integer failures = 0;
 reg [15:0] expected;
@@ -39,6 +38,7 @@ initial begin
     rst = 0;
     IN = 16'h13b0;
     expected = 16'h000b;
+    counter = counter + 1;
     if (OUT != expected) begin
         failures = failures + 1;
         $display(":( 1");
@@ -53,6 +53,7 @@ initial begin
     rst = 0;
     IN = 16'h1234;
     expected = 16'h0003;
+    counter = counter + 1;
 
     if (OUT != expected) begin
         failures = failures + 1;
