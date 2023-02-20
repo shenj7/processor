@@ -24,11 +24,11 @@ module data_mem_component
 
 	always @ (posedge clk)
 	begin
-		addr_reg <= addr-4'h03ff;
+		addr_reg <= addr-4'h027f;
 		// Write
 		if (write)
-			if (addr == 0'hf69f) begin
-				ram[addr] <= writedata;
+			if (addr_reg = 4'h0142) begin
+				ram[addr_reg] <= writedata;
 			end else begin
 				write_out <= out;
 			end

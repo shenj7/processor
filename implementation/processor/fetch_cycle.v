@@ -16,9 +16,9 @@ inst_mem_component im (
 );
 
 alu_component small_alu (
-    .inst_id(1'b0),
+    .inst_id(4'b0000),
     .in0(pc),
-    .in1(2'b01),
+    .in1(2'b10),
     .reset(rst),
     .out(newpc),
     .zero(), // should be empty

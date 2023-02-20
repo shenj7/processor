@@ -43,6 +43,8 @@ initial begin
         failures = failures + 1;
         $display(":( 1");
     end
+    $display("out: %d, expected: %d", OUT, expected);
+    $display("stinky poopy");
     @(OUT != 0);
     #(2*HALF_PERIOD);
 
