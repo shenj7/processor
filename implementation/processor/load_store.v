@@ -1,5 +1,5 @@
 //load-store
-module load-store(clock, read_in, rst, write_out);
+module load_store(clock, read_in, rst, write_out);
 // make input, output, clocki, rest
 input clock;
 input [15:0] read_in;
@@ -339,7 +339,10 @@ always @(posedge clock)
 begin
 
 $display("HERE READ_IN: %d", read_in);
-$display("Reading inst from mem: %d", decode_ir)
+$display("fetch inst %d", fetch_ir);
+$display("Reading inst from mem: %d", decode_ir);
+$display("fetch pcout: %d", fetch_pcout);
+$display("chosen pc: %d", chosen_pc);
 
 
 end

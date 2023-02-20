@@ -2,21 +2,21 @@
 // Single port RAM with single read/write address 
 
 module inst_mem_component 
-#(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
+// #(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
 (
-	input [(ADDR_WIDTH-1):0] addr,
+	input [8:0] addr,
 	input clk,
-	output [(DATA_WIDTH-1):0] out
+	output [15:0] out
 );
 
 	// Declare the RAM variable
-	reg [DATA_WIDTH-1:0] ram[0:2**ADDR_WIDTH-1];
+	reg [15:0] ram[0:2**8];
 
 	// Variable to hold the registered read address
-	reg [ADDR_WIDTH-1:0] addr_reg;
+	reg [8:0] addr_reg;
 	
 	initial begin
-		$readmemh("inst_mem.txt", ram);
+		$readmemb("inst_mem.txt", ram);
 	end
 
 	always @ (posedge clk)
@@ -27,6 +27,6 @@ module inst_mem_component
 	// Continuous assignment implies read returns NEW data.
 	// This is the natural behavior of the TriMatrix memory
 	// blocks in Single Port mode.  
-	assign q = ram[addr_reg>>1];
+	assign out = ram[addr_reg>>1];
 
 endmodule
