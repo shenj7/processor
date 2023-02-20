@@ -24,8 +24,8 @@ wire mem2reg; //we still need to put docs for this
 
 
 //wires for hazards and forwarding
-wire stall;
-wire flush;
+wire stall = 1;
+wire flush = 0;
 
 
 //pc main stuff
@@ -343,6 +343,7 @@ $display("fetch inst %d", fetch_ir);
 $display("Reading inst from mem: %d", decode_ir);
 $display("fetch pcout: %d", fetch_pcout);
 $display("chosen pc: %d", chosen_pc);
+$display("stall: %d plz be 1", stall);
 
 
 end

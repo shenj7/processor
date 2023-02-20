@@ -16,6 +16,11 @@ output reg [15:0] reg2;
 parameter NUM_REG = 16;
 
 reg [15:0] regs[NUM_REG-1:0];
+integer i = 0;
+initial begin
+  for (i=0;i<NUM_REG;i=i+1)
+    regs[i] = 0;
+end
 
 always @(posedge clock)
 begin

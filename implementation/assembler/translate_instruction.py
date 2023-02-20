@@ -6,7 +6,7 @@ def typeswitch(inst):
     func = inst[0]
     if func in ["add", "grt", "sub", "eq", "jalr", "bne"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
-    elif func in ["lui", "jal"]:
+    elif func in ["lui", "lli", "jal"]:
         return itype_parse(inst) if instlen == ilen else f"malformed instruction, should be length {ilen}"
     elif func in ["addi", "lw", "sw", "wri", "rea"]:
         return mtype_parse(inst) if instlen == mlen else f"malformed instruction, should be length {mlen}"
@@ -57,6 +57,8 @@ def itype_parse(inst):
         iid = "0101"
     elif func == "jal":
         iid = "0110"
+    elif func == "lli":
+        iid = "1111"
     else:
         return f"instruction not found: {func}"
 
