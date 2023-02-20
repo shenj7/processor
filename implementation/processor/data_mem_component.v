@@ -24,17 +24,18 @@ module data_mem_component
 
 	always @ (posedge clk)
 	begin
-		addr_reg <= addr-4'h027f;
+		addr_reg <= addr-4'h0280;
+		$display("data mem reading %d", addr_reg);
 		// Write
 		if (write)
-			if (addr_reg = 4'h0142) begin
+			if (addr_reg == 4'h0142) begin
 				ram[addr_reg] <= writedata;
 			end else begin
 				write_out <= out;
 			end
 			
 
-		if (addr == 0'h69f) begin
+		if (addr == 4'h69f) begin
 			out <= read_in;
 		end
 		else begin

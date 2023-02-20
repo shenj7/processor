@@ -22,6 +22,7 @@ data_mem_component dm (
 
 always @(posedge clk)
 begin
+    $display("mem_cycle aluout: %d", aluout);
     alufor <= aluout;
 end
 

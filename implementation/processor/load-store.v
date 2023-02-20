@@ -1,5 +1,5 @@
 //load-store
-module load_store(clock, read_in, rst, write_out);
+module load-store(clock, read_in, rst, write_out);
 // make input, output, clocki, rest
 input clock;
 input [15:0] read_in;
@@ -20,6 +20,8 @@ wire memwrite;
 wire pcwrite;
 wire regwrite; //why do we not have this?
 wire mem2reg; //we still need to put docs for this
+
+
 
 //wires for hazards and forwarding
 wire stall;
@@ -336,7 +338,8 @@ forward_unit_component fw (
 always @(posedge clock)
 begin
 
-
+$display("HERE READ_IN: %d", read_in);
+$display("Reading inst from mem: %d", decode_ir)
 
 
 end

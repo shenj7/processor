@@ -57,6 +57,7 @@ always @(posedge clk)
 begin
     rdout <= rd;
     bout <= b;
+    $display("execute rdout: %d", rdout);
 end
 
 
