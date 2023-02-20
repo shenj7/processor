@@ -1,11 +1,15 @@
-bne a0, x0, ENDIF1
+GCD: addi at, x0, ENDIF1
+bne at, a0, x0
 jalr a1, 0, ra
 ENDIF1: addi t0, x0, 1
-LOOP: grt t1, a0, a1
-bne a0, x0, ENDIF2
+LOOP2: grt t1, a0, a1
+addi at, x0, ENDIF2
+bne at, a0, x0
 sub a0, a0, a1
-bne x0, t0, ENDELSE
+addi at, x0, ENDELSE
+bne at, x0, t0
 ENDIF2: sub a1, a1, a0
-ENDELSE: bne t0, x0, LOOP
+addi at, x0, LOOP2
+ENDELSE: bne at, t0, x0
 jalr a0, 0, ra
 
