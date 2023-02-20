@@ -19,27 +19,27 @@ module data_mem_component
 	reg [ADDR_WIDTH-1:0] addr_reg;
 	
 	initial begin
-		$readmemh("data_mem.txt", ram);
+		$readmemb("data_mem.txt", ram);
 	end
 
 	always @ (posedge clk)
 	begin
-		addr_reg <= addr-4'h0280;
+		addr_reg <= addr-4'h0280; //could also change to 2ff
 		$display("data mem reading %d", addr_reg);
 		// Write
 		if (write)
 			if (addr_reg == 4'h0142) begin
-				ram[addr_reg] <= writedata;
-			end else begin
 				write_out <= out;
+			end else begin
+				ram[addr_reg >> 1] <= writedata;
 			end
 			
 
-		if (addr == 4'h69f) begin
+		if (addr == 4'h0142) begin
 			out <= read_in;
 		end
 		else begin
-			out <= ram[addr_reg >>1];
+			out <= ram[addr_reg >> 1];
 		end
 	end
 endmodule

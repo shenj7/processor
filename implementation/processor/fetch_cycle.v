@@ -7,7 +7,7 @@ input rst;
 
 output [15:0] ir;
 output reg [15:0] currpc;
-output [15:0] newpc;
+output reg [15:0] newpc;
 
 inst_mem_component im (
     .addr(pc),
@@ -15,19 +15,14 @@ inst_mem_component im (
     .out(ir)
 );
 
-alu_component small_alu (
-    .inst_id(4'b0000),
-    .in0(pc),
-    .in1(2'b10),
-    .reset(rst),
-    .out(newpc),
-    .zero(), // should be empty
-    .pos()
-);
 
 always @(posedge clk)
 begin
+    $display("pc: %d", pc);
+    $display("Inside fetc ir: %d", ir);
     currpc = pc;
+    newpc = pc + 2;
+    $display("now pc should be %d", newpc);
 end
 
 

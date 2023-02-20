@@ -1,4 +1,4 @@
-module proc_tb();
+ module proc_tb();
 
 //inputs
 reg rst;
@@ -45,7 +45,7 @@ initial begin
     end
     $display("out: %d, expected: %d", OUT, expected);
     $display("stinky poopy");
-    @(OUT != 0);
+    // @(OUT != 0);
     #(2*HALF_PERIOD);
 
     rst = 1;
@@ -62,7 +62,7 @@ initial begin
         $display(":( 2");
     end
 
-    @(OUT != 0);
+    // @(OUT != 0);
     #(2*HALF_PERIOD);
 
     $stop;
