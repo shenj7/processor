@@ -8,15 +8,7 @@ reg [15:0] IN;
 //outputs
 wire [15:0]  OUT;
 
-load_store UUT (
-    .rst(rst),
-    .read_in(IN),
-    .write_out(OUT),
-    .clock(clk)
-);
-
 parameter HALF_PERIOD = 50;
-integer cycle_counter = 0;
 integer counter = 0;
 integer failures = 0;
 reg [15:0] expected;
@@ -29,6 +21,13 @@ initial begin
     end
 end
 
+load_store UUT (
+    .clock(clk),
+    .read_in(IN),
+    .rst(rst),    
+    .write_out(OUT)    
+);
+
 
 //block to run the clock
 
@@ -39,10 +38,13 @@ initial begin
     rst = 0;
     IN = 16'h13b0;
     expected = 16'h000b;
+    counter = counter + 1;
     if (OUT != expected) begin
         failures = failures + 1;
         $display(":( 1");
     end
+    $display("out: %d, expected: %d", OUT, expected);
+    $display("stinky poopy");
     @(OUT != 0);
     #(2*HALF_PERIOD);
 
@@ -53,6 +55,7 @@ initial begin
     rst = 0;
     IN = 16'h1234;
     expected = 16'h0003;
+    counter = counter + 1;
 
     if (OUT != expected) begin
         failures = failures + 1;

@@ -53,6 +53,7 @@ always @(posedge clk)
 begin
     pcout = pc;
     rdout = currrd;
+    $display(" decodde! pcout: %d", pcout);
 end
 
 
