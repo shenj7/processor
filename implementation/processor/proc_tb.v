@@ -33,7 +33,7 @@ load_store UUT (
 
 initial begin
     rst = 1;
-    #(2*HALF_PERIOD);
+    #(10*HALF_PERIOD);
 //test 1
     rst = 0;
     IN = 16'h13b0;

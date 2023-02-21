@@ -39,7 +39,7 @@ reg branch_taken;
 wire [15:0] fetch_pc; //error
 
 reg_component pcmain (
-    .clock(clock),
+    .clock(clock), 
     .in(chosen_pc), //mux (pcsrc)
     .out(fetch_pc),
     .write(stall),
@@ -50,11 +50,17 @@ reg_component pcmain (
 wire [15:0] fetch_ir;
 wire [15:0] fetch_pcout;
 
+//wires into decode
+wire [15:0] decode_ir;
+wire [15:0] decode_pc;
+wire [15:0] decode_writedata;
+wire [15:0] decode_rd;
+
 //control
 control_component control (
     //input
     .op(decode_ir),
-    .reset(),
+    .reset(rst),
 
     //output
     .IMMGENOP(immgenop),
@@ -73,7 +79,7 @@ control_component control (
 fetch_cycle fetch (
     //from prev cycle
     .pc(fetch_pc),
-    .clk(clock),
+    //.clk(clock), not clocked
     
     //from control
     .rst(branch_taken),
@@ -84,12 +90,6 @@ fetch_cycle fetch (
     .currpc(fetch_pcout),
     .newpc(next_pc)
 );
-
-//wires into decode
-wire [15:0] decode_ir;
-wire [15:0] decode_pc;
-wire [15:0] decode_writedata;
-wire [15:0] decode_rd;
 
 //wires out of decode
 wire [15:0] decode_pcout;
@@ -203,7 +203,7 @@ reg_component fd_pc (
     .out(decode_pc)
 );
 
-wire [15:0] inst_ir;
+reg [15:0] inst_ir;
 
 reg_component fd_ir (
     .clock(clock),
@@ -213,7 +213,7 @@ reg_component fd_ir (
     .out(decode_ir)
 );
 
-always @(stall) begin
+always @(stall, fetch_ir) begin
     if (stall == 0) begin // stall
         inst_ir = 16'b0000000000000000;
     end else begin

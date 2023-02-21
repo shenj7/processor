@@ -1,8 +1,7 @@
-module fetch_cycle(pc, pcwrite, clk, rst, ir, currpc, newpc);
+module fetch_cycle(pc, pcwrite, rst, ir, currpc, newpc);
 
 input [15:0] pc;
 input pcwrite;
-input clk;
 input rst;
 
 output [15:0] ir;
@@ -15,8 +14,7 @@ inst_mem_component im (
     .out(ir)
 );
 
-
-always @(posedge clk)
+always @(pc)
 begin
     $display("pc coming from pcmain: %d", pc);
     $display("Inside fetc ir: %d", ir);
