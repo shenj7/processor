@@ -39,9 +39,11 @@ reg branch_taken;
 wire [15:0] fetch_pc; //error
 
 reg_component pcmain (
+    .clock(clock),
     .in(chosen_pc), //mux (pcsrc)
     .out(fetch_pc),
-    .write(stall)
+    .write(stall),
+    .reset(flush)
 );
 
 //wires out of fetch
@@ -342,6 +344,7 @@ $display("HERE READ_IN: %d", read_in);
 $display("fetch inst %d", fetch_ir);
 $display("Reading inst from mem: %d", decode_ir);
 $display("fetch pcout: %d", fetch_pcout);
+$display("fetch pc: %d", fetch_pc);
 $display("chosen pc: %d", chosen_pc);
 $display("stall: %d plz be 1", stall);
 

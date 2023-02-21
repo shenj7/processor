@@ -18,7 +18,7 @@ inst_mem_component im (
 
 always @(posedge clk)
 begin
-    $display("pc: %d", pc);
+    $display("pc coming from pcmain: %d", pc);
     $display("Inside fetc ir: %d", ir);
     currpc = pc;
     newpc = pc + 2;

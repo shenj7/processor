@@ -8,20 +8,30 @@ input zero;
 
 output reg stall;
 output reg flush;
+reg stalled;
+
+initial begin 
+    stalled <= 0;
+end
 
 always @(posedge clock)
 begin
 
     //branch/flush
     if (instop == 4'b1011 && zero == 0) begin
-        flush = 1;
+        flush <= 1;
     end
     //lw/store
     //0 if we want to stall otherwise 1 (should mostly be 1)
+    $display("memread: %d", memread);
+    $display("stalled: %d", stalled);
     if (memread == 1) begin //check whether rd = rs1 or rs2 from prev cycle
-        stall = 0;
+        $display("shold not stall >:(");
+        stall <= 0;
+        stalled <= 1;
     end else begin
-        stall = 1;
+        stalled <= 0;
+        stall <= 1;
     end
 end
 

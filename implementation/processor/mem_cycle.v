@@ -6,7 +6,7 @@ input memwrite;
 input rst;
 input [15:0] read_in;
 
-output [15:0] write_out;
+output [15:0] write_out = 0;
 output [15:0] memout;
 output reg [15:0] alufor;
 

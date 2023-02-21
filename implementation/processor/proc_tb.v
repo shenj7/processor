@@ -64,7 +64,41 @@ initial begin
 
     // @(OUT != 0);
     #(2*HALF_PERIOD);
+    rst = 1;
+    #(2*HALF_PERIOD);
 
+//test 3
+    rst = 0;
+    IN = 16'h1234;
+    expected = 16'h0003;
+    counter = counter + 1;
+
+    if (OUT != expected) begin
+        failures = failures + 1;
+        $display(":( 2");
+    end
+
+    // @(OUT != 0);
+    #(2*HALF_PERIOD);
+    rst = 1;
+    #(2*HALF_PERIOD);
     $stop;
+
+
+//test 4
+    rst = 0;
+    IN = 16'h1234;
+    expected = 16'h0003;
+    counter = counter + 1;
+
+    if (OUT != expected) begin
+        failures = failures + 1;
+        $display(":( 2");
+    end
+
+    // @(OUT != 0);
+    #(2*HALF_PERIOD);
+    rst = 1;
+    #(2*HALF_PERIOD);
 end
 endmodule

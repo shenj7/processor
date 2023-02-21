@@ -25,6 +25,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b0;
       end  
       else begin  
       case(op)   
@@ -37,6 +38,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b0;
                 end  
      4'b0010: begin // sub  
                 IMMGENOP <= 2'b00;  
@@ -47,6 +49,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;  
+                MEM2REG <= 1'b0;
                 end 
       4'b0001: begin // grt 
                 IMMGENOP <= 2'b00;  
@@ -57,6 +60,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0; 
+                MEM2REG <= 1'b0;
                 end   
       4'b0011: begin // eq  
                 IMMGENOP <= 2'b00;  
@@ -67,6 +71,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b0;
                 end  
      4'b0110: begin // jal
                 IMMGENOP <= 2'b10;  
@@ -77,6 +82,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b1;  
+                MEM2REG <= 1'b0;
                 end  
       4'b0100: begin // jalr 
                 IMMGENOP <= 2'b00;  
@@ -87,6 +93,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b1;  
+                MEM2REG <= 1'b0;
                 end  
       4'b1000: begin // addi  
                 IMMGENOP <= 2'b00;  
@@ -97,6 +104,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b0;
                 end  
       4'b0101: begin // lui  
                 IMMGENOP <= 2'b11;  
@@ -107,6 +115,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;  
+                MEM2REG <= 1'b0;
                 end  
      4'b1001: begin // lw  
                 IMMGENOP <= 2'b00;  
@@ -117,6 +126,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b1;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b1;
                 end  
      4'b1010: begin // sw  
                 IMMGENOP <= 2'b00;  
@@ -127,6 +137,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b1;   
+                MEM2REG <= 1'b0;
                 end  
      4'b1011: begin // bne  
                 IMMGENOP <= 2'b10;  
@@ -137,6 +148,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b1;   
+                MEM2REG <= 1'b0;
                 end  
      4'b1100: begin // wri  
                 IMMGENOP <= 2'b00;  
@@ -147,6 +159,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b1;  
                 PCWRITE <= 1'b0;   
+                MEM2REG <= 1'b0;
                 end    
       default: begin  //rea
                  IMMGENOP <= 2'b00;  
@@ -157,6 +170,7 @@ output reg MEM2REG;
                 MEMREAD <= 1'b1;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0; 
+                MEM2REG <= 1'b0;
                 end  
       endcase  
       end  
