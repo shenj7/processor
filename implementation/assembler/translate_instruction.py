@@ -110,6 +110,9 @@ def parse_inst(inst):
     registers = inst.replace(",", "").split(" ")
     instruction = [registers[0]]
     registers = registers[1:]
+    # r type: [id, rd, rs1, rs2]
+    # i type: [id, rd, imm]
+    # m type: [id, rs1, rs2, imm]
     for register in registers:
         instruction.append(reg_trans(register))
     return instruction

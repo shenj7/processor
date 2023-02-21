@@ -12,6 +12,7 @@ output reg [15:0] out;
 
 always @(in0 or in1 or op)
 begin
+	$display("op: %d", op);
 	if (reset) begin
 		out <= 0;
 	end else if (op == 0) begin

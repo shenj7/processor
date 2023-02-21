@@ -53,7 +53,7 @@ wire [15:0] fetch_pcout;
 //control
 control_component control (
     //input
-    .op(fetch_ir),
+    .op(decode_ir),
     .reset(),
 
     //output

@@ -46,7 +46,7 @@ def make_machine_file(f, labels):
     fm = open(f.name + "_machine", "w")
     f.seek(0)
     print(labels)
-    counter = 0;
+    counter = 0
     for instruction in f:
         if not instruction.strip():
             continue
