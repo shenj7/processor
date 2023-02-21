@@ -10,7 +10,6 @@ output reg [15:0] newpc;
 
 inst_mem_component im (
     .addr(pc),
-    .clk(clk),
     .out(ir)
 );
 
