@@ -27,10 +27,8 @@ begin
     $display("stalled: %d", stalled);
     if (memread == 1) begin //check whether rd = rs1 or rs2 from prev cycle
         $display("shold not stall >:(");
-        stall <= 0;
-        stalled <= 1;
+        stall <= 0; // if stall == 0, then stall else don't
     end else begin
-        stalled <= 0;
         stall <= 1;
     end
 end

@@ -203,13 +203,23 @@ reg_component fd_pc (
     .out(decode_pc)
 );
 
+wire [15:0] inst_ir;
+
 reg_component fd_ir (
     .clock(clock),
-    .in(fetch_ir),
-    .write(stall),
+    .in(inst_ir),
+    .write(1),
     .reset(branch_taken),
     .out(decode_ir)
 );
+
+always @(stall) begin
+    if (stall == 0) begin // stall
+        inst_ir = 16'b0000000000000000;
+    end else begin
+        inst_ir = fetch_ir;
+    end
+end
 
 //decode-execute
 reg_component de_pc (

@@ -7,7 +7,7 @@ input [15:0] in0;
 input [15:0] in1;
 input reset;
 
-output reg [15:0] out;
+output reg [15:0] out = 0;
 output reg zero;
 output reg pos;
 
@@ -21,11 +21,12 @@ begin
         inst_id == 4'b1010 ||
         inst_id == 4'b1011) begin
         //add
-        out <= in0 + in1;
+        out = in0 + in1;
     end else begin
         //subtract
-        out <= in0 - in1;
+        out = in0 - in1;
     end
+    $display("alu: %d", out);
 
     if (out > 0) begin //zero or positive
         pos <= 1;
