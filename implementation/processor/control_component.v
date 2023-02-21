@@ -4,7 +4,7 @@ module control_component(op, reset, IMMGENOP, ALUOP, ALUIN1, ALUIN2, ALUSRC, MEM
 input[3:0] op;
 input reset;
 
-output reg IMMGENOP;
+output reg IMMGENOP; //can get rid of all immgenops later - just pass in entire inst to immgen
 output reg ALUOP;
 output reg ALUIN1;
 output reg ALUIN2;

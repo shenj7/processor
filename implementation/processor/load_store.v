@@ -18,7 +18,7 @@ wire alusrc; //tf is this doing?
 wire memread;
 wire memwrite;
 wire pcwrite;
-wire regwrite; //why do we not have this?
+wire regwrite; //why do we not have this? TODO: forward a regwrite (1 for instructions involving writing to registers), see wb intermediate register (https://rosehulman-my.sharepoint.com/personal/williarj_rose-hulman_edu/_layouts/15/Doc.aspx?sourcedoc={526b68a4-b014-48a8-a92e-48a2395fe4d4}&action=view&wd=target%28Pipeline.one%7C19a91754-ac57-43a0-b626-081762078c5b%2FClean%20Datapath%7Ca31e1fa3-3f74-bd49-b1f8-643b6fb30f73%2F%29&wdorigin=NavigationUrl)
 wire mem2reg; //we still need to put docs for this
 
 
@@ -109,7 +109,6 @@ decode_cycle decode (
     //from control
     .rst(branch_taken),
     .regwrite(regwrite),
-    .immgenop(immgenop),
 
     //output
     .pcout(decode_pcout),
