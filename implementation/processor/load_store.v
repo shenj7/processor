@@ -25,14 +25,15 @@ wire mem2reg; //we still need to put docs for this
 
 //wires for hazards and forwarding
 wire stall = 1;
-wire flush = 0;
+wire branch_taken;
 
 
 //pc main stuff
 wire [15:0] next_pc;
 wire [15:0] chosen_pc;
 
-reg branch_taken;
+
+// reg branch_taken;
 
 //wires from forwarding
 wire [15:0] newb;
@@ -47,7 +48,7 @@ reg_component pcmain (
     .in(chosen_pc), //mux (pcsrc)
     .out(fetch_pc),
     .write(stall),
-    .reset(flush)
+    .reset(rst )
 );
 
 //wires out of fetch
@@ -87,7 +88,7 @@ fetch_cycle fetch (
     //.clk(clock), not clocked
     
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .pcwrite(stall),
     
     //output
@@ -113,7 +114,7 @@ decode_cycle decode (
     .rd(decode_rd),
 
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .regwrite(memory_regwritein), //HERE
 
     //output
@@ -142,6 +143,7 @@ wire execute_regwriteout;
 
 //writeback 
 wire [15:0] mem_aluout;
+wire execute_pcwrite;
 
 execute_cycle execute (
     //from the prev cycle
@@ -157,10 +159,11 @@ execute_cycle execute (
     .forwarded_aluout(mem_aluout),
 
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .aluop(aluop),
     .aluin1(forwarded_alusrc0),
     .aluin2(forwarded_alusrc1),
+    .pcwrite(pcwrite),
 
     //outputs
     .bout(execute_bout),
@@ -168,14 +171,15 @@ execute_cycle execute (
     .rdout(execute_rdout),
     .zero(execute_zero),
     .pos(execute_pos),
-    .regwriteout(execute_regwriteout)
+    .regwriteout(execute_regwriteout),
+    .execute_pcwrite(execute_pcwrite)
 );
 
 two_way_mux_component pcsrc (
     .in0(next_pc),
     .in1(execute_aluout),
     .op(branch_taken),
-    .reset(branch_taken),
+    .reset(rst),
     .out(chosen_pc)
 );
 
@@ -199,7 +203,7 @@ mem_cycle mem (
     .write_out(write_out),
 
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .memwrite(memwrite),
     .regwrite(memory_regwritein),
 
@@ -215,7 +219,7 @@ reg_component fd_pc (
     .clock(clock),
     .in(fetch_pc),
     .write(stall),
-    .reset(branch_taken),
+    .reset(branch_taken | rst),
     .out(decode_pc)
 );
 
@@ -225,7 +229,7 @@ reg_component fd_ir (
     .clock(clock),
     .in(inst_ir),
     .write(1),
-    .reset(branch_taken),
+    .reset(branch_taken | rst),
     .out(decode_ir)
 );
 
@@ -242,7 +246,7 @@ reg_component de_regwrite (
     .clock(clock),
     .in(regwrite),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_regwritein)
 );
 
@@ -251,7 +255,7 @@ reg_component de_pc (
     .clock(clock),
     .in(decode_pcout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_pc)
 );
 
@@ -259,7 +263,7 @@ reg_component de_a (
     .clock(clock),
     .in(decode_a),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_a)
 );
 
@@ -267,7 +271,7 @@ reg_component de_b (
     .clock(clock),
     .in(decode_b),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_b)
 );
 
@@ -275,7 +279,7 @@ small_reg_component de_rd (
     .clock(clock),
     .in(decode_rdout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_rd)
 );
 
@@ -283,7 +287,7 @@ reg_component de_imm (
     .clock(clock),
     .in(decode_imm),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_imm)
 );
 
@@ -292,7 +296,7 @@ reg_component em_regwrite (
     .clock(clock),
     .in(execute_regwriteout),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(memory_regwritein)
 );
 
@@ -301,7 +305,7 @@ reg_component em_b (
     .clock(clock),
     .in(newb),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(mem_b)
 );
 
@@ -309,7 +313,7 @@ reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(mem_aluout)
 );
 
@@ -317,7 +321,7 @@ small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(decode_rd)
 );
 
@@ -329,7 +333,7 @@ reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
-    .reset(0),
+    .reset(rst),
     .out(writeback_memout)
 );
 
@@ -337,7 +341,7 @@ reg_component mw_alufor (
     .clock(clock),
     .in(mem_alufor),
     .write(1),
-    .reset(0),
+    .reset(rst),
     .out(writeback_alufor)
 );
 
@@ -348,20 +352,15 @@ two_way_mux_component mw_m2r (
     .out(decode_writedata)
 );
 
-//branch logic
-always @(*) begin
-    branch_taken <= pcwrite && flush;
-end
-
-
 //hazards and forwarding
 hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
+    .pcwrite(execute_pcwrite),
     .instop(decode_ir),
-    .zero(execute_zero), //not the right zero?
+    .zero(execute_zero), //??
     .stall(stall),
-    .flush(flush) //probably not right either?
+    .branch_taken(branch_taken) //???
 );
 
 forward_unit_component fw (
