@@ -1,4 +1,4 @@
-module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos, regwrite, regwriteout);
+module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos, regwrite, regwriteout, forwarded_aluout);
 //inputs
 input clk;
 input [15:0] pc;
@@ -6,6 +6,8 @@ input [15:0] a;
 input [15:0] b;
 input [3:0] rd;
 input [15:0] imm;
+
+input [15:0] forwarded_aluout;
 
 //controls
 input rst;

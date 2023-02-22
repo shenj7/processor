@@ -140,6 +140,9 @@ wire execute_zero;
 wire execute_pos;
 wire execute_regwriteout;
 
+//writeback 
+wire [15:0] mem_aluout;
+
 execute_cycle execute (
     //from the prev cycle
     .clk(clock),
@@ -149,6 +152,9 @@ execute_cycle execute (
     .rd(execute_rd),
     .imm(execute_imm),
     .regwrite(execute_regwritein),
+
+    //writeback
+    .forwarded_aluout(mem_aluout),
 
     //from control
     .rst(branch_taken),
@@ -175,7 +181,6 @@ two_way_mux_component pcsrc (
 
 //wires into mem
 wire [15:0] mem_b;
-wire [15:0] mem_aluout;
 
 //wires out of mem
 wire [15:0] mem_memout;

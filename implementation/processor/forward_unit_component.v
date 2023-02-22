@@ -5,12 +5,12 @@ input rs2;
 input rd; // get from both mem and writeback
 input oldalusrc0;
 input [1:0] oldalusrc1;
-input shouldb;
-input originalb;
+input [15:0] shouldb;
+input [15:0] originalb;
 
 output reg [1:0] alusrc0;
 output reg [1:0] alusrc1;
-output reg newb;
+output reg [15:0] newb;
 
 always @(*)
 begin
