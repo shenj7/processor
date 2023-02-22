@@ -1,4 +1,4 @@
-module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos);
+module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pos, regwrite, regwriteout);
 //inputs
 input clk;
 input [15:0] pc;
@@ -12,6 +12,7 @@ input rst;
 input aluop;
 input [1:0] aluin1;
 input [1:0] aluin2;
+input regwrite;
 
 //outputs
 output reg [15:0] bout;
@@ -19,6 +20,7 @@ output [15:0] aluout;
 output reg [3:0] rdout;
 output zero;
 output pos;
+output reg regwriteout;
 
 wire [15:0] aluin1_wire;
 wire [15:0] aluin2_wire;
@@ -54,10 +56,12 @@ four_way_mux_component aluin2_mux (
 );
 
 always @(posedge clk)
-begin
+begin 
+    regwriteout <= regwrite;
     rdout <= rd;
     bout <= b;
     $display("execute rdout: %d", rdout);
+    $display("zero: %d", zero);
 end
 
 

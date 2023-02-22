@@ -68,11 +68,12 @@ control_component control (
     .ALUIN1(aluin1),
     .ALUIN2(aluin2),
     .ALUSRC(alusrc),
-    //.REGWRITE(regwrite),
+    .REGWRITE(regwrite),
     .MEMREAD(memread),
     .MEMWRITE(memwrite),
     .PCWRITE(pcwrite),
     .MEM2REG(mem2reg)
+   
 );
 
 //fetch cycle
@@ -97,6 +98,7 @@ wire [15:0] decode_a;
 wire [15:0] decode_b;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
+wire memory_regwritein;
 
 decode_cycle decode (
     //from prev cycle (and writeback)
@@ -108,7 +110,7 @@ decode_cycle decode (
 
     //from control
     .rst(branch_taken),
-    .regwrite(regwrite),
+    .regwrite(memory_regwritein), //HERE
 
     //output
     .pcout(decode_pcout),
@@ -124,6 +126,7 @@ wire [15:0] execute_a;
 wire [15:0] execute_b;
 wire [3:0] execute_rd;
 wire [15:0] execute_imm;
+wire execute_regwritein;
 
 //wires out of execute
 wire [15:0] execute_bout;
@@ -131,6 +134,7 @@ wire [15:0] execute_aluout;
 wire [3:0] execute_rdout;
 wire execute_zero;
 wire execute_pos;
+wire execute_regwriteout;
 
 execute_cycle execute (
     //from the prev cycle
@@ -140,6 +144,7 @@ execute_cycle execute (
     .b(execute_b),
     .rd(execute_rd),
     .imm(execute_imm),
+    .regwrite(execute_regwritein),
 
     //from control
     .rst(branch_taken),
@@ -152,7 +157,8 @@ execute_cycle execute (
     .aluout(execute_aluout),
     .rdout(execute_rdout),
     .zero(execute_zero),
-    .pos(execute_pos)
+    .pos(execute_pos),
+    .regwriteout(execute_regwriteout)
 );
 
 two_way_mux_component pcsrc (
@@ -186,10 +192,12 @@ mem_cycle mem (
     //from control
     .rst(branch_taken),
     .memwrite(memwrite),
+    .regwrite(memory_regwritein),
 
     //output
     .memout(mem_memout),
-    .alufor(mem_alufor)
+    .alufor(mem_alufor),
+    .regwriteout(memory_regwriteout)
 );
 
 //in-between registers
@@ -221,6 +229,15 @@ always @(stall, fetch_ir) begin
 end
 
 //decode-execute
+reg_component de_regwrite (
+    .clock(clock),
+    .in(regwrite),
+    .write(stall),
+    .reset(branch_taken),
+    .out(execute_regwritein)
+);
+
+
 reg_component de_pc (
     .clock(clock),
     .in(decode_pcout),
@@ -262,6 +279,15 @@ reg_component de_imm (
 );
 
 //execute-memory
+reg_component em_regwrite (
+    .clock(clock),
+    .in(execute_regwriteout),
+    .write(stall),
+    .reset(0),
+    .out(memory_regwritein)
+);
+
+
 reg_component em_b (
     .clock(clock),
     .in(newb),
@@ -324,9 +350,9 @@ hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
     .instop(decode_ir),
-    .zero(execute_zero),
+    .zero(execute_zero), //not the right zero?
     .stall(stall),
-    .flush(flush)
+    .flush(flush) //probably not right either?
 );
 
 forward_unit_component fw (
