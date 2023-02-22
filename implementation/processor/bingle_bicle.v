@@ -197,9 +197,9 @@ two_way_mux_component branch_selector (
 
 always @(posedge clock)
 begin
-    $display("curr pc: %d", pcout);
-    $display("newpc: %d", newpc);
-    $display("pcin: %d", pcin);
+    //$display("curr pc: %d", pcout);
+    //$display("newpc: %d", newpc);
+    //$display("pcin: %d", pcin);
 
 end
 

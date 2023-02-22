@@ -32,8 +32,6 @@ load_store UUT (
 //block to run the clock
 
 initial begin
-    rst = 1;
-    #(10*HALF_PERIOD);
 //test 1
     rst = 0;
     IN = 16'h13b0;
@@ -41,10 +39,10 @@ initial begin
     counter = counter + 1;
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 1");
+        //$display(":( 1");
     end
-    $display("out: %d, expected: %d", OUT, expected);
-    $display("stinky poopy");
+    //$display("out: %d, expected: %d", OUT, expected);
+    //$display("stinky poopy");
     // @(OUT != 0);
     #(2*HALF_PERIOD);
 
@@ -59,7 +57,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);
@@ -75,7 +73,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);
@@ -93,7 +91,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);

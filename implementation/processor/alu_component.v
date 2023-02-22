@@ -26,7 +26,6 @@ begin
         //subtract
         out = in0 - in1;
     end
-    $display("alu: %d", out);
 
     if (out > 0) begin //zero or positive
         pos <= 1;

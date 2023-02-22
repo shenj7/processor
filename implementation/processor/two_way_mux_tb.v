@@ -45,7 +45,7 @@ initial begin
     in1 = 0000000000000001;
     if (out != 0000000000000000) begin
         failures = failures + 1;
-        $display("Test 1 Failed output = %d, expecting = %d", out, 0000000000000000);
+        //$display("Test 1 Failed output = %d, expecting = %d", out, 0000000000000000);
     end
     //------TEST 2-----
     op = 1;
@@ -53,9 +53,9 @@ initial begin
     in1 = 0000000000000001;
     if (out != 0000000000000001) begin
         failures = failures + 1;
-        $display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000001);
+        //$display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000001);
     end
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 end
 

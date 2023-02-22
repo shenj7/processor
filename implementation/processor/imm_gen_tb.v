@@ -37,11 +37,11 @@ initial begin
     #(100*HALF_PERIOD);
     reset = 0;
 
-    $display("Testing immgen");
+    //$display("Testing immgen");
 
     //-----TEST 1-----
     //Testing shift by 1 
-    $display("Testing shift by 1.");
+    //$display("Testing shift by 1.");
     reset = 1; 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -50,7 +50,7 @@ initial begin
         expected = {{8{inst[16]}},inst[15:8]} << 1; 
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Shift by 1) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Shift by 1) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
@@ -58,7 +58,7 @@ initial begin
 
    
     
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 
 end

@@ -37,11 +37,11 @@ reg PCWrite;
 
 always @ (posedge CLK)
 begin      
-$display("The opcode is %d", OP);
+//$display("The opcode is %d", OP);
 case (OP)
     4'b0000:
     begin
-        $display("add");
+        //$display("add");
         IMMGENOP = 0;
         ALUOP = 0;
         ALUIN1 = 0;
@@ -53,7 +53,7 @@ case (OP)
     end
     4'b0001:
     begin
-        $display("grt");
+        //$display("grt");
         IMMGENOP = 0;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -65,7 +65,7 @@ case (OP)
     end
     4'b0010:
     begin
-        $display("sub");
+        //$display("sub");
         IMMGENOP = 0;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -77,7 +77,7 @@ case (OP)
     end
     4'b0011:
     begin
-        $display("eq");
+        //$display("eq");
         IMMGENOP = 0;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -89,7 +89,7 @@ case (OP)
     end
     4'b0100:
     begin
-        $display("jalr");
+        //$display("jalr");
         IMMGENOP = 0;
         ALUOP = 0;
         ALUIN1 = 1;
@@ -101,7 +101,7 @@ case (OP)
     end
     4'b0101:
     begin
-        $display("lui");
+        //$display("lui");
         IMMGENOP = 3;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -113,7 +113,7 @@ case (OP)
     end
     4'b0110:
     begin
-        $display("jal");
+        //$display("jal");
         IMMGENOP = 2;
         ALUOP = 0;
         ALUIN1 = 1;
@@ -125,7 +125,7 @@ case (OP)
     end
     4'b1000:
     begin
-        $display("addi");
+        //$display("addi");
         IMMGENOP = 0;
         ALUOP = 0;
         ALUIN1 = 0;
@@ -137,7 +137,7 @@ case (OP)
     end
     4'b1001:
     begin
-        $display("lw");
+        //$display("lw");
         IMMGENOP = 0;
         ALUOP = 0;
         ALUIN1 = 0;
@@ -149,7 +149,7 @@ case (OP)
     end
     4'b1010:
     begin
-        $display("sw");
+        //$display("sw");
         IMMGENOP = 0;
         ALUOP = 0;
         ALUIN1 = 0;
@@ -161,7 +161,7 @@ case (OP)
     end
     4'b1011:
     begin
-        $display("bne"); // AHHH
+        //$display("bne"); // AHHH
         IMMGENOP = 2;
         ALUOP = 1;
         ALUIN1 = 1;
@@ -173,7 +173,7 @@ case (OP)
     end
     4'b1100:
     begin
-        $display("wri");
+        //$display("wri");
         IMMGENOP = 0;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -185,7 +185,7 @@ case (OP)
     end
     4'b1101:
     begin
-        $display("rea");
+        //$display("rea");
         IMMGENOP = 0;
         ALUOP = 1;
         ALUIN1 = 0;
@@ -197,7 +197,7 @@ case (OP)
     end
     default:
     begin 
-        $display(" Wrong Opcode %d ", OP);  
+        //$display(" Wrong Opcode %d ", OP);  
     end
     endcase 
 

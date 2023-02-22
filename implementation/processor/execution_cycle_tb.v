@@ -59,7 +59,7 @@ initial begin
     rst = 0;
 
     //-----TEST 1-----
-    $display("Testing execute cycle: Add");
+    //$display("Testing execute cycle: Add");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -77,13 +77,13 @@ initial begin
     
     if (aluout != expected) begin
         failures = failures + 1;
-        $display("%t (execute add) Output = %d, expecting %d", $time, aluout, expected);
+        //$display("%t (execute add) Output = %d, expecting %d", $time, aluout, expected);
     end
     
     #(100*HALF_PERIOD);
 
     //-----TEST 2-----
-    $display("Testing execute cycle: Subtract");
+    //$display("Testing execute cycle: Subtract");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -101,13 +101,13 @@ initial begin
     
     if (aluout != expected) begin
         failures = failures + 1;
-        $display("%t (execute sub) Output = %d, expecting %d", $time, aluout, expected);
+        //$display("%t (execute sub) Output = %d, expecting %d", $time, aluout, expected);
     end
     
     #(100*HALF_PERIOD);
 
     //-----TEST 3-----
-    $display("Testing execute cycle: Immediate Addition");
+    //$display("Testing execute cycle: Immediate Addition");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -125,13 +125,13 @@ initial begin
     
     if (aluout != expected) begin
         failures = failures + 1;
-        $display("%t (execute sub) Output = %d, expecting %d", $time, aluout, expected);
+        //$display("%t (execute sub) Output = %d, expecting %d", $time, aluout, expected);
     end
     
     #(100*HALF_PERIOD);
 
 
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 
 end

@@ -15,11 +15,11 @@ inst_mem_component im (
 
 always @(pc)
 begin
-    $display("pc coming from pcmain: %d", pc);
-    $display("Inside fetc ir: %d", ir);
+    //$display("pc coming from pcmain: %d", pc);
+    //$display("Inside fetc ir: %d", ir);
     currpc = pc;
     newpc = pc + 2;
-    $display("now pc should be %d", newpc);
+    //$display("now pc should be %d", newpc);
 end
 
 

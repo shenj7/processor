@@ -376,13 +376,13 @@ forward_unit_component fw (
 always @(posedge clock)
 begin
 
-$display("HERE READ_IN: %d", read_in);
-$display("fetch inst %d", fetch_ir);
-$display("Reading inst from mem: %d", decode_ir);
-$display("fetch pcout: %d", fetch_pcout);
-$display("fetch pc: %d", fetch_pc);
-$display("chosen pc: %d", chosen_pc);
-$display("stall: %d plz be 1", stall);
+//$display("HERE READ_IN: %d", read_in);
+//$display("fetch inst %d", fetch_ir);
+//$display("Reading inst from mem: %d", decode_ir);
+//$display("fetch pcout: %d", fetch_pcout);
+//$display("fetch pc: %d", fetch_pc);
+//$display("chosen pc: %d", chosen_pc);
+//$display("stall: %d plz be 1", stall);
 
 
 end

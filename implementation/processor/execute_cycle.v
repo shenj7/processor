@@ -60,8 +60,8 @@ begin
     regwriteout <= regwrite;
     rdout <= rd;
     bout <= b;
-    $display("execute rdout: %d", rdout);
-    $display("zero: %d", zero);
+    //$display("execute rdout: %d", rdout);
+    //$display("zero: %d", zero);
 end
 
 

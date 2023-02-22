@@ -25,7 +25,7 @@ module data_mem_component
 	always @ (posedge clk)
 	begin
 		addr_reg <= addr-4'h0280; //could also change to 2ff
-		$display("data mem reading %d", addr_reg);
+		//$display("data mem reading %d", addr_reg);
 		// Write
 		if (write)
 			if (addr_reg == 4'h0142) begin

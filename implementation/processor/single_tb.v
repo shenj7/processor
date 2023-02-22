@@ -41,10 +41,10 @@ initial begin
     counter = counter + 1;
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 1");
+        //$display(":( 1");
     end
-    $display("out: %d, expected: %d", OUT, expected);
-    $display("stinky poopy");
+    //$display("out: %d, expected: %d", OUT, expected);
+    //$display("stinky poopy");
     // @(OUT != 0);
     #(2*HALF_PERIOD);
 
@@ -59,7 +59,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);
@@ -75,7 +75,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);
@@ -93,7 +93,7 @@ initial begin
 
     if (OUT != expected) begin
         failures = failures + 1;
-        $display(":( 2");
+        //$display(":( 2");
     end
 
     // @(OUT != 0);

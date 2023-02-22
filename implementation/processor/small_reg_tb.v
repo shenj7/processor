@@ -40,7 +40,7 @@ initial begin
     reset = 0;
 
     //-----TEST 1-----
-    $display("Testing small reg reset");
+    //$display("Testing small reg reset");
     reset = 1; 
     #(2*HALF_PERIOD);
     reset = 1;
@@ -51,14 +51,14 @@ initial begin
         expected = 16'b0000; 
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Small reg reset) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Small reg reset) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 
     //-----TEST 2-----
-    $display("Testing small reg");
+    //$display("Testing small reg");
     reset = 1; 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -69,13 +69,13 @@ initial begin
         expected = 4'b1111; 
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Small Reg) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Small Reg) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
      //-----TEST 3-----
-    $display("Testing small reg write");
+    //$display("Testing small reg write");
     reset = 1; 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -86,13 +86,13 @@ initial begin
         expected = 4'b0000; 
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Small Reg write) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Small Reg write) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 
 end

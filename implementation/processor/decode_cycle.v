@@ -52,8 +52,8 @@ always @(posedge clk)
 begin
     pcout <= pc;
     rdout <= currrd;
-    $display("currpc: %d", pc);
-    $display(" decodde! pcout: %d", pcout);
+    //$display("currpc: %d", pc);
+    //$display(" decodde! pcout: %d", pcout);
 end
 
 
