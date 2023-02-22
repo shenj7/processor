@@ -22,27 +22,24 @@ initial begin
     regs[i] = 0;
 end
 
-always @(posedge clock)
+always @(rs1, rs2, rd, writedata, write, reset)
 begin
     //write to register
     if (write && rd != 4'b0000) begin
-        regs[rd] = writedata;
+        regs[rd] <= writedata; // can be nonblocking since 
     end
 
+    reg1 <= regs[rs1];
+    reg2 <= regs[rs2];
     //get out of rs1
     if (rs1 == 0) begin
         reg1 <= 4'h0000;
-    end else begin
-        reg1 <= regs[rs1];
     end
 
     //get out of rs2
     if (rs2 == 0) begin
         reg1 <= 4'h0000;
-    end else begin
-        reg2 <= regs[rs2];
     end
-
 
     //reset
     if (reset) begin
