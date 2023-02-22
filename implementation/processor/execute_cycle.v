@@ -44,7 +44,7 @@ four_way_mux_component aluin1_mux (
     .in1(a),
     .in2(forwarded_aluout),
     .in3(0),
-    .op(aluin2),
+    .op(aluin1),
     .reset(rst),
     .out(aluin1_wire)
 );

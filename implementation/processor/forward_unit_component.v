@@ -1,8 +1,8 @@
 module forward_unit_component(rs1, rs2, rd, oldalusrc0, oldalusrc1, alusrc0, alusrc1, shouldb, originalb, newb);
 //remove clock from loadstorej
-input rs1;
-input rs2;
-input rd; // get from both mem and writeback
+input [3:0] rs1;
+input [3:0] rs2;
+input [3:0] rd; // get from both mem and writeback
 input oldalusrc0;
 input [1:0] oldalusrc1;
 input [15:0] shouldb;

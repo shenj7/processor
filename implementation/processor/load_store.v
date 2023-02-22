@@ -24,7 +24,7 @@ wire mem2reg; //we still need to put docs for this
 
 
 //wires for hazards and forwarding
-wire stall = 1;
+wire stall;
 wire branch_taken;
 
 
@@ -32,22 +32,19 @@ wire branch_taken;
 wire [15:0] next_pc;
 wire [15:0] chosen_pc;
 
-
-// reg branch_taken;
-
 //wires from forwarding
 wire [15:0] newb;
 wire [1:0] forwarded_alusrc0;
 wire [1:0] forwarded_alusrc1;
 
 //wires into fetch
-wire [15:0] fetch_pc; //error
+wire [15:0] fetch_pc; 
 
 reg_component pcmain (
     .clock(clock), 
-    .in(chosen_pc), //mux (pcsrc)
+    .in(chosen_pc), 
     .out(fetch_pc),
-    .write(stall),
+    .write(stall), //wacky
     .reset(rst )
 );
 
@@ -358,9 +355,9 @@ hazard_detection_unit_component hazard (
     .memread(memread),
     .pcwrite(execute_pcwrite),
     .instop(decode_ir),
-    .zero(execute_zero), //??
+    .zero(execute_zero),
     .stall(stall),
-    .branch_taken(branch_taken) //???
+    .branch_taken(branch_taken)
 );
 
 forward_unit_component fw (
@@ -379,15 +376,6 @@ forward_unit_component fw (
 
 always @(posedge clock)
 begin
-
-//$display("HERE READ_IN: %d", read_in);
-//$display("fetch inst %d", fetch_ir);
-//$display("Reading inst from mem: %d", decode_ir);
-//$display("fetch pcout: %d", fetch_pcout);
-//$display("fetch pc: %d", fetch_pc);
-//$display("chosen pc: %d", chosen_pc);
-//$display("stall: %d plz be 1", stall);
-
 
 end
 
