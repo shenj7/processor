@@ -34,6 +34,10 @@ wire [15:0] chosen_pc;
 
 reg branch_taken;
 
+//wires from forwarding
+wire [15:0] newb;
+wire [1:0] forwarded_alusrc0;
+wire [1:0] forwarded_alusrc1;
 
 //wires into fetch
 wire [15:0] fetch_pc; //error
@@ -366,9 +370,6 @@ forward_unit_component fw (
     .newb(newb),
     .shouldb(mem_aluout),
     .originalb(execute_bout)
-    // wire [15:0] newb;
-    // wire [1:0] forwarded_alusrc0;
-    // wire [1:0] forwarded_alusrc1;
 );
 
 

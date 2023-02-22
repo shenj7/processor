@@ -4,12 +4,12 @@ input rs1;
 input rs2;
 input rd; // get from both mem and writeback
 input oldalusrc0;
-input oldalusrc1;
+input [1:0] oldalusrc1;
 input shouldb;
 input originalb;
 
-output reg alusrc0;
-output reg alusrc1;
+output reg [1:0] alusrc0;
+output reg [1:0] alusrc1;
 output reg newb;
 
 always @(*)
@@ -17,7 +17,7 @@ begin
     if (rd == rs1) begin
         alusrc0 <= 2'b10;
     end else begin
-        alusrc0 <= oldalusrc0;
+        alusrc0 <= {{1{0}},oldalusrc0};
     end
     if (rd == rs2) begin
         alusrc1 <= 2'b11;
