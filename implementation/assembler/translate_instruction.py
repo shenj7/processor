@@ -82,7 +82,7 @@ def mtype_parse(inst):
         iid == "1101"
     else:
         return f"instruction not found: {func}"
-    return imm + rs2 + rs1 + iid
+    return rs2 + rs1 + imm + iid
 
 
 def reg_trans(reg):
