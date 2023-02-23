@@ -1,0 +1,26 @@
+RELPRIME: addi sp, sp, -4
+sw ra, sp, 0
+sw a0, sp, 2
+addi a1, x0, 2
+addi t1, x0, 1
+LOOP: jal ra, GCD
+addi a1, a1, 1
+bne a2, t1, LOOP
+addi a1, a1, -1
+lw ra, sp, 0
+addi sp, sp, 8
+jalr ra, ra, ra
+GCD: addi sp, sp, -6
+sw ra, sp, 0
+sw a0, sp, 2
+bne a0, x0, CONTINUEGCD
+addi sp, sp, 6
+jalr ra, ra, ra
+CONTINUEGCD: bne a1, x0, ENDLOOP
+grt t2, a0, a1
+bne t2, x0, THEN
+ELSE: sub a1, a1, a0
+jal x0, CONTINUEGCD
+THEN: sub a0, a0, a1
+jal x0, CONTINUEGCD
+ENDLOOP: jalr ra, ra, ra
