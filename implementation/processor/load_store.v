@@ -100,7 +100,7 @@ wire [15:0] decode_a;
 wire [15:0] decode_b;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
-wire [3:0] decode_irout;
+wire [15:0] decode_irout;
 wire memory_regwritein;
 
 decode_cycle decode (
@@ -130,6 +130,7 @@ wire [15:0] execute_a;
 wire [15:0] execute_b;
 wire [3:0] execute_rd;
 wire [15:0] execute_imm;
+wire [15:0] execute_ir;
 wire execute_regwritein;
 
 //wires out of execute
@@ -154,6 +155,7 @@ execute_cycle execute (
     .rd(execute_rd),
     .imm(execute_imm),
     .regwrite(execute_regwritein),
+    .op(execute_ir[3:0]),
 
     //writeback
     .forwarded_aluout(mem_aluout),
@@ -333,9 +335,20 @@ small_reg_component em_rd (
     .out(decode_rd)
 );
 
+
 //memory-writeback
 wire [15:0] writeback_memout;
 wire [15:0] writeback_alufor;
+
+wire [3:0] write_rd;
+
+small_reg_component mw_rd (
+    .clock(clock),
+    .in(decode_rd),
+    .write(1),
+    .reset(rst),
+    .out(write_rd)
+);
 
 reg_component mw_mem (
     .clock(clock),
@@ -354,9 +367,10 @@ reg_component mw_alufor (
 );
 
 two_way_mux_component mw_m2r (
-    .in0(writeback_memout),
-    .in1(writeback_alufor),
+    .in0(writeback_alufor),
+    .in1(writeback_memout),
     .op(mem2reg),
+    .reset(0),
     .out(decode_writedata)
 );
 
@@ -376,7 +390,7 @@ hazard_detection_unit_component hazard (
 forward_unit_component fw (
     .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
     .rs2(execute_ir[15:12]),
-    .rd(mw_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
+    .rd(write_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
     .oldalusrc0(aluin1),
     .oldalusrc1(aluin2),
     .alusrc0(forwarded_alusrc0),

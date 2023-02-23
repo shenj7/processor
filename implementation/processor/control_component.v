@@ -118,7 +118,19 @@ output reg REGWRITE;
       4'b0101: begin // lui  
                 IMMGENOP <= 2'b11;  
                 ALUOP <= 1'b1;  
-                ALUIN1 <= 1'b0;  
+                ALUIN1 <= 2'b11;  
+                ALUIN2 <= 2'b10;  
+                ALUSRC <= 2'b00;  
+                MEMREAD <= 1'b0;  
+                MEMWRITE <= 1'b0;  
+                PCWRITE <= 1'b0;  
+                MEM2REG <= 1'b0;
+                REGWRITE <= 1'b1;
+                end  
+      4'b1111: begin // lli  
+                IMMGENOP <= 2'b00;  
+                ALUOP <= 1'b1;  
+                ALUIN1 <= 2'b11;  
                 ALUIN2 <= 2'b10;  
                 ALUSRC <= 2'b00;  
                 MEMREAD <= 1'b0;  

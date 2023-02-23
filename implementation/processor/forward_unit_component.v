@@ -17,7 +17,7 @@ begin
     if (rd == rs1) begin
         alusrc0 <= 2'b10;
     end else begin
-        alusrc0 <= {{1{0}},oldalusrc0};
+        alusrc0 <= oldalusrc0;
     end
     if (rd == rs2) begin
         alusrc1 <= 2'b11;

@@ -32,6 +32,8 @@ load_store UUT (
 //block to run the clock
 
 initial begin
+    rst = 1;
+    #(10*HALF_PERIOD);
 //test 1
     rst = 0;
     IN = 16'h13b0;
@@ -43,8 +45,8 @@ initial begin
     end
     //$display("out: %d, expected: %d", OUT, expected);
     //$display("stinky poopy");
-    @(OUT != 0);
-    #(2*HALF_PERIOD);
+    // @(OUT != 0);
+    #(200*HALF_PERIOD);
 
     rst = 1;
     #(2*HALF_PERIOD);

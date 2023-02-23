@@ -13,7 +13,7 @@ output [15:0] a;
 output [15:0] b;
 output reg [3:0] rdout;
 output [15:0] imm;
-output [15:0] irout;
+output reg[15:0] irout;
 
 
 wire [3:0] rs1;
@@ -22,13 +22,11 @@ wire [3:0] currrd;
 
 
 ir_component irc (
-    .clock(clk),
     .in1(ir),
     .reset(rst),
     .rs1(rs1),
     .rs2(rs2),
-    .rd(currrd),
-    .op(irout)
+    .rd(currrd)
 );
 
 reg_file_component rf (
@@ -44,7 +42,6 @@ reg_file_component rf (
 );
 
 imm_gen_component ig (
-    .clock(clk),
     .reset(rst),
     .inst(ir),
     .out(imm)
@@ -54,6 +51,7 @@ always @(posedge clk)
 begin
     pcout <= pc;
     rdout <= currrd;
+    irout <= ir;
     //$display("currpc: %d", pc);
     //$display(" decodde! pcout: %d", pcout);
 end
