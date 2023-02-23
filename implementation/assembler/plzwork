@@ -1,3 +1,7 @@
+lui x15, 3
+lli x14, 194
+add x15, x15, x14
+lw a0, x15, 0
 RELPRIME: addi sp, sp, -4
 sw ra, sp, 0
 sw a0, sp, 2
@@ -24,3 +28,4 @@ jal x0, CONTINUEGCD
 THEN: sub a0, a0, a1
 jal x0, CONTINUEGCD
 ENDLOOP: jalr ra, ra, ra
+sw a0, x15, 0
