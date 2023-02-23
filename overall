@@ -1,0 +1,212 @@
+onerror {resume}
+quietly WaveActivateNextPane {} 0
+add wave -noupdate -group main /proc_tb/HALF_PERIOD
+add wave -noupdate -group main /proc_tb/IN
+add wave -noupdate -group main /proc_tb/OUT
+add wave -noupdate -group main /proc_tb/clk
+add wave -noupdate -group main /proc_tb/counter
+add wave -noupdate -group main /proc_tb/expected
+add wave -noupdate -group main /proc_tb/failures
+add wave -noupdate -group main /proc_tb/rst
+add wave -noupdate -group pcmain /proc_tb/UUT/pcmain/clock
+add wave -noupdate -group pcmain /proc_tb/UUT/pcmain/in
+add wave -noupdate -group pcmain /proc_tb/UUT/pcmain/out
+add wave -noupdate -group pcmain /proc_tb/UUT/pcmain/reset
+add wave -noupdate -group pcmain /proc_tb/UUT/pcmain/write
+add wave -noupdate -group control /proc_tb/UUT/control/ALUIN1
+add wave -noupdate -group control /proc_tb/UUT/control/ALUIN2
+add wave -noupdate -group control /proc_tb/UUT/control/ALUOP
+add wave -noupdate -group control /proc_tb/UUT/control/ALUSRC
+add wave -noupdate -group control /proc_tb/UUT/control/IMMGENOP
+add wave -noupdate -group control /proc_tb/UUT/control/MEM2REG
+add wave -noupdate -group control /proc_tb/UUT/control/MEMREAD
+add wave -noupdate -group control /proc_tb/UUT/control/MEMWRITE
+add wave -noupdate -group control /proc_tb/UUT/control/PCWRITE
+add wave -noupdate -group control /proc_tb/UUT/control/REGWRITE
+add wave -noupdate -group control /proc_tb/UUT/control/op
+add wave -noupdate -group control /proc_tb/UUT/control/reset
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/currpc
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/ir
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/newpc
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/pc
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/pcwrite
+add wave -noupdate -group fetch /proc_tb/UUT/fetch/rst
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/rst
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/ir
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/pc
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/rd
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/clk
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/writedata
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/regwrite
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/pcout
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/a
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/b
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/rdout
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/imm
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/irout
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/rs1
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/rs2
+add wave -noupdate -expand -group decode /proc_tb/UUT/decode/currrd
+add wave -noupdate -group execute /proc_tb/UUT/execute/clk
+add wave -noupdate -group execute /proc_tb/UUT/execute/pc
+add wave -noupdate -group execute /proc_tb/UUT/execute/a
+add wave -noupdate -group execute /proc_tb/UUT/execute/b
+add wave -noupdate -group execute /proc_tb/UUT/execute/rd
+add wave -noupdate -group execute /proc_tb/UUT/execute/op
+add wave -noupdate -group execute /proc_tb/UUT/execute/imm
+add wave -noupdate -group execute /proc_tb/UUT/execute/forwarded_aluout
+add wave -noupdate -group execute /proc_tb/UUT/execute/rst
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluop
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluin1
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluin2
+add wave -noupdate -group execute /proc_tb/UUT/execute/regwrite
+add wave -noupdate -group execute /proc_tb/UUT/execute/pcwrite
+add wave -noupdate -group execute /proc_tb/UUT/execute/bout
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluout
+add wave -noupdate -group execute /proc_tb/UUT/execute/rdout
+add wave -noupdate -group execute /proc_tb/UUT/execute/zero
+add wave -noupdate -group execute /proc_tb/UUT/execute/pos
+add wave -noupdate -group execute /proc_tb/UUT/execute/regwriteout
+add wave -noupdate -group execute /proc_tb/UUT/execute/execute_pcwrite
+add wave -noupdate -group execute /proc_tb/UUT/execute/opout
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluin1_wire
+add wave -noupdate -group execute /proc_tb/UUT/execute/aluin2_wire
+add wave -noupdate -group pcsrc /proc_tb/UUT/pcsrc/in0
+add wave -noupdate -group pcsrc /proc_tb/UUT/pcsrc/in1
+add wave -noupdate -group pcsrc /proc_tb/UUT/pcsrc/op
+add wave -noupdate -group pcsrc /proc_tb/UUT/pcsrc/reset
+add wave -noupdate -group pcsrc /proc_tb/UUT/pcsrc/out
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/clk
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/b
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/aluout
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/memwrite
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/rst
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/read_in
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/regwrite
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/write_out
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/memout
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/alufor
+add wave -noupdate -expand -group mem /proc_tb/UUT/mem/regwriteout
+add wave -noupdate -group fd_pc /proc_tb/UUT/fd_pc/clock
+add wave -noupdate -group fd_pc /proc_tb/UUT/fd_pc/in
+add wave -noupdate -group fd_pc /proc_tb/UUT/fd_pc/write
+add wave -noupdate -group fd_pc /proc_tb/UUT/fd_pc/reset
+add wave -noupdate -group fd_pc /proc_tb/UUT/fd_pc/out
+add wave -noupdate -group fd_ir /proc_tb/UUT/fd_ir/clock
+add wave -noupdate -group fd_ir /proc_tb/UUT/fd_ir/in
+add wave -noupdate -group fd_ir /proc_tb/UUT/fd_ir/write
+add wave -noupdate -group fd_ir /proc_tb/UUT/fd_ir/reset
+add wave -noupdate -group fd_ir /proc_tb/UUT/fd_ir/out
+add wave -noupdate -expand -group de_regwrite /proc_tb/UUT/de_regwrite/clock
+add wave -noupdate -expand -group de_regwrite /proc_tb/UUT/de_regwrite/in
+add wave -noupdate -expand -group de_regwrite /proc_tb/UUT/de_regwrite/write
+add wave -noupdate -expand -group de_regwrite /proc_tb/UUT/de_regwrite/reset
+add wave -noupdate -expand -group de_regwrite /proc_tb/UUT/de_regwrite/out
+add wave -noupdate -group de_ir /proc_tb/UUT/de_ir/clock
+add wave -noupdate -group de_ir /proc_tb/UUT/de_ir/in
+add wave -noupdate -group de_ir /proc_tb/UUT/de_ir/write
+add wave -noupdate -group de_ir /proc_tb/UUT/de_ir/reset
+add wave -noupdate -group de_ir /proc_tb/UUT/de_ir/out
+add wave -noupdate -group de_pc /proc_tb/UUT/de_pc/clock
+add wave -noupdate -group de_pc /proc_tb/UUT/de_pc/in
+add wave -noupdate -group de_pc /proc_tb/UUT/de_pc/write
+add wave -noupdate -group de_pc /proc_tb/UUT/de_pc/reset
+add wave -noupdate -group de_pc /proc_tb/UUT/de_pc/out
+add wave -noupdate -group de_a /proc_tb/UUT/de_a/clock
+add wave -noupdate -group de_a /proc_tb/UUT/de_a/in
+add wave -noupdate -group de_a /proc_tb/UUT/de_a/write
+add wave -noupdate -group de_a /proc_tb/UUT/de_a/reset
+add wave -noupdate -group de_a /proc_tb/UUT/de_a/out
+add wave -noupdate -group de_b /proc_tb/UUT/de_b/clock
+add wave -noupdate -group de_b /proc_tb/UUT/de_b/in
+add wave -noupdate -group de_b /proc_tb/UUT/de_b/write
+add wave -noupdate -group de_b /proc_tb/UUT/de_b/reset
+add wave -noupdate -group de_b /proc_tb/UUT/de_b/out
+add wave -noupdate -group de_rd /proc_tb/UUT/de_rd/clock
+add wave -noupdate -group de_rd /proc_tb/UUT/de_rd/in
+add wave -noupdate -group de_rd /proc_tb/UUT/de_rd/write
+add wave -noupdate -group de_rd /proc_tb/UUT/de_rd/reset
+add wave -noupdate -group de_rd /proc_tb/UUT/de_rd/out
+add wave -noupdate -group de_imm /proc_tb/UUT/de_imm/clock
+add wave -noupdate -group de_imm /proc_tb/UUT/de_imm/in
+add wave -noupdate -group de_imm /proc_tb/UUT/de_imm/write
+add wave -noupdate -group de_imm /proc_tb/UUT/de_imm/reset
+add wave -noupdate -group de_imm /proc_tb/UUT/de_imm/out
+add wave -noupdate -expand -group em_regwrite /proc_tb/UUT/em_regwrite/clock
+add wave -noupdate -expand -group em_regwrite /proc_tb/UUT/em_regwrite/in
+add wave -noupdate -expand -group em_regwrite /proc_tb/UUT/em_regwrite/write
+add wave -noupdate -expand -group em_regwrite /proc_tb/UUT/em_regwrite/reset
+add wave -noupdate -expand -group em_regwrite /proc_tb/UUT/em_regwrite/out
+add wave -noupdate -group em_b /proc_tb/UUT/em_b/clock
+add wave -noupdate -group em_b /proc_tb/UUT/em_b/in
+add wave -noupdate -group em_b /proc_tb/UUT/em_b/write
+add wave -noupdate -group em_b /proc_tb/UUT/em_b/reset
+add wave -noupdate -group em_b /proc_tb/UUT/em_b/out
+add wave -noupdate -group em_aluout /proc_tb/UUT/em_aluout/clock
+add wave -noupdate -group em_aluout /proc_tb/UUT/em_aluout/in
+add wave -noupdate -group em_aluout /proc_tb/UUT/em_aluout/write
+add wave -noupdate -group em_aluout /proc_tb/UUT/em_aluout/reset
+add wave -noupdate -group em_aluout /proc_tb/UUT/em_aluout/out
+add wave -noupdate -group em_rd /proc_tb/UUT/em_rd/clock
+add wave -noupdate -group em_rd /proc_tb/UUT/em_rd/in
+add wave -noupdate -group em_rd /proc_tb/UUT/em_rd/write
+add wave -noupdate -group em_rd /proc_tb/UUT/em_rd/reset
+add wave -noupdate -group em_rd /proc_tb/UUT/em_rd/out
+add wave -noupdate -group mw_rd /proc_tb/UUT/mw_rd/clock
+add wave -noupdate -group mw_rd /proc_tb/UUT/mw_rd/in
+add wave -noupdate -group mw_rd /proc_tb/UUT/mw_rd/write
+add wave -noupdate -group mw_rd /proc_tb/UUT/mw_rd/reset
+add wave -noupdate -group mw_rd /proc_tb/UUT/mw_rd/out
+add wave -noupdate -expand -group mw_mem /proc_tb/UUT/mw_mem/clock
+add wave -noupdate -expand -group mw_mem /proc_tb/UUT/mw_mem/in
+add wave -noupdate -expand -group mw_mem /proc_tb/UUT/mw_mem/write
+add wave -noupdate -expand -group mw_mem /proc_tb/UUT/mw_mem/reset
+add wave -noupdate -expand -group mw_mem /proc_tb/UUT/mw_mem/out
+add wave -noupdate -group mw_alufor /proc_tb/UUT/mw_alufor/clock
+add wave -noupdate -group mw_alufor /proc_tb/UUT/mw_alufor/in
+add wave -noupdate -group mw_alufor /proc_tb/UUT/mw_alufor/write
+add wave -noupdate -group mw_alufor /proc_tb/UUT/mw_alufor/reset
+add wave -noupdate -group mw_alufor /proc_tb/UUT/mw_alufor/out
+add wave -noupdate -expand -group mw_m2r /proc_tb/UUT/mw_m2r/in0
+add wave -noupdate -expand -group mw_m2r /proc_tb/UUT/mw_m2r/in1
+add wave -noupdate -expand -group mw_m2r /proc_tb/UUT/mw_m2r/op
+add wave -noupdate -expand -group mw_m2r /proc_tb/UUT/mw_m2r/reset
+add wave -noupdate -expand -group mw_m2r /proc_tb/UUT/mw_m2r/out
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/clock
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/memread
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/rs1
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/rs2
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/zero
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/pcwrite
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/instop
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/stall
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/branch_taken
+add wave -noupdate -group hazard /proc_tb/UUT/hazard/stalled
+add wave -noupdate -group forward /proc_tb/UUT/fw/rs1
+add wave -noupdate -group forward /proc_tb/UUT/fw/rs2
+add wave -noupdate -group forward /proc_tb/UUT/fw/rd
+add wave -noupdate -group forward /proc_tb/UUT/fw/oldalusrc0
+add wave -noupdate -group forward /proc_tb/UUT/fw/oldalusrc1
+add wave -noupdate -group forward /proc_tb/UUT/fw/shouldb
+add wave -noupdate -group forward /proc_tb/UUT/fw/originalb
+add wave -noupdate -group forward /proc_tb/UUT/fw/alusrc0
+add wave -noupdate -group forward /proc_tb/UUT/fw/alusrc1
+add wave -noupdate -group forward /proc_tb/UUT/fw/newb
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {0 ps} 0}
+quietly wave cursor active 0
+configure wave -namecolwidth 60
+configure wave -valuecolwidth 40
+configure wave -justifyvalue left
+configure wave -signalnamewidth 1
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ps
+update
+WaveRestoreZoom {0 ps} {11523 ps}

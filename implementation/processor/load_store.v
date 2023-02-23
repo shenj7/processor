@@ -245,9 +245,9 @@ always @(stall, fetch_ir) begin
 end
 
 //decode-execute
-reg_component de_regwrite (
+tiny_reg_component de_regwrite (
     .clock(clock),
-    .in(regwrite),
+    .in(regwrite), 
     .write(stall),
     .reset(rst),
     .out(execute_regwritein)
@@ -302,7 +302,7 @@ reg_component de_imm (
 );
 
 //execute-memory
-reg_component em_regwrite (
+tiny_reg_component em_regwrite (
     .clock(clock),
     .in(execute_regwriteout),
     .write(stall),
