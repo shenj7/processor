@@ -1,4 +1,4 @@
-module decode_cycle(rst, ir, pc, rd, clk, writedata, regwrite, pcout, a, b, rdout, imm, irop);
+module decode_cycle(rst, ir, pc, rd, clk, writedata, regwrite, pcout, a, b, rdout, imm, irout);
 input rst;
 input [15:0] ir;
 input [15:0] pc;
@@ -13,7 +13,7 @@ output [15:0] a;
 output [15:0] b;
 output reg [3:0] rdout;
 output [15:0] imm;
-output [3:0] irop;
+output [15:0] irout;
 
 
 wire [3:0] rs1;
@@ -28,7 +28,7 @@ ir_component irc (
     .rs1(rs1),
     .rs2(rs2),
     .rd(currrd),
-    .op(irop)
+    .op(irout)
 );
 
 reg_file_component rf (

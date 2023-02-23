@@ -100,6 +100,7 @@ wire [15:0] decode_a;
 wire [15:0] decode_b;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
+wire [3:0] decode_irout;
 wire memory_regwritein;
 
 decode_cycle decode (
@@ -119,7 +120,8 @@ decode_cycle decode (
     .a(decode_a),
     .b(decode_b),
     .rdout(decode_rdout),
-    .imm(decode_imm)
+    .imm(decode_imm),
+    .irout(decode_irout)
 );
 
 //wires into execute
@@ -141,6 +143,7 @@ wire execute_regwriteout;
 //writeback 
 wire [15:0] mem_aluout;
 wire execute_pcwrite;
+wire [3:0] execute_opout;
 
 execute_cycle execute (
     //from the prev cycle
@@ -166,6 +169,7 @@ execute_cycle execute (
     .bout(execute_bout),
     .aluout(execute_aluout),
     .rdout(execute_rdout),
+    .opout(execute_opout)
     .zero(execute_zero),
     .pos(execute_pos),
     .regwriteout(execute_regwriteout),
@@ -247,6 +251,13 @@ reg_component de_regwrite (
     .out(execute_regwritein)
 );
 
+reg_component de_ir (
+    .clock(clock),
+    .in(decode_irout),
+    .write(stall),
+    .reset(rst),
+    .out(execute_ir)
+);
 
 reg_component de_pc (
     .clock(clock),
@@ -354,16 +365,18 @@ hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
     .pcwrite(execute_pcwrite),
-    .instop(),
+    .instop(execute_opout),
+    .rs1(decode_ir[11:8]),
+    .rs2(decode_ir[15:12])
     .zero(execute_zero),
     .stall(stall),
     .branch_taken(branch_taken)
 );
 
 forward_unit_component fw (
-    .rs1(decode_ir[11:8]),
-    .rs2(decode_ir[15:12]),
-    .rd(decode_ir[7:4]),
+    .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
+    .rs2(execute_ir[15:12]),
+    .rd(mw_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
     .oldalusrc0(aluin1),
     .oldalusrc1(aluin2),
     .alusrc0(forwarded_alusrc0),

@@ -18,6 +18,7 @@ begin
         rs1 <= 4'b0000;
         rs2 <= 4'b0000;
         rd <= 4'b0000;
+        op <= 4'b0000;
     end else begin
         rs1 <= in1[11:8];
         rs2 <= in1[15:12];
