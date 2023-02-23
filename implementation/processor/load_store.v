@@ -149,7 +149,7 @@ wire [3:0] execute_opout;
 execute_cycle execute (
     //from the prev cycle
     .clk(clock),
-    .pc(execute_pc),
+    .pc(decode_pcout), //was execte_pcout
     .a(execute_a),
     .b(execute_b),
     .rd(execute_rd),
@@ -165,7 +165,8 @@ execute_cycle execute (
     .aluop(aluop),
     .aluin1(forwarded_alusrc0),
     .aluin2(forwarded_alusrc1),
-    .pcwrite(pcwrite),
+    //maybe
+    .pcwrite(chosen_pc),
 
     //outputs
     .bout(execute_bout),

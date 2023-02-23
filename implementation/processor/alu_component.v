@@ -29,8 +29,10 @@ begin
 
     if (out > 0) begin //zero or positive
         pos <= 1;
+        zero <= 0;
     end else if (out == 0) begin
         zero <= 1;
+        pos <= 0;
     end
 end
 

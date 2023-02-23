@@ -52,8 +52,6 @@ begin
     pcout <= pc;
     rdout <= currrd;
     irout <= ir;
-    //$display("currpc: %d", pc);
-    //$display(" decodde! pcout: %d", pcout);
 end
 
 
