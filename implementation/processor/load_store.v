@@ -141,6 +141,7 @@ wire execute_regwriteout;
 //writeback 
 wire [15:0] mem_aluout;
 wire execute_pcwrite;
+wire [3:0] execute_instop;
 
 execute_cycle execute (
     //from the prev cycle
@@ -169,7 +170,8 @@ execute_cycle execute (
     .zero(execute_zero),
     .pos(execute_pos),
     .regwriteout(execute_regwriteout),
-    .execute_pcwrite(execute_pcwrite)
+    .execute_pcwrite(execute_pcwrite),
+    .instop(execute_instop)
 );
 
 two_way_mux_component pcsrc (
@@ -354,7 +356,7 @@ hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
     .pcwrite(execute_pcwrite),
-    .instop(),
+    .instop(execute_instop),
     .zero(execute_zero),
     .stall(stall),
     .branch_taken(branch_taken)
