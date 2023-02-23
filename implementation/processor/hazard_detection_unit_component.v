@@ -21,7 +21,7 @@ begin
 
     if(!zero && pcwrite) begin
         branch_taken <= 1;
-    end else if (//check op)
+   // end else if (//check op)
      // branch take = 1
      //end
     end else begin
