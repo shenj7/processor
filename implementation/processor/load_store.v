@@ -354,7 +354,7 @@ hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
     .pcwrite(execute_pcwrite),
-    .instop(decode_ir),
+    .instop(),
     .zero(execute_zero),
     .stall(stall),
     .branch_taken(branch_taken)

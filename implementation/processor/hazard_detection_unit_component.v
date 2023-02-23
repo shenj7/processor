@@ -3,9 +3,10 @@ module hazard_detection_unit_component(clock, memread, instop, zero, stall, bran
 input clock;
 input memread;
 
-input instop;
 input zero;
 input pcwrite;
+input [3:0] instop;
+
 
 output reg stall;
 output reg branch_taken;
@@ -21,9 +22,8 @@ begin
 
     if(!zero && pcwrite) begin
         branch_taken <= 1;
-   // end else if (//check op)
-     // branch take = 1
-     //end
+    end else if (instop == 4'b0100 || instop == 4'b0110) begin
+      branch_taken <= 1;
     end else begin
         branch_taken <= 0;
     end
