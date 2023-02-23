@@ -20,6 +20,7 @@ module data_mem_component
 	
 	initial begin
 		$readmemb("data_mem.txt", ram);
+		write_out <= 0;
 	end
 
 	always @ (posedge clk)

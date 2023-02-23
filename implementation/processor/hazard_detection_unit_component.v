@@ -1,7 +1,9 @@
-module hazard_detection_unit_component(clock, memread, instop, zero, stall, branch_taken, pcwrite);
+module hazard_detection_unit_component(clock, memread, rs1, rs2, instop, zero, stall, branch_taken, pcwrite);
 
 input clock;
 input memread;
+input [3:0] rs1;
+input [3:0] rs2;
 
 input zero;
 input pcwrite;
@@ -19,7 +21,7 @@ end
 
 always @(posedge clock)
 begin
-
+    //use rs1 and rs2 to determine whether we need to flush or not
     if(!zero && pcwrite) begin
         branch_taken <= 1;
     end else if (instop == 4'b0100 || instop == 4'b0110) begin
