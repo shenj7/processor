@@ -1,10 +1,11 @@
-module execute_cycle(clk, pc, a, b, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pcwrite, execute_pcwrite, pos, regwrite, regwriteout, forwarded_aluout);
+module execute_cycle(clk, pc, a, b, op, rd, imm, rst, aluop, aluin1, aluin2, bout, aluout, rdout, zero, pcwrite, execute_pcwrite, pos, regwrite, regwriteout, forwarded_aluout, opout);
 //inputs
 input clk;
 input [15:0] pc;
 input [15:0] a;
 input [15:0] b;
 input [3:0] rd;
+input [3:0] op;
 input [15:0] imm;
 
 input [15:0] forwarded_aluout;
@@ -25,6 +26,7 @@ output zero;
 output pos;
 output reg regwriteout;
 output reg execute_pcwrite;
+output reg [3:0] opout; 
 
 wire [15:0] aluin1_wire;
 wire [15:0] aluin2_wire;
@@ -65,8 +67,7 @@ begin
     rdout <= rd;
     bout <= b;
     execute_pcwrite <= pcwrite;
-    //$display("execute rdout: %d", rdout);
-    //$display("zero: %d", zero);
+    opout <= op;
 end
 
 

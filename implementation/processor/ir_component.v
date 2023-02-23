@@ -1,6 +1,6 @@
 // Instruction register
 
-module ir_component(clock, in1, reset, rs1, rs2, rd);
+module ir_component(clock, in1, reset, rs1, rs2, rd, op);
 
 input clock;
 input [15:0] in1;
@@ -9,6 +9,7 @@ input reset;
 output reg [3:0] rs1;
 output reg [3:0] rs2;
 output reg [3:0] rd;
+output reg [3:0] op;
 
 
 always @(posedge clock)
@@ -21,6 +22,7 @@ begin
         rs1 <= in1[11:8];
         rs2 <= in1[15:12];
         rd <= in1[7:4];
+        op <= in1[3:0];
     end
 end
 
