@@ -63,8 +63,8 @@ memory mem (
 
 always @ (posedge CLK)
 begin
-    $display("Reading from pc = %d", PC);
-    $display("instruction: %d", inst);
+    //$display("Reading from pc = %d", PC);
+    //$display("instruction: %d", inst);
 
 end
 

@@ -7,7 +7,7 @@ input [3:0] in;
 input write;
 input reset;
 
-output reg [3:0] out;
+output reg [3:0] out = 0;
 
 
 always @(posedge clock)

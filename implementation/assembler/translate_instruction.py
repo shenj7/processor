@@ -6,7 +6,7 @@ def typeswitch(inst):
     func = inst[0]
     if func in ["add", "grt", "sub", "eq", "jalr", "bne"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
-    elif func in ["lui", "jal"]:
+    elif func in ["lui", "lli", "jal"]:
         return itype_parse(inst) if instlen == ilen else f"malformed instruction, should be length {ilen}"
     elif func in ["addi", "lw", "sw", "wri", "rea"]:
         return mtype_parse(inst) if instlen == mlen else f"malformed instruction, should be length {mlen}"
@@ -57,6 +57,8 @@ def itype_parse(inst):
         iid = "0101"
     elif func == "jal":
         iid = "0110"
+    elif func == "lli":
+        iid = "1111"
     else:
         return f"instruction not found: {func}"
 
@@ -80,7 +82,7 @@ def mtype_parse(inst):
         iid == "1101"
     else:
         return f"instruction not found: {func}"
-    return imm + rs2 + rs1 + iid
+    return rs2 + rs1 + imm + iid
 
 
 def reg_trans(reg):
@@ -108,6 +110,9 @@ def parse_inst(inst):
     registers = inst.replace(",", "").split(" ")
     instruction = [registers[0]]
     registers = registers[1:]
+    # r type: [id, rd, rs1, rs2]
+    # i type: [id, rd, imm]
+    # m type: [id, rs1, rs2, imm]
     for register in registers:
         instruction.append(reg_trans(register))
     return instruction

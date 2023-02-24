@@ -14,45 +14,55 @@ wire [1:0] immgenop;
 wire aluop;
 wire aluin1;
 wire [1:0] aluin2;
-wire alusrc; //tf is this doing?
+wire [1:0] alusrc; 
 wire memread;
 wire memwrite;
 wire pcwrite;
-wire regwrite; //why do we not have this?
+wire regwrite; //why do we not have this? TODO: forward a regwrite (1 for instructions involving writing to registers), see wb intermediate register (https://rosehulman-my.sharepoint.com/personal/williarj_rose-hulman_edu/_layouts/15/Doc.aspx?sourcedoc={526b68a4-b014-48a8-a92e-48a2395fe4d4}&action=view&wd=target%28Pipeline.one%7C19a91754-ac57-43a0-b626-081762078c5b%2FClean%20Datapath%7Ca31e1fa3-3f74-bd49-b1f8-643b6fb30f73%2F%29&wdorigin=NavigationUrl)
 wire mem2reg; //we still need to put docs for this
 
 
 
 //wires for hazards and forwarding
 wire stall;
-wire flush;
+wire branch_taken;
 
 
 //pc main stuff
 wire [15:0] next_pc;
 wire [15:0] chosen_pc;
 
-reg branch_taken;
-
+//wires from forwarding
+wire [15:0] newb;
+wire [1:0] forwarded_alusrc0;
+wire [1:0] forwarded_alusrc1;
 
 //wires into fetch
-wire [15:0] fetch_pc; //error
+wire [15:0] fetch_pc; 
 
 reg_component pcmain (
-    .in(chosen_pc), //mux (pcsrc)
+    .clock(clock), 
+    .in(chosen_pc), 
     .out(fetch_pc),
-    .write(stall)
+    .write(stall), //wacky
+    .reset(rst )
 );
 
 //wires out of fetch
 wire [15:0] fetch_ir;
 wire [15:0] fetch_pcout;
 
+//wires into decode
+wire [15:0] decode_ir;
+wire [15:0] decode_pc;
+wire [15:0] decode_writedata;
+wire [15:0] decode_rd;
+
 //control
 control_component control (
     //input
-    .op(fetch_ir),
-    .reset(),
+    .op(fetch_ir[3:0]),
+    .reset(rst),
 
     //output
     .IMMGENOP(immgenop),
@@ -60,11 +70,12 @@ control_component control (
     .ALUIN1(aluin1),
     .ALUIN2(aluin2),
     .ALUSRC(alusrc),
-    //.REGWRITE(regwrite),
+    .REGWRITE(regwrite),
     .MEMREAD(memread),
     .MEMWRITE(memwrite),
     .PCWRITE(pcwrite),
     .MEM2REG(mem2reg)
+   
 );
 
 //fetch cycle
@@ -74,7 +85,7 @@ fetch_cycle fetch (
     .clk(clock),
     
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .pcwrite(stall),
     
     //output
@@ -83,18 +94,15 @@ fetch_cycle fetch (
     .newpc(next_pc)
 );
 
-//wires into decode
-wire [15:0] decode_ir;
-wire [15:0] decode_pc;
-wire [15:0] decode_writedata;
-wire [15:0] decode_rd;
-
 //wires out of decode
 wire [15:0] decode_pcout;
 wire [15:0] decode_a;
 wire [15:0] decode_b;
+wire [15:0] decode_c;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
+wire [15:0] decode_irout;
+wire memory_regwritein;
 
 decode_cycle decode (
     //from prev cycle (and writeback)
@@ -105,24 +113,28 @@ decode_cycle decode (
     .rd(decode_rd),
 
     //from control
-    .rst(branch_taken),
-    .regwrite(regwrite),
-    .immgenop(immgenop),
+    .rst(rst),
+    .regwrite(memory_regwritein), //HERE
 
     //output
     .pcout(decode_pcout),
     .a(decode_a),
     .b(decode_b),
+    .c(decode_c),
     .rdout(decode_rdout),
-    .imm(decode_imm)
+    .imm(decode_imm),
+    .irout(decode_irout)
 );
 
 //wires into execute
 wire [15:0] execute_pc;
 wire [15:0] execute_a;
 wire [15:0] execute_b;
+wire [15:0] execute_c;
 wire [3:0] execute_rd;
 wire [15:0] execute_imm;
+wire [15:0] execute_ir;
+wire execute_regwritein;
 
 //wires out of execute
 wire [15:0] execute_bout;
@@ -130,41 +142,61 @@ wire [15:0] execute_aluout;
 wire [3:0] execute_rdout;
 wire execute_zero;
 wire execute_pos;
+wire execute_regwriteout;
+
+//writeback 
+wire [15:0] mem_aluout;
+wire [15:0] intermediate_aluout;
+wire execute_pcwrite;
+wire [3:0] execute_opout;
 
 execute_cycle execute (
     //from the prev cycle
     .clk(clock),
-    .pc(execute_pc),
+    .pc(decode_pcout), //was execte_pcout
     .a(execute_a),
     .b(execute_b),
+    .c(execute_c),
     .rd(execute_rd),
     .imm(execute_imm),
+    .regwrite(execute_regwritein),
+    .op(execute_ir[3:0]),
+
+    //writeback
+    .forwarded_aluout(mem_aluout),
 
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .aluop(aluop),
     .aluin1(forwarded_alusrc0),
     .aluin2(forwarded_alusrc1),
+    .alusrc(alusrc),
+
+    //maybe
+    .pcwrite(pcwrite),
 
     //outputs
     .bout(execute_bout),
     .aluout(execute_aluout),
     .rdout(execute_rdout),
+    .opout(execute_opout),
     .zero(execute_zero),
-    .pos(execute_pos)
+    .pos(execute_pos),
+    .regwriteout(execute_regwriteout),
+    .execute_pcwrite(execute_pcwrite),
+    .intermediate_aluout(intermediate_aluout)
 );
 
 two_way_mux_component pcsrc (
     .in0(next_pc),
-    .in1(execute_aluout),
+    .in1(execute_c),
     .op(branch_taken),
-    .reset(branch_taken),
+    .reset(rst),
     .out(chosen_pc)
 );
 
 //wires into mem
 wire [15:0] mem_b;
-wire [15:0] mem_aluout;
 
 //wires out of mem
 wire [15:0] mem_memout;
@@ -183,12 +215,14 @@ mem_cycle mem (
     .write_out(write_out),
 
     //from control
-    .rst(branch_taken),
+    .rst(rst),
     .memwrite(memwrite),
+    .regwrite(memory_regwritein),
 
     //output
     .memout(mem_memout),
-    .alufor(mem_alufor)
+    .alufor(mem_alufor),
+    .regwriteout(memory_regwriteout)
 );
 
 //in-between registers
@@ -197,24 +231,50 @@ reg_component fd_pc (
     .clock(clock),
     .in(fetch_pc),
     .write(stall),
-    .reset(branch_taken),
+    .reset(branch_taken | rst),
     .out(decode_pc)
 );
 
+reg [15:0] inst_ir;
+
 reg_component fd_ir (
     .clock(clock),
-    .in(fetch_ir),
-    .write(stall),
-    .reset(branch_taken),
+    .in(inst_ir),
+    .write(1),
+    .reset(branch_taken | rst),
     .out(decode_ir)
 );
 
+always @(stall, fetch_ir) begin
+    if (stall == 0) begin // stall
+        inst_ir = 16'b0000000000000000;
+    end else begin
+        inst_ir = fetch_ir;
+    end
+end
+
 //decode-execute
+tiny_reg_component de_regwrite (
+    .clock(clock),
+    .in(regwrite), 
+    .write(stall),
+    .reset(branch_taken || reset),
+    .out(execute_regwritein)
+);
+
+reg_component de_ir (
+    .clock(clock),
+    .in(decode_irout),
+    .write(stall),
+    .reset(rst),
+    .out(execute_ir)
+);
+
 reg_component de_pc (
     .clock(clock),
     .in(decode_pcout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_pc)
 );
 
@@ -222,7 +282,7 @@ reg_component de_a (
     .clock(clock),
     .in(decode_a),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_a)
 );
 
@@ -230,15 +290,23 @@ reg_component de_b (
     .clock(clock),
     .in(decode_b),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_b)
+);
+
+reg_component de_c (
+    .clock(clock),
+    .in(decode_c),
+    .write(stall),
+    .reset(rst),
+    .out(execute_c)
 );
 
 small_reg_component de_rd (
     .clock(clock),
     .in(decode_rdout),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_rd)
 );
 
@@ -246,16 +314,25 @@ reg_component de_imm (
     .clock(clock),
     .in(decode_imm),
     .write(stall),
-    .reset(branch_taken),
+    .reset(rst),
     .out(execute_imm)
 );
 
 //execute-memory
+tiny_reg_component em_regwrite (
+    .clock(clock),
+    .in(execute_regwriteout),
+    .write(stall),
+    .reset(rst),
+    .out(memory_regwritein)
+);
+
+
 reg_component em_b (
     .clock(clock),
     .in(newb),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(mem_b)
 );
 
@@ -263,7 +340,7 @@ reg_component em_aluout (
     .clock(clock),
     .in(execute_aluout),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(mem_aluout)
 );
 
@@ -271,57 +348,66 @@ small_reg_component em_rd (
     .clock(clock),
     .in(execute_rd),
     .write(stall),
-    .reset(0),
+    .reset(rst),
     .out(decode_rd)
 );
+
 
 //memory-writeback
 wire [15:0] writeback_memout;
 wire [15:0] writeback_alufor;
 
+wire [3:0] write_rd;
+
+small_reg_component mw_rd (
+    .clock(clock),
+    .in(decode_rd),
+    .write(1),
+    .reset(rst),
+    .out(write_rd)
+);
+
 reg_component mw_mem (
     .clock(clock),
     .in(mem_memout),
     .write(1),
-    .reset(0),
+    .reset(rst),
     .out(writeback_memout)
 );
 
 reg_component mw_alufor (
     .clock(clock),
-    .in(mem_alufor),
+    .in(mem_aluout),
     .write(1),
-    .reset(0),
+    .reset(rst),
     .out(writeback_alufor)
 );
 
 two_way_mux_component mw_m2r (
-    .in0(writeback_memout),
-    .in1(writeback_alufor),
+    .in0(writeback_alufor),
+    .in1(writeback_memout),
     .op(mem2reg),
+    .reset(0),
     .out(decode_writedata)
 );
-
-//branch logic
-always @(*) begin
-    branch_taken <= pcwrite && flush;
-end
-
 
 //hazards and forwarding
 hazard_detection_unit_component hazard (
     .clock(clock),
     .memread(memread),
-    .instop(decode_ir),
+    .pcwrite(execute_pcwrite),
+    .instop(execute_opout),
+    .rs1(decode_ir[11:8]),
+    .rs2(decode_ir[15:12]),
     .zero(execute_zero),
     .stall(stall),
-    .flush(flush)
+    .branch_taken(branch_taken)
 );
 
 forward_unit_component fw (
-    .rs1(decode_ir[11:8]),
-    .rs2(decode_ir[15:12]),
-    .rd(decode_ir[7:4]),
+    .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
+    .rs2(execute_ir[15:12]),
+    .rd(write_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
     .oldalusrc0(aluin1),
     .oldalusrc1(aluin2),
     .alusrc0(forwarded_alusrc0),
@@ -329,21 +415,11 @@ forward_unit_component fw (
     .newb(newb),
     .shouldb(mem_aluout),
     .originalb(execute_bout)
-    // wire [15:0] newb;
-    // wire [1:0] forwarded_alusrc0;
-    // wire [1:0] forwarded_alusrc1;
 );
 
 
 always @(posedge clock)
 begin
-
-$display("HERE READ_IN: %d", read_in);
-$display("fetch inst %d", fetch_ir);
-$display("Reading inst from mem: %d", decode_ir);
-$display("fetch pcout: %d", fetch_pcout);
-$display("chosen pc: %d", chosen_pc);
-
 
 end
 

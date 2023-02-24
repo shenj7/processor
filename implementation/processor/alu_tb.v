@@ -41,10 +41,10 @@ initial begin
     #(100*HALF_PERIOD);
     reset = 0;
 
-    $display("Testing ALU");
+    //$display("Testing ALU");
 
     //-----TEST 1-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -55,13 +55,13 @@ initial begin
     expected = 16'b0000000000000010;
     if (out != expected) begin
         failures = failures + 1;
-        $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+        //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
     end
     
     #(100*HALF_PERIOD);
 
 //-----TEST 2-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -72,13 +72,13 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 //-----TEST 3-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -89,13 +89,13 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 //-----TEST 4-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -106,13 +106,13 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 //-----TEST 5-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -123,12 +123,12 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 //-----TEST 6-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -139,13 +139,13 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 //-----TEST 7-----
-    $display("Testing ALU addition");
+    //$display("Testing ALU addition");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -156,13 +156,13 @@ initial begin
         expected = 16'b0000000000000010;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (Addition) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 //-----TEST 8-----
-    $display("Testing ALU subtraction");
+    //$display("Testing ALU subtraction");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -173,12 +173,12 @@ initial begin
         expected = 16'b0000000000000000;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
     //-----TEST 9-----
-    $display("Testing ALU subtraction");
+    //$display("Testing ALU subtraction");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -189,12 +189,12 @@ initial begin
         expected = 16'b0000000000000000;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
     //-----TEST 10-----
-    $display("Testing ALU subtraction");
+    //$display("Testing ALU subtraction");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -205,12 +205,12 @@ initial begin
         expected = 16'b0000000000000000;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
     //-----TEST 11-----
-    $display("Testing ALU subtraction");
+    //$display("Testing ALU subtraction");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -221,12 +221,12 @@ initial begin
         expected = 16'b0000000000000000;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
     //-----TEST 12-----
-    $display("Testing ALU subtraction");
+    //$display("Testing ALU subtraction");
     reset = 1; //reset ALU before testing
     #(2*HALF_PERIOD);
     reset = 0;
@@ -237,12 +237,12 @@ initial begin
         expected = 16'b0000000000000000;
         if (out != expected) begin
             failures = failures + 1;
-            $display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
+            //$display("%t (subtraction) Output = %d, expecting %d", $time, out, expected);
         end
     end
     #(100*HALF_PERIOD);
 
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 
 end

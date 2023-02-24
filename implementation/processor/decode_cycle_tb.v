@@ -55,7 +55,7 @@ initial begin
     rst = 0;
 
     //-----TEST 1-----
-    $display("Testing decode cycle");
+    //$display("Testing decode cycle");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -73,13 +73,13 @@ initial begin
         expected = 4'b0001; 
         if (a != expected) begin
             failures = failures + 1;
-            $display("%t (decode rs1) Output = %d, expecting %d", $time, a, expected);
+            //$display("%t (decode rs1) Output = %d, expecting %d", $time, a, expected);
         end
     end
     #(100*HALF_PERIOD);
 
     //-----TEST 2-----
-    $display("Testing decode cycle");
+    //$display("Testing decode cycle");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -93,13 +93,13 @@ initial begin
         expected = 4'b0010; 
         if (b != expected) begin
             failures = failures + 1;
-            $display("%t (decode) Output = %d, expecting %d", $time, a, expected);
+            //$display("%t (decode) Output = %d, expecting %d", $time, a, expected);
         end
     end
     #(100*HALF_PERIOD);
 
       //-----TEST 3-----
-    $display("Testing decode cycle");
+    //$display("Testing decode cycle");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -113,13 +113,13 @@ initial begin
         expected = 4'b0010; 
         if (b != expected) begin
             failures = failures + 1;
-            $display("%t (decode) Output = %d, expecting %d", $time, a, expected);
+            //$display("%t (decode) Output = %d, expecting %d", $time, a, expected);
         end
     end
     #(100*HALF_PERIOD);
 
     //-----TEST 4-----
-    $display("Testing decode cycle");
+    //$display("Testing decode cycle");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -133,14 +133,14 @@ initial begin
         expected = 4'b0010; 
         if (b != expected) begin
             failures = failures + 1;
-            $display("%t (reset) Output = %d, expecting %d", $time, a, expected);
+            //$display("%t (reset) Output = %d, expecting %d", $time, a, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 
      //-----TEST 5-----
-    $display("Testing decode cycle");
+    //$display("Testing decode cycle");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 0;
@@ -153,14 +153,14 @@ initial begin
         expected = {{8{ir[16]}},ir[15:8]} <<1; 
         if (imm != expected) begin
             failures = failures + 1;
-            $display("%t (imm) Output = %d, expecting %d", $time, imm, expected);
+            //$display("%t (imm) Output = %d, expecting %d", $time, imm, expected);
         end
     end
     #(100*HALF_PERIOD);
 
 
     //-----reset test-----
-    $display("Testing decode cycle reset");
+    //$display("Testing decode cycle reset");
     rst = 1; 
     #(2*HALF_PERIOD);
     rst = 1;
@@ -174,12 +174,12 @@ initial begin
         expected = 4'b000; 
         if (a != expected) begin
             failures = failures + 1;
-            $display("%t (decode rs1) Output = %d, expecting %d", $time, a, expected);
+            //$display("%t (decode rs1) Output = %d, expecting %d", $time, a, expected);
         end
     end
     #(100*HALF_PERIOD);
 
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 
 end

@@ -38,10 +38,10 @@ integer expected = 0;
     #(100*HALF_PERIOD);
     reset = 0;
 
-    $display("Testing Instruction Reg");
+    //$display("Testing Instruction Reg");
 
     //-----TEST 1-----
-    $display("Testing rs2.");
+    //$display("Testing rs2.");
     reset = 1; //reset 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -50,12 +50,12 @@ integer expected = 0;
     expected = 4'b0010; 
     if (rs2 != expected) begin
          failures = failures + 1;
-        $display("%t (rs2) Output = %d, expecting %d", $time, rs2, expected);
+        //$display("%t (rs2) Output = %d, expecting %d", $time, rs2, expected);
     end
     #(100*HALF_PERIOD);
 
     //-----TEST 2-----
-    $display("Testing rs1.");
+    //$display("Testing rs1.");
     reset = 1; //reset 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -64,12 +64,12 @@ integer expected = 0;
     expected = 4'b0001; 
     if (rs1 != expected) begin
          failures = failures + 1;
-        $display("%t (rs1) Output = %d, expecting %d", $time, rs1, expected);
+        //$display("%t (rs1) Output = %d, expecting %d", $time, rs1, expected);
     end
     #(100*HALF_PERIOD);
 
     //-----TEST 3-----
-    $display("Testing rd.");
+    //$display("Testing rd.");
     reset = 1; //reset 
     #(2*HALF_PERIOD);
     reset = 0;
@@ -78,11 +78,11 @@ integer expected = 0;
     expected = 4'b0110; 
     if (rd != expected) begin
          failures = failures + 1;
-        $display("%t (rd) Output = %d, expecting %d", $time, rs1, expected);
+        //$display("%t (rd) Output = %d, expecting %d", $time, rs1, expected);
     end
     #(100*HALF_PERIOD);
     
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 end
 

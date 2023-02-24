@@ -44,11 +44,11 @@
 //    #(100*HALF_PERIOD);
 //    rst = 0;
 //
-//    $display("Testing reg file")
+//    //$display("Testing reg file")
 //
 //    //-----TEST 1-----
 //    //Testing counting up 
-//    $display("Testing counting up.");
+//    //$display("Testing counting up.");
 //    rst = 1;
 //    counter = 0;
 //    cycle_counter = 0;
@@ -63,13 +63,13 @@
 //        cycle_counter = cycle_counter + 1;
 //        if (out != counter) begin
 //            failures = failures + 1;
-//            $display("%t (COUNT UP) Error at cycle %d, output = %d, expecting = %d", $time, cycle_counter, out, counter);
+//            //$display("%t (COUNT UP) Error at cycle %d, output = %d, expecting = %d", $time, cycle_counter, out, counter);
 //        end
 //    end
 //    #(100*HALF_PERIOD);
 //
 //
-//    $display("TESTS COMPLETE. \n Failures = %d", failures);
+//    //$display("TESTS COMPLETE. \n Failures = %d", failures);
 //    $stop;
 //
 //end

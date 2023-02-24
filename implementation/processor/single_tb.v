@@ -1,4 +1,4 @@
- module proc_tb();
+ module single_tb();
 
 //inputs
 reg rst;
@@ -21,7 +21,7 @@ initial begin
     end
 end
 
-load_store UUT (
+bingle_bicle UUT (
     .clock(clk),
     .read_in(IN),
     .rst(rst),    
@@ -33,7 +33,7 @@ load_store UUT (
 
 initial begin
     rst = 1;
-    #(10*HALF_PERIOD);
+    #(2*HALF_PERIOD);
 //test 1
     rst = 0;
     IN = 16'h13b0;
@@ -46,7 +46,7 @@ initial begin
     //$display("out: %d, expected: %d", OUT, expected);
     //$display("stinky poopy");
     // @(OUT != 0);
-    #(200*HALF_PERIOD);
+    #(2*HALF_PERIOD);
 
     rst = 1;
     #(2*HALF_PERIOD);

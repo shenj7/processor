@@ -52,7 +52,7 @@ initial begin
     IN3 = 16'b0000000000000011;
     if (out != 16'b0000000000000000) begin
         failures = failures + 1;
-        $display("Test 1 Failed output = %d, expecting = %d", out, 0000000000000000);
+        //$display("Test 1 Failed output = %d, expecting = %d", out, 0000000000000000);
     end
     //-----TEST 2-----
     OP = 2'b01;
@@ -62,7 +62,7 @@ initial begin
     IN3 = 16'b0000000000000011;
     if (out != 16'b0000000000000001) begin
         failures = failures + 1;
-        $display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000001);
+        //$display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000001);
     end
     //-----TEST 3-----
     OP = 2'b10;
@@ -72,7 +72,7 @@ initial begin
     IN3 = 16'b0000000000000011;
     if (out != 16'b0000000000000010) begin
         failures = failures + 1;
-        $display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000010);
+        //$display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000010);
     end
     //-----TEST 4-----
     OP = 2'b11;
@@ -82,9 +82,9 @@ initial begin
     IN3 = 16'b0000000000000011;
     if (out != 16'b0000000000000011) begin
         failures = failures + 1;
-        $display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000011);
+        //$display("Test 2 Failed output = %d, expecting = %d", out, 0000000000000011);
     end
-    $display("TESTS COMPLETE. \n Failures = %d", failures);
+    //$display("TESTS COMPLETE. \n Failures = %d", failures);
     $stop;
 end
 

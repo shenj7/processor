@@ -4,8 +4,8 @@
 module inst_mem_component 
 // #(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
 (
-	input [8:0] addr,
-	input clk,
+	input [15:0] addr,
+	input clock,
 	output [15:0] out
 );
 
@@ -19,14 +19,14 @@ module inst_mem_component
 		$readmemb("inst_mem.txt", ram);
 	end
 
-	always @ (posedge clk)
+	always @ (posedge clock)
 	begin
-		addr_reg <= addr;
+		addr_reg <= addr[9:1]; //since byte address vs word address
 	end
 
 	// Continuous assignment implies read returns NEW data.
 	// This is the natural behavior of the TriMatrix memory
 	// blocks in Single Port mode.  
-	assign out = ram[addr_reg>>1];
+	assign out = ram[addr_reg];
 
 endmodule
