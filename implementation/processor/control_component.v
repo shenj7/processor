@@ -60,7 +60,7 @@ output reg REGWRITE;
                 ALUOP <= 1'b1;  
                 ALUIN1 <= 1'b0;  
                 ALUIN2 <= 2'b00;  
-                ALUSRC <= 2'b01;  
+                ALUSRC <= 2'b10;  
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0; 
@@ -72,7 +72,7 @@ output reg REGWRITE;
                 ALUOP <= 1'b1;  
                 ALUIN1 <= 1'b0;  
                 ALUIN2 <= 2'b00;  
-                ALUSRC <= 2'b10;  
+                ALUSRC <= 2'b11;  
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;   
@@ -120,7 +120,7 @@ output reg REGWRITE;
                 ALUOP <= 1'b1;  
                 ALUIN1 <= 2'b11;  
                 ALUIN2 <= 2'b10;  
-                ALUSRC <= 2'b00;  
+                ALUSRC <= 2'b01;  
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;  
@@ -132,7 +132,7 @@ output reg REGWRITE;
                 ALUOP <= 1'b1;  
                 ALUIN1 <= 2'b11;  
                 ALUIN2 <= 2'b10;  
-                ALUSRC <= 2'b00;  
+                ALUSRC <= 2'b01;  
                 MEMREAD <= 1'b0;  
                 MEMWRITE <= 1'b0;  
                 PCWRITE <= 1'b0;  
@@ -163,7 +163,7 @@ output reg REGWRITE;
                 MEM2REG <= 1'b0;
                 REGWRITE <= 1'b0;
                 end  
-     4'b1011: begin // bne  
+       default: begin // bne  
                 IMMGENOP <= 2'b10;  
                 ALUOP <= 1'b1;  
                 ALUIN1 <= 1'b1;  
@@ -174,30 +174,6 @@ output reg REGWRITE;
                 PCWRITE <= 1'b1;   
                 MEM2REG <= 1'b0;
                 REGWRITE <= 1'b0;
-                end  
-     4'b1100: begin // wri  
-                IMMGENOP <= 2'b00;  
-                ALUOP <= 1'b1;  
-                ALUIN1 <= 1'b0;  
-                ALUIN2 <= 2'b00;  
-                ALUSRC <= 2'b00;  
-                MEMREAD <= 1'b0;  
-                MEMWRITE <= 1'b1;  
-                PCWRITE <= 1'b0;   
-                MEM2REG <= 1'b0;
-                REGWRITE <= 1'b0;
-                end    
-      default: begin  //rea
-                 IMMGENOP <= 2'b00;  
-                ALUOP <= 1'b1;  
-                ALUIN1 <= 1'b0;  
-                ALUIN2 <= 2'b00;  
-                ALUSRC <= 2'b00;  
-                MEMREAD <= 1'b1;  
-                MEMWRITE <= 1'b0;  
-                PCWRITE <= 1'b0; 
-                MEM2REG <= 1'b0;
-                REGWRITE <= 1'b1;
                 end  
       endcase  
       end  

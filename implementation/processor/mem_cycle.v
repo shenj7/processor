@@ -22,7 +22,7 @@ data_mem_component dm (
     .out(memout)
 );
 
-always @(posedge clk)
+always @(aluout, regwrite)
 begin
     alufor <= aluout;
     regwriteout <= regwrite;

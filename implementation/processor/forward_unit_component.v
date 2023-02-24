@@ -14,12 +14,12 @@ output reg [15:0] newb;
 
 always @(*)
 begin
-    if (rd == rs1) begin
+    if (rd == rs1 && oldalusrc1 == 1) begin
         alusrc0 <= 2'b10;
     end else begin
         alusrc0 <= oldalusrc0;
     end
-    if (rd == rs2) begin
+    if (rd == rs2 && shouldb == 0) begin
         alusrc1 <= 2'b11;
         newb <= shouldb;
     end else begin

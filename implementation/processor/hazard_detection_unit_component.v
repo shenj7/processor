@@ -19,7 +19,7 @@ initial begin
     stalled <= 0;
 end
 
-always @(posedge clock)
+always @(*)
 begin
     //use rs1 and rs2 to determine whether we need to flush or not
     if(!zero && pcwrite) begin

@@ -12,7 +12,7 @@ input reset;
 output reg [15:0] out;
 
 
-always @(in0 or in1 or in2 or in3 or op)
+always @(in0 or in1 or in2 or in3 or op or reset)
 begin
 	if (reset) begin
 		out <= 0;

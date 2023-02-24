@@ -1,14 +1,16 @@
-module fetch_cycle(pc, pcwrite, rst, ir, currpc, newpc);
+module fetch_cycle(pc, pcwrite, clk, rst, ir, currpc, newpc);
 
 input [15:0] pc;
 input pcwrite;
 input rst;
+input clk;
 
 output [15:0] ir;
 output reg [15:0] currpc;
 output reg [15:0] newpc;
 
 inst_mem_component im (
+    .clock(clk),
     .addr(pc),
     .out(ir)
 );

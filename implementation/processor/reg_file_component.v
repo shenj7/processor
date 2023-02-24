@@ -1,17 +1,19 @@
 // Register File
 
-module reg_file_component(clock, rs1, rs2, rd, writedata, reset, write, reg1, reg2);
+module reg_file_component(clock, rs1, rs2, rd, currrd, writedata, reset, write, reg1, reg2, rdout);
 
 input clock;
 input [3:0] rs1;
 input [3:0] rs2;
 input [3:0] rd;
+input [3:0] currrd;
 input [15:0] writedata;
 input reset;
 input write;
 
 output reg [15:0] reg1;
 output reg [15:0] reg2;
+output reg [15:0] rdout;
 
 parameter NUM_REG = 16;
 
@@ -31,6 +33,7 @@ begin
 
     reg1 <= regs[rs1];
     reg2 <= regs[rs2];
+    rdout <= regs[currrd];
     //get out of rs1
     if (rs1 == 0) begin
         reg1 <= 4'h0000;
@@ -45,6 +48,7 @@ begin
     if (reset) begin
         reg1 <= 0;
         reg2 <= 0;
+        rdout <= 0;
     end
 
 

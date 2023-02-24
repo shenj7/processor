@@ -5,6 +5,7 @@ module inst_mem_component
 // #(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=9)
 (
 	input [15:0] addr,
+	input clock,
 	output [15:0] out
 );
 
@@ -18,7 +19,7 @@ module inst_mem_component
 		$readmemb("inst_mem.txt", ram);
 	end
 
-	always @ (addr)
+	always @ (posedge clock)
 	begin
 		addr_reg <= addr[9:1]; //since byte address vs word address
 	end

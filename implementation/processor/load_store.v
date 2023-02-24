@@ -14,7 +14,7 @@ wire [1:0] immgenop;
 wire aluop;
 wire aluin1;
 wire [1:0] aluin2;
-wire alusrc; //tf is this doing?
+wire [1:0] alusrc; 
 wire memread;
 wire memwrite;
 wire pcwrite;
@@ -61,7 +61,7 @@ wire [15:0] decode_rd;
 //control
 control_component control (
     //input
-    .op(decode_ir),
+    .op(fetch_ir[3:0]),
     .reset(rst),
 
     //output
@@ -82,7 +82,7 @@ control_component control (
 fetch_cycle fetch (
     //from prev cycle
     .pc(fetch_pc),
-    //.clk(clock), not clocked
+    .clk(clock),
     
     //from control
     .rst(rst),
@@ -98,6 +98,7 @@ fetch_cycle fetch (
 wire [15:0] decode_pcout;
 wire [15:0] decode_a;
 wire [15:0] decode_b;
+wire [15:0] decode_c;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
 wire [15:0] decode_irout;
@@ -119,6 +120,7 @@ decode_cycle decode (
     .pcout(decode_pcout),
     .a(decode_a),
     .b(decode_b),
+    .c(decode_c),
     .rdout(decode_rdout),
     .imm(decode_imm),
     .irout(decode_irout)
@@ -128,6 +130,7 @@ decode_cycle decode (
 wire [15:0] execute_pc;
 wire [15:0] execute_a;
 wire [15:0] execute_b;
+wire [15:0] execute_c;
 wire [3:0] execute_rd;
 wire [15:0] execute_imm;
 wire [15:0] execute_ir;
@@ -143,6 +146,7 @@ wire execute_regwriteout;
 
 //writeback 
 wire [15:0] mem_aluout;
+wire [15:0] intermediate_aluout;
 wire execute_pcwrite;
 wire [3:0] execute_opout;
 
@@ -152,6 +156,7 @@ execute_cycle execute (
     .pc(decode_pcout), //was execte_pcout
     .a(execute_a),
     .b(execute_b),
+    .c(execute_c),
     .rd(execute_rd),
     .imm(execute_imm),
     .regwrite(execute_regwritein),
@@ -165,8 +170,10 @@ execute_cycle execute (
     .aluop(aluop),
     .aluin1(forwarded_alusrc0),
     .aluin2(forwarded_alusrc1),
+    .alusrc(alusrc),
+
     //maybe
-    .pcwrite(chosen_pc),
+    .pcwrite(pcwrite),
 
     //outputs
     .bout(execute_bout),
@@ -176,12 +183,13 @@ execute_cycle execute (
     .zero(execute_zero),
     .pos(execute_pos),
     .regwriteout(execute_regwriteout),
-    .execute_pcwrite(execute_pcwrite)
+    .execute_pcwrite(execute_pcwrite),
+    .intermediate_aluout(intermediate_aluout)
 );
 
 two_way_mux_component pcsrc (
     .in0(next_pc),
-    .in1(execute_aluout),
+    .in1(execute_c),
     .op(branch_taken),
     .reset(rst),
     .out(chosen_pc)
@@ -250,7 +258,7 @@ tiny_reg_component de_regwrite (
     .clock(clock),
     .in(regwrite), 
     .write(stall),
-    .reset(rst),
+    .reset(branch_taken || reset),
     .out(execute_regwritein)
 );
 
@@ -284,6 +292,14 @@ reg_component de_b (
     .write(stall),
     .reset(rst),
     .out(execute_b)
+);
+
+reg_component de_c (
+    .clock(clock),
+    .in(decode_c),
+    .write(stall),
+    .reset(rst),
+    .out(execute_c)
 );
 
 small_reg_component de_rd (
@@ -361,7 +377,7 @@ reg_component mw_mem (
 
 reg_component mw_alufor (
     .clock(clock),
-    .in(mem_alufor),
+    .in(mem_aluout),
     .write(1),
     .reset(rst),
     .out(writeback_alufor)
