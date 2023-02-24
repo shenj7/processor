@@ -14,18 +14,18 @@ output reg [15:0] newb;
 
 always @(*)
 begin
-    if (rd == rs1 && oldalusrc1 == 1) begin
-        alusrc0 <= 2'b10;
-    end else begin
-        alusrc0 <= oldalusrc0;
-    end
-    if (rd == rs2) begin
-        alusrc1 <= 2'b11;
-        newb <= shouldb;
-    end else begin
-        alusrc1 <= oldalusrc1;
-        newb <= originalb;
-    end
+    // if (rd == rs1 && oldalusrc1 == 1) begin
+    //     alusrc0 <= 2'b10;
+    // end else begin
+    //     alusrc0 <= oldalusrc0;
+    // end
+    // if (rd == rs2) begin
+        // alusrc1 <= 2'b11;
+    //     newb <= shouldb;
+    // end else begin
+        // alusrc1 <= oldalusrc1;
+    //     newb <= originalb;
+    // end
 
     //also need a case for b - may need to forward b into memory
 end

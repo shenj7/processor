@@ -75,7 +75,7 @@ four_way_mux_component aluout_mux (
     .out(aluout)
 );
 
-always @(posedge clk)
+always @(*) //TODO: ask
 begin 
     regwriteout <= regwrite;
     rdout <= rd;

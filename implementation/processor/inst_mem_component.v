@@ -6,7 +6,8 @@ module inst_mem_component
 (
 	input [15:0] addr,
 	input clock,
-	output [15:0] out
+	input reset,
+	output reg [15:0] out
 );
 
 	// Declare the RAM variable
@@ -21,12 +22,13 @@ module inst_mem_component
 
 	always @ (posedge clock)
 	begin
-		addr_reg <= addr[9:1]; //since byte address vs word address
-	end
+		addr_reg = addr[9:1]; //since byte address vs word address
+		if (reset == 1) begin
+			out <= 16'b0000000000000000;
 
-	// Continuous assignment implies read returns NEW data.
-	// This is the natural behavior of the TriMatrix memory
-	// blocks in Single Port mode.  
-	assign out = ram[addr_reg];
+		end else begin
+			out <= ram[addr_reg];
+		end
+	end
 
 endmodule

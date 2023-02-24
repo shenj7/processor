@@ -23,7 +23,7 @@ initial begin
     for (i=0;i<NUM_REG;i=i+1)
         regs[i] <= 0;
 
-    regs[2] <= 4'hfffc;
+    // regs[2] <= 4'hfffc;
 end
 
 always @(rs1, rs2, rd, writedata, write, reset)

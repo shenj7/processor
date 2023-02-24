@@ -1,10 +1,13 @@
-module decode_cycle(rst, ir, pc, rd, clk, writedata, regwrite, pcout, a, b, c, rdout, imm, irout);
+module decode_cycle(rst, ir, pc, rd, clk, writedata, aluin1, aluin2, regwrite, pcout, a, b, c, rdout, imm, irout, aluin1out, aluin2out);
 input rst;
 input [15:0] ir;
 input [15:0] pc;
 input [3:0] rd;
 input clk;
 input [15:0] writedata;
+input [1:0] aluin1;
+input [1:0] aluin2;
+
 
 input regwrite;
 
@@ -15,6 +18,8 @@ output [15:0] c;
 output reg [3:0] rdout;
 output [15:0] imm;
 output reg [15:0] irout;
+output reg [1:0] aluin1out;
+output reg [1:0] aluin2out;
 
 
 wire [3:0] rs1;
@@ -50,11 +55,14 @@ imm_gen_component ig (
     .out(imm)
 );
 
-always @(posedge clk)
+always @(*)
 begin
     pcout <= pc;
     rdout <= currrd;
     irout <= ir;
+    aluin1out <= aluin1;
+    aluin2out <= aluin2;
+    
 end
 
 

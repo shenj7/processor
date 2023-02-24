@@ -12,7 +12,7 @@ parameter HALF_PERIOD=50;
 //wires out of control
 wire [1:0] immgenop;
 wire aluop;
-wire aluin1;
+wire [1:0] aluin1;
 wire [1:0] aluin2;
 wire [1:0] alusrc; 
 wire memread;
@@ -51,12 +51,16 @@ reg_component pcmain (
 //wires out of fetch
 wire [15:0] fetch_ir;
 wire [15:0] fetch_pcout;
+wire [1:0] fetch_aluin1;
+wire [1:0] fetch_aluin2;
 
 //wires into decode
 wire [15:0] decode_ir;
 wire [15:0] decode_pc;
 wire [15:0] decode_writedata;
 wire [15:0] decode_rd;
+wire [1:0] decode_aluin1;
+wire [1:0] decode_aluin2;
 
 //control
 control_component control (
@@ -87,8 +91,12 @@ fetch_cycle fetch (
     //from control
     .rst(rst),
     .pcwrite(stall),
+    .aluin1(aluin1),
+    .aluin2(aluin2),
     
     //output
+    .aluin1out(fetch_aluin1),
+    .aluin2out(fetch_aluin2),
     .ir(fetch_ir),
     .currpc(fetch_pcout),
     .newpc(next_pc)
@@ -102,7 +110,10 @@ wire [15:0] decode_c;
 wire [3:0] decode_rdout;
 wire [15:0] decode_imm;
 wire [15:0] decode_irout;
+wire [1:0] decode_aluin1out;
+wire [1:0] decode_aluin2out;
 wire memory_regwritein;
+wire rb_regwrite;
 
 decode_cycle decode (
     //from prev cycle (and writeback)
@@ -114,7 +125,11 @@ decode_cycle decode (
 
     //from control
     .rst(rst),
-    .regwrite(memory_regwritein), //HERE
+    .regwrite(wb_regwrite), //HERE
+    // .aluin1(decode_aluin1), //TODO
+    // .aluin2(decode_aluin2),
+    .aluin1(fetch_aluin1),
+    .aluin2(fetch_aluin2),
 
     //output
     .pcout(decode_pcout),
@@ -123,6 +138,8 @@ decode_cycle decode (
     .c(decode_c),
     .rdout(decode_rdout),
     .imm(decode_imm),
+    .aluin1out(decode_aluin1out),
+    .aluin2out(decode_aluin2out),
     .irout(decode_irout)
 );
 
@@ -134,6 +151,8 @@ wire [15:0] execute_c;
 wire [3:0] execute_rd;
 wire [15:0] execute_imm;
 wire [15:0] execute_ir;
+wire [1:0] execute_aluin1;
+wire [1:0] execute_aluin2;
 wire execute_regwritein;
 
 //wires out of execute
@@ -170,6 +189,8 @@ execute_cycle execute (
     .aluop(aluop),
     .aluin1(forwarded_alusrc0),
     .aluin2(forwarded_alusrc1),
+    // .aluin1(aluin1),
+    // .aluin2(aluin2),
     .alusrc(alusrc),
 
     //maybe
@@ -227,6 +248,22 @@ mem_cycle mem (
 
 //in-between registers
 //fetch-decode
+little_reg_component fd_aluin1 (
+    .clock(clock),
+    .in(fetch_aluin1),
+    .write(stall),
+    .reset(branch_taken | rst),
+    .out(decode_aluin1)
+);
+
+little_reg_component fd_aluin2 (
+    .clock(clock),
+    .in(fetch_aluin2),
+    .write(stall),
+    .reset(branch_taken | rst),
+    .out(decode_aluin2)
+);
+
 reg_component fd_pc (
     .clock(clock),
     .in(fetch_pc),
@@ -292,6 +329,22 @@ reg_component de_b (
     .write(stall),
     .reset(rst),
     .out(execute_b)
+);
+
+little_reg_component de_aluin1 (
+    .clock(clock),
+    .in(decode_aluin1out),
+    .reset(rst),
+    .write(stall),
+    .out(execute_aluin1)
+);
+
+little_reg_component de_aluin2 (
+    .clock(clock),
+    .in(decode_aluin2out),
+    .reset(rst),
+    .write(stall),
+    .out(execute_aluin2)
 );
 
 reg_component de_c (
@@ -383,6 +436,14 @@ reg_component mw_alufor (
     .out(writeback_alufor)
 );
 
+tiny_reg_component mw_regwrite (
+    .clock(clock),
+    .in(memory_regwriteout),
+    .write(1),
+    .reset(rst),
+    .out(wb_regwrite)
+);
+
 two_way_mux_component mw_m2r (
     .in0(writeback_alufor),
     .in1(writeback_memout),
@@ -408,8 +469,8 @@ forward_unit_component fw (
     .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
     .rs2(execute_ir[15:12]),
     .rd(write_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
-    .oldalusrc0(aluin1),
-    .oldalusrc1(aluin2),
+    .oldalusrc0(execute_aluin1),
+    .oldalusrc1(execute_aluin2),
     .alusrc0(forwarded_alusrc0),
     .alusrc1(forwarded_alusrc1),
     .newb(newb),
