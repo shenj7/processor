@@ -36,7 +36,8 @@ def replace_label(new_inst, labels, curr):
     split_inst = new_inst.split(" ")
     split_inst[-1] = split_inst[-1].strip()
     if split_inst[-1] in labels:
-        split_inst[-1] = str(int(labels[split_inst[-1]]) - curr)
+        #split_inst[-1] = str(int(labels[split_inst[-1]]) - curr)
+        split_inst[-1] = str(int(labels[split_inst[-1]]))
     replaced = " ".join(split_inst)
     print(replaced)
     return replaced
@@ -66,11 +67,21 @@ def make_machine_file(f, labels):
 #        fm.write(new_inst[8:12])
 #        fm.write("\n")
 #        fm.write(new_inst[12:16])
-        fm.write(new_inst)
+        fm.write(binToHexa(new_inst))
         fm.write("\n")
         counter = counter + 2
 
     return fm
+
+
+def binToHexa(n):
+
+    # convert binary to int
+    num = int(n, 2)
+
+    # convert int to hexadecimal
+    hex_num = hex(num)
+    return hex_num[2:].zfill(4)
 
 
 
