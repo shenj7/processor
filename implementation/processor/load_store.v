@@ -115,13 +115,16 @@ wire [1:0] decode_aluin2out;
 wire memory_regwritein;
 wire rb_regwrite;
 
+//writeback decode
+wire [3:0] write_rd;
+
 decode_cycle decode (
     //from prev cycle (and writeback)
     .ir(decode_ir),
     .pc(decode_pc),
     .clk(clock),
     .writedata(decode_writedata),
-    .rd(decode_rd),
+    .rd(write_rd),
 
     //from control
     .rst(rst),
@@ -168,13 +171,18 @@ wire [15:0] mem_aluout;
 wire [15:0] intermediate_aluout;
 wire execute_pcwrite;
 wire [3:0] execute_opout;
+wire [15:0] writeback_alufor;
 
+wire [1:0] forward_a;
+wire [1:0] forward_b;
 execute_cycle execute (
     //from the prev cycle
     .clk(clock),
     .pc(decode_pcout), //was execte_pcout
     .a(execute_a),
     .b(execute_b),
+    .new_write_aluout(writeback_alufor),
+    .new_mem_aluout(),
     .c(execute_c),
     .rd(execute_rd),
     .imm(execute_imm),
@@ -187,8 +195,10 @@ execute_cycle execute (
     //from control
     .rst(rst),
     .aluop(aluop),
-    .aluin1(forwarded_alusrc0),
-    .aluin2(forwarded_alusrc1),
+    .aluin1(execute_aluin1), //no longer fucked with by forwarding unit
+    .aluin2(execute_aluin2),
+    .forward_a(forward_a),
+    .forward_b(forward_b),
     // .aluin1(aluin1),
     // .aluin2(aluin2),
     .alusrc(alusrc),
@@ -408,9 +418,7 @@ small_reg_component em_rd (
 
 //memory-writeback
 wire [15:0] writeback_memout;
-wire [15:0] writeback_alufor;
 
-wire [3:0] write_rd;
 
 small_reg_component mw_rd (
     .clock(clock),
@@ -465,17 +473,26 @@ hazard_detection_unit_component hazard (
     .branch_taken(branch_taken)
 );
 
+// forward_unit_component fw (
+//     .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
+//     .rs2(execute_ir[15:12]),
+//     .rd(write_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
+//     .oldalusrc0(execute_aluin1),
+//     .oldalusrc1(execute_aluin2),
+//     .alusrc0(forwarded_alusrc0),
+//     .alusrc1(forwarded_alusrc1),
+//     .newb(newb),
+//     .shouldb(mem_aluout),
+//     .originalb(execute_bout)
+// );
+
 forward_unit_component fw (
-    .rs1(execute_ir[11:8]), // moved rs1 and rs2 one cycle forward, seems to be coming in too early
+    .rs1(execute_ir[11:8]),
     .rs2(execute_ir[15:12]),
-    .rd(write_rd), //mw_rd doesn't exist yet, need to move either rd or the entire inst down the pipeline
-    .oldalusrc0(execute_aluin1),
-    .oldalusrc1(execute_aluin2),
-    .alusrc0(forwarded_alusrc0),
-    .alusrc1(forwarded_alusrc1),
-    .newb(newb),
-    .shouldb(mem_aluout),
-    .originalb(execute_bout)
+    .write_rd(write_rd),
+    .mem_rd(decode_rd), //this is actually mem_rd
+    .forward_a(forward_a),
+    .forward_b(forward_b)
 );
 
 
