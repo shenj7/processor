@@ -189,7 +189,7 @@ execute_cycle execute (
 
 two_way_mux_component pcsrc (
     .in0(next_pc),
-    .in1(execute_c),
+    .in1(decode_c), //execute_c
     .op(branch_taken),
     .reset(rst),
     .out(chosen_pc)

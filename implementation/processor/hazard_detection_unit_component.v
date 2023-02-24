@@ -12,12 +12,6 @@ input [3:0] instop;
 
 output reg stall;
 output reg branch_taken;
-reg stalled;
-
-
-initial begin 
-    stalled <= 0;
-end
 
 always @(*)
 begin

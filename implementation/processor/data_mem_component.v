@@ -19,7 +19,7 @@ module data_mem_component
 	// reg [ADDR_WIDTH-1:0] addr_reg;
 	
 	initial begin
-		$readmemb("data_mem.txt", ram);
+		$readmemh("data_mem.txt", ram);
 		write_out <= 0;
 	end
 

@@ -16,7 +16,7 @@ module inst_mem_component
 	reg [8:0] addr_reg;
 	
 	initial begin
-		$readmemb("inst_mem.txt", ram);
+		$readmemh("inst_mem.txt", ram);
 	end
 
 	always @ (posedge clock)
