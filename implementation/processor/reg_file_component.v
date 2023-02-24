@@ -20,8 +20,10 @@ parameter NUM_REG = 16;
 reg [15:0] regs[NUM_REG-1:0];
 integer i = 0;
 initial begin
-  for (i=0;i<NUM_REG;i=i+1)
-    regs[i] = 0;
+    for (i=0;i<NUM_REG;i=i+1)
+        regs[i] <= 0;
+
+    regs[2] <= 4'hfffc;
 end
 
 always @(rs1, rs2, rd, writedata, write, reset)
@@ -46,6 +48,11 @@ begin
 
     //reset
     if (reset) begin
+
+        for (i=0;i<NUM_REG;i=i+1)
+            regs[i] <= 0;
+
+        regs[2] <= 4'hfffc;
         reg1 <= 0;
         reg2 <= 0;
         rdout <= 0;

@@ -19,7 +19,7 @@ begin
     end else begin
         alusrc0 <= oldalusrc0;
     end
-    if (rd == rs2 && shouldb == 0) begin
+    if (rd == rs2) begin
         alusrc1 <= 2'b11;
         newb <= shouldb;
     end else begin
