@@ -167,14 +167,25 @@ hazard_detection_unit_component hazard (
 //     .originalb(execute_bout)
 // );
 
-forward_unit_component fw (
-    .rs1(execute_ir[11:8]),
-    .rs2(execute_ir[15:12]),
-    .write_rd(write_rd),
-    .mem_rd(decode_rd), //this is actually mem_rd
-    .forward_a(forward_a),
-    .forward_b(forward_b)
-);
+
+
+
+forward_unit_component fw(
+    .new_rs1(),
+    .new_rs2(),
+    .old_inst_op(),
+    .old_exe_rd(),
+    .old_mem_rd(),
+    .old_aluin1(),
+    .old_aluin2(),
+    .memout(),
+    .aluout(),
+    .forward_a(),
+    .forward_b(),
+    .new_alusrc1(),
+    .new_alusrc2()
+
+)
 
 //_______________________________________________
 //MUXES
