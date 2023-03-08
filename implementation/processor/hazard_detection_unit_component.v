@@ -1,9 +1,10 @@
-module hazard_detection_unit_component(clock, memread, rs1, rs2, rs2, instop, zero, stall, branch_taken, pcwrite);
+module hazard_detection_unit_component(clock, memread, rs1, rs2, rd, instop, zero, stall, branch_taken, pcwrite);
 
 input clock;
 input memread;
 input [3:0] rs1;
 input [3:0] rs2;
+input [3:0] rd;
 
 input zero;
 input pcwrite;
@@ -19,12 +20,12 @@ begin
     if(!zero && pcwrite) begin
         branch_taken <= 1;
     end else if (instop == 4'b0100 || instop == 4'b0110) begin
-      branch_taken <= 1;
+        branch_taken <= 1;
     end else begin
         branch_taken <= 0;
     end
 
-    if (memread == 1) begin //check whether rd = rs1 or rs2 from prev cycle
+    if (memread == 1 && (rd == rs1 || rd == rs2)) begin //check whether rd = rs1 or rs2 from prev cycle
         //$display("shold not stall >:(");
         stall <= 0; // if stall == 0, then stall else don't
     end else begin

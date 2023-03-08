@@ -1,6 +1,5 @@
-module execute_cycle(clk, pc, a, new_write_aluout, new_mem_aluout, forward_a, forward_b, b, c, op, rd, imm, rst, aluop, alusrc, aluin1, aluin2, bout, aluout, rdout, zero, pcwrite, execute_pcwrite, pos, regwrite, regwriteout, forwarded_aluout, intermediate_aluout, opout);
+module execute_cycle(pc, a, new_write_aluout, new_mem_aluout, forward_a, forward_b, b, c, op, rd, imm, rst, aluop, alusrc, aluin1, aluin2, bout, aluout, rdout, zero, pcwrite, execute_pcwrite, pos, regwrite, regwriteout, forwarded_aluout, intermediate_aluout, opout);
 //inputs
-input clk;
 input [15:0] pc;
 input [15:0] a;
 input [15:0] new_write_aluout;

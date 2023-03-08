@@ -144,14 +144,15 @@ control_component control (
 //hazards and forwarding
 hazard_detection_unit_component hazard (
     .clock(clock),
-    .memread(memread),
-    .pcwrite(execute_pcwrite),
-    .instop(execute_opout),
-    .rs1(decode_ir[11:8]),
-    .rs2(decode_ir[15:12]),
-    .zero(execute_zero),
-    .stall(stall),
-    .branch_taken(branch_taken)
+    .memread(),
+    .pcwrite(),
+    .instop(),
+    .rs1(),
+    .rs2(),
+    .rd(),
+    .zero(),
+    .stall(),
+    .branch_taken()
 );
 
 // forward_unit_component fw (
@@ -171,8 +172,8 @@ hazard_detection_unit_component hazard (
 
 
 forward_unit_component fw(
-    .new_rs1(),
-    .new_rs2(),
+    .new_rs1(decode_ir[11:8]),
+    .new_rs2(decode_ir[15:12]),
     .old_inst_op(),
     .old_exe_rd(),
     .old_mem_rd(),
@@ -185,7 +186,7 @@ forward_unit_component fw(
     .new_alusrc1(),
     .new_alusrc2()
 
-)
+);
 
 //_______________________________________________
 //MUXES
@@ -213,7 +214,6 @@ two_way_mux_component pcsrc (
 fetch_cycle fetch (
     //from prev cycle
     .pc(fetch_pc),
-    .clk(clock),
     
     //from control
     .rst(rst),
@@ -251,7 +251,6 @@ decode_cycle decode (
     //from prev cycle (and writeback)
     .ir(decode_ir),
     .pc(decode_pc),
-    .clk(clock),
     .writedata(decode_writedata),
     .rd(write_rd),
 
@@ -288,7 +287,19 @@ de_regs der(
     .decode_rdout(decode_rdout),
     .decode_imm(decode_imm),
 
-    .clock(clock),
+    .pcwrite_in(),
+    .mem2reg_in(),
+    .memwrite_in(),
+    .alusrc_in(),
+    .aluin1_in(),
+    .aluin2_in(),
+    .pcwrite_out(),
+    .mem2reg_out(),
+    .memwrite_out(),
+    .alusrc_out(),
+    .aluin1_out(),
+    .aluin2_out(),
+
     .stall(stall),
     .rst(rst),
     .branch_taken(branch_taken),
@@ -308,7 +319,6 @@ de_regs der(
 
 execute_cycle execute (
     //from the prev cycle
-    .clk(clock),
     .pc(decode_pcout), //was execte_pcout
     .a(execute_a),
     .b(execute_b),
@@ -356,6 +366,10 @@ em_regs emr (
     .execute_aluout(execute_aluout),
     .execute_rd(execute_rd),
 
+    .pcwrite_in(),
+    .mem2reg_in(),
+    .memwrite_in(),
+
     .clock(clock),
     .stall(stall),
     .rst(rst),
@@ -363,13 +377,16 @@ em_regs emr (
     .memory_regwritein(memory_regwritein),
     .mem_b(mem_b),
     .mem_aluout(mem_aluout),
-    .decode_rd(decode_rd)
+    .decode_rd(decode_rd),
+
+    .pcwrite_out(),
+    .mem2reg_out(),
+    .memwrite_out()
 );
 
 
 mem_cycle mem (
     //input
-    .clk(clock),
     .b(mem_b),
     .aluout(mem_aluout),
 
@@ -397,9 +414,16 @@ mw_regs mwr (
     .mem_aluout(mem_aluout),
     .memory_regwriteout(memory_regwriteout),
 
+    .mem2reg_in(),
+    .pcwrite_in(),
+
+
     .clock(clock),
     .stall(stall),
     .rst(rst),
+
+    .mem2reg_out(),
+    .pcwrite_out(),
 
     .write_rd(write_rd),
     .writeback_memout(writeback_memout),
