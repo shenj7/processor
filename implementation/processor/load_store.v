@@ -218,20 +218,15 @@ fetch_cycle fetch (
     //from control
     .rst(rst),
     .pcwrite(stall),
-    .aluin1(aluin1),
-    .aluin2(aluin2),
+    .clock(clock),
     
     //output
-    .aluin1out(fetch_aluin1),
-    .aluin2out(fetch_aluin2),
     .ir(fetch_ir),
     .currpc(fetch_pcout),
     .newpc(next_pc)
 );
 
 fd_regs fdr (
-    .fetch_aluin1(fetch_aluin1),
-    .fetch_aluin2(fetch_aluin2),
     .fetch_pc(fetch_pc),
     .inst_ir(inst_ir),
 
@@ -240,50 +235,32 @@ fd_regs fdr (
     .rst(rst),
     .branch_taken(branch_taken),
 
-    .decode_aluin1(decode_aluin1),
-    .decode_aluin2(decode_aluin2),
     .decode_pc(decode_pc),
     .decode_ir(decode_ir)
 );
 
 
 decode_cycle decode (
-    //from prev cycle (and writeback)
+    .rst(rst),
     .ir(decode_ir),
     .pc(decode_pc),
+    .writelocation(write_rd),
+    .clock(clock),
     .writedata(decode_writedata),
-    .rd(write_rd),
+    .regwrite(wb_regwrite), 
 
-    //from control
-    .rst(rst),
-    .regwrite(wb_regwrite), //HERE
-    // .aluin1(decode_aluin1), //TODO
-    // .aluin2(decode_aluin2),
-    .aluin1(fetch_aluin1),
-    .aluin2(fetch_aluin2),
-
-    //output
-    .pcout(decode_pcout),
     .a(decode_a),
     .b(decode_b),
     .c(decode_c),
     .rdout(decode_rdout),
-    .imm(decode_imm),
-    .aluin1out(decode_aluin1out),
-    .aluin2out(decode_aluin2out),
-    .irout(decode_irout)
+    .imm(decode_imm)
 );
 
 //decode-execute new nice component
 de_regs der(
-    .decode_regwriteout(decode_regwriteout),
-    .decode_irout(decode_irout),
     .decode_pcout(decode_pcout),
     .decode_a(decode_a),
     .decode_b(decode_b),
-    .decode_aluin1out(decode_aluin1out),
-    .decode_aluin2out(decode_aluin2out),
-    .decode_c(decode_c),
     .decode_rdout(decode_rdout),
     .decode_imm(decode_imm),
 
@@ -303,15 +280,11 @@ de_regs der(
     .stall(stall),
     .rst(rst),
     .branch_taken(branch_taken),
+    .clock(clock),
 
-    .execute_regwritein(execute_regwritein),
-    .execute_ir(execute_ir),
     .execute_pc(execute_pc),
     .execute_a(execute_a),
     .execute_b(execute_b),
-    .execute_aluin1(execute_aluin1),
-    .execute_aluin2(execute_aluin2),
-    .execute_c(execute_c),
     .execute_rd(execute_rd),
     .execute_imm(execute_imm)
 );
@@ -361,7 +334,6 @@ execute_cycle execute (
 
 //execute-memory
 em_regs emr (
-    .execute_regwriteout(execute_regwriteout),
     .newb(newb),
     .execute_aluout(execute_aluout),
     .execute_rd(execute_rd),
@@ -374,7 +346,6 @@ em_regs emr (
     .stall(stall),
     .rst(rst),
 
-    .memory_regwritein(memory_regwritein),
     .mem_b(mem_b),
     .mem_aluout(mem_aluout),
     .decode_rd(decode_rd),
@@ -386,25 +357,17 @@ em_regs emr (
 
 
 mem_cycle mem (
-    //input
     .b(mem_b),
     .aluout(mem_aluout),
 
-    //outside input
     .read_in(read_in),
 
-    //outside output
     .write_out(write_out),
 
-    //from control
     .rst(rst),
     .memwrite(memwrite),
-    .regwrite(memory_regwritein),
-
-    //output
-    .memout(mem_memout),
-    .alufor(mem_alufor),
-    .regwriteout(memory_regwriteout)
+  
+    .memout(mem_memout)
 );
 
 
@@ -412,11 +375,9 @@ mw_regs mwr (
     .decode_rd(decode_rd),
     .mem_memout(mem_memout),
     .mem_aluout(mem_aluout),
-    .memory_regwriteout(memory_regwriteout),
 
     .mem2reg_in(),
     .pcwrite_in(),
-
 
     .clock(clock),
     .stall(stall),
@@ -427,8 +388,7 @@ mw_regs mwr (
 
     .write_rd(write_rd),
     .writeback_memout(writeback_memout),
-    .writeback_alufor(writeback_alufor),
-    .wb_regwrite(wb_regwrite)
+    .writeback_alufor(writeback_alufor)
 );
 
 //________________________________________________

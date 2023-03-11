@@ -1,6 +1,5 @@
-module em_regs(pcwrite_in, pcwrite_out, mem2reg_in, mem2reg_out, memwrite_in, memwrite_out, execute_regwriteout, newb, execute_aluout, execute_rd, memory_regwritein, mem_b, mem_aluout, decode_rd, clock, stall, rst);
+module em_regs(pcwrite_in, pcwrite_out, mem2reg_in, mem2reg_out, memwrite_in, memwrite_out, newb, execute_aluout, execute_rd, memory_regwritein, mem_b, mem_aluout, decode_rd, clock, stall, rst);
 
-input execute_regwriteout;
 input [15:0] newb;
 input [15:0] execute_aluout;
 input [3:0] execute_rd;
@@ -13,7 +12,6 @@ input clock;
 input stall;
 input rst;
 
-output memory_regwritein;
 output [15:0] mem_b;
 output [15:0] mem_aluout;
 output [3:0] decode_rd;
