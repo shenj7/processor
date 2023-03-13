@@ -1,7 +1,7 @@
 // Quartus Prime Verilog Template
 // Single port RAM with single read/write address 
 
-module data_mem_component 
+module mem_component 
 #(parameter DATA_WIDTH=16, parameter ADDR_WIDTH=10)
 (
 	input [(DATA_WIDTH-1):0] writedata,
@@ -19,7 +19,7 @@ module data_mem_component
 	// reg [ADDR_WIDTH-1:0] addr_reg;
 	
 	initial begin
-		$readmemh("data_mem.txt", ram);
+		$readmemh("mem.txt", ram);
 		write_out <= 0;
 	end
 
