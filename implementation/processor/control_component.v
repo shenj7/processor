@@ -4,12 +4,10 @@ module control_component (PCWriteCond,
     ALUSrcA,
     ALUSrcB,
     ALUOp,
-    ImmgenOp,
     RegWrite,
     MemToReg,
     PCSrc,
     MemWrite,
-    MemRead,
     current_state,
     next_state,
     CLK,
@@ -24,12 +22,10 @@ output IorD;
 output [1:0] ALUSrcA;
 output [1:0] ALUSrcB;
 output ALUOp;
-output [1:0] ImmgenOp;
 output RegWrite;
 output MemToReg;
 output PCSrc;
 output MemWrite;
-output MemRead;
 
 output [3:0] current_state;
 output [3:0] next_state;
@@ -46,12 +42,10 @@ reg IorD;
 reg [1:0] ALUSrcA;
 reg [1:0] ALUSrcB;
 reg ALUOp;
-reg [1:0] ImmgenOp;
 reg RegWrite;
 reg MemToReg;
 reg PCSrc;
 reg MemWrite;
-reg MemRead;
 
 //state flip-flops
 reg [3:0]    current_state;
@@ -106,12 +100,11 @@ begin
     ALUSrcA = 2'b00; //0 = PC, 1 = A
     ALUSrcB = 2'b00; //0 = B, 1 = 2, 2 = imm
     ALUOp = 0; //0 = "+", 1 = "-"
-    ImmgenOp =  2'b00; //0 = shift by left 1, 1 = shift by 8, 2 = sign extend, 3 = do nothing
     RegWrite = 0;
     MemToReg = 0; //0 = aluout, 1 = mdr, 2 = zero, 3 = pos
     PCSrc = 0;
     MemWrite = 0;
-    MemRead = 1;
+
 
     case (current_state)
 
@@ -212,14 +205,12 @@ begin
 		begin
 			ALUSrcA = 2;
 			ALUSrcB = 2;
-			ImmgenOp = 1;
 		end
 
 		I_Lli:
 		begin
 			ALUSrcA = 2;
 			ALUSrcB = 2;
-			ImmgenOp = 3;
 		end
 
         I_LIW:

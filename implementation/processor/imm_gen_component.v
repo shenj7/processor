@@ -3,7 +3,6 @@ module imm_gen_component(reset, inst, out);
 
 input [15:0] inst;
 input reset;
-
 output reg [15:0] out;
 
 
