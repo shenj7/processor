@@ -8,6 +8,7 @@ module control_component (PCWriteCond,
     MemToReg,
     PCSrc,
     MemWrite,
+    IRWrite,
     CLK,
     Reset
 );
@@ -24,6 +25,7 @@ output RegWrite;
 output MemToReg;
 output PCSrc;
 output MemWrite;
+output RegWrite;
 
 //inputs
 input [15:0]  inst;
@@ -42,6 +44,7 @@ reg MemToReg;
 reg PCSrc;
 reg MemWrite;
 reg [3:0] Opcode;
+reg IRWrite;
 
 //state flip-flops
 reg [3:0]    current_state;
@@ -53,7 +56,7 @@ parameter    Fetch = 0;
 parameter    Decode = 1;
 //r-type (nonbranching)
 parameter R_E_A = 2;
-parameter R_E_SEG = 3
+parameter R_E_SEG = 3;
 parameter R_W_AS = 4;
 parameter R_W_G = 5;
 parameter R_W_E = 6;
@@ -100,6 +103,7 @@ begin
     MemToReg = 0; //0 = aluout, 1 = mdr, 2 = zero, 3 = pos
     PCSrc = 0;
     MemWrite = 0;
+    IRWrite = 0;
 
 
     case (current_state)
@@ -161,7 +165,7 @@ begin
 
         R_W_J:
         begin
-            PCWrite = 1
+            PCWrite = 1;
         end
      
         M_C:
@@ -283,7 +287,7 @@ case (current_state)
 
 			11:
 			begin
-				next_state = I_Bne
+				next_state = I_Bne;
 			end
 
 			15:

@@ -153,11 +153,11 @@ module load_store(clock, read_in, rst, write_out);
         .out(immgen_alusrc2)
     );
 
-    four_way_mux_component alusrc1_alu (
+    four_way_mux_component alusrc1_mux (
         .in0(pc_pc2mem),
         .in1(a_alusrc1),
         .in2(0),
-        .in3(),
+        .in3(0),
         .op(alusrca),
         .reset(rst),
         .out(alusrc1_alu),
