@@ -8,8 +8,6 @@ module control_component (PCWriteCond,
     MemToReg,
     PCSrc,
     MemWrite,
-    current_state,
-    next_state,
     CLK,
     Reset
 );
@@ -27,11 +25,8 @@ output MemToReg;
 output PCSrc;
 output MemWrite;
 
-output [3:0] current_state;
-output [3:0] next_state;
-
 //inputs
-input [3:0]  Opcode;
+input [15:0]  inst;
 input        CLK;
 input        Reset;
 
@@ -46,6 +41,7 @@ reg RegWrite;
 reg MemToReg;
 reg PCSrc;
 reg MemWrite;
+reg [3:0] Opcode;
 
 //state flip-flops
 reg [3:0]    current_state;
@@ -440,6 +436,10 @@ case (current_state)
 
     $display("After the tests, the next_state is %d", next_state);
 
+    end
+
+    always @(inst) begin
+        Opcode = inst[3:0];
     end
 
     endmodule
