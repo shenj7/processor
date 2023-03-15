@@ -17,7 +17,7 @@ begin
         inst[3:0] == 4'b1010) begin
         out <= {{12{inst[7]}},inst[7:4]};
 	end else if (inst[3:0] == 4'b1111) begin
-		out <={{8{0}}, inst[15:8]};
+		out <={{8{1'b0}}, inst[15:8]};
     end
 end
 endmodule

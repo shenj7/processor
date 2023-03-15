@@ -8,7 +8,9 @@ module control_component (PCWriteCond,
     MemToReg,
     PCSrc,
     MemWrite,
+    MemRead,
     IRWrite,
+    inst,
     CLK,
     Reset
 );
@@ -25,7 +27,8 @@ output RegWrite;
 output MemToReg;
 output PCSrc;
 output MemWrite;
-output RegWrite;
+output MemRead;
+output IRWrite;
 
 //inputs
 input [15:0]  inst;
@@ -43,12 +46,13 @@ reg RegWrite;
 reg MemToReg;
 reg PCSrc;
 reg MemWrite;
+reg MemRead;
 reg [3:0] Opcode;
 reg IRWrite;
 
 //state flip-flops
-reg [3:0]    current_state;
-reg [3:0]    next_state;
+reg [8:0]    current_state;
+reg [8:0]    next_state;
 
 //state definitions
 //common steps
@@ -103,6 +107,7 @@ begin
     MemToReg = 0; //0 = aluout, 1 = mdr, 2 = zero, 3 = pos
     PCSrc = 0;
     MemWrite = 0;
+    MemRead = 0;
     IRWrite = 0;
 
 
@@ -110,6 +115,7 @@ begin
 
         Fetch:
         begin
+            MemRead = 1;
             IRWrite =  1;
             ALUSrcB = 1;
             PCWrite = 1;
@@ -292,7 +298,7 @@ case (current_state)
 
 			15:
 			begin
-				next_state = I_Lli
+				next_state = I_Lli;
 			end
 
 			

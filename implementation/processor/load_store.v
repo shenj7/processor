@@ -39,6 +39,8 @@ module load_store(clock, read_in, rst, write_out);
     wire memtoreg;
     wire pcsrc;
     wire memwrite;
+    wire memread;
+    wire irwrite;
 
     //outputs
     output write_out;
@@ -56,8 +58,8 @@ module load_store(clock, read_in, rst, write_out);
         .MemToReg(memtoreg),
         .PCSrc(pcsrc),
         .MemWrite(memwrite),
-        .current_state(),
-        .next_state(),
+        .MemRead(memread),
+        .IRWrite(irwrite),
         .CLK(clock),
         .Reset(rst)
     );
@@ -77,13 +79,14 @@ module load_store(clock, read_in, rst, write_out);
         .in1(aluout_pcsrc),
         .op(iord),
         .reset(rst),
-        .out(pc2mem_mem),
+        .out(pc2mem_mem)
     );
     
     mem_component memory (
         .writedata(b_alusrc2),
         .addr(pc2mem_mem),
         .write(memwrite),
+        .read(memread),
         .clk(clock),
         .read_in(read_in),
         .write_out(write_out),
@@ -93,6 +96,7 @@ module load_store(clock, read_in, rst, write_out);
     ir_component ir (
         .in1(mem_ir),
         .inst(ir_inst),
+        .write(irwrite),
         .reset(rst),
         .rs1(ir_rs1_reg),
         .rs2(ir_rs2_reg),
@@ -114,7 +118,7 @@ module load_store(clock, read_in, rst, write_out);
         .in3(alu_pos),
         .op(memtoreg),
         .reset(rst),
-        .out(regwrite_in),
+        .out(regwrite_in)
     );
     
     reg_file_component reg_file (
@@ -160,7 +164,7 @@ module load_store(clock, read_in, rst, write_out);
         .in3(0),
         .op(alusrca),
         .reset(rst),
-        .out(alusrc1_alu),
+        .out(alusrc1_alu)
     );
 
     four_way_mux_component alusrc2_mux (
@@ -170,7 +174,7 @@ module load_store(clock, read_in, rst, write_out);
         .in3(0),
         .op(alusrcb),
         .reset(rst),
-        .out(alusrc2_alu),
+        .out(alusrc2_alu)
     );
     
     alu_component alu(
@@ -198,7 +202,7 @@ module load_store(clock, read_in, rst, write_out);
         .in1(aluout_pcsrc),
         .op(pcsrc),
         .reset(rst),
-        .out(pcsrcout_pc),
+        .out(pcsrcout_pc)
     );
 
 

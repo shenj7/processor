@@ -6,6 +6,7 @@ module mem_component
 (
 	input [(DATA_WIDTH-1):0] writedata,
 	input [(ADDR_WIDTH-1):0] addr,
+	input read,
 	input write, clk,
 	input [15:0] read_in,
 	output reg [15:0] write_out,
@@ -23,26 +24,30 @@ module mem_component
 		write_out <= 0;
 	end
 
-	always @(posedge ~clock)
+	always @(posedge ~clk)
 	begin
 		// addr_reg = addr-4'h0280; //could also change to 2ff
 		//$display("data mem reading %d", addr_reg);
 		// Write
-		if (write)
+		if (write) begin
 			if (addr == 4'h03c2) begin
 				write_out <= out;
-			end else begin
+			end
+			else begin
 				ram[(addr-4'h0280) >> 1] <= writedata;
 			end
+		end
 	end
 
 	always @(posedge clk)
 	begin
-		if (addr == 4'h032) begin
-			out <= read_in;
-		end
-		else begin
-			out <= ram[(addr-4'h0280) >> 1];
+		if (read) begin
+			if (addr == 4'h032) begin
+				out <= read_in;
+			end
+			else begin
+				out <= ram[(addr-4'h0280) >> 1];
+			end
 		end
 	end
 endmodule
