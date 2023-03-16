@@ -17,7 +17,7 @@ module control_component (PCWriteCond,
 
 
 // outputs
-output PCWriteCond;
+output PCWriteCond; //we know what do :)
 output PCWrite;
 output IorD;
 output [1:0] ALUSrcA;
@@ -82,6 +82,8 @@ parameter I_Bne = 16;
 parameter I_Lui = 17;
 parameter I_Lli = 18;
 parameter I_LIW = 19;
+parameter I_Bne_2 = 20;
+parameter I_Bne_3 = 21;
 
 //register calculation
 always @ (posedge CLK, posedge Reset)
@@ -206,6 +208,16 @@ begin
 			ALUSrcA = 1;
 			ALUOp = 1;
 		end
+
+        I_Bne_2:
+        begin
+            ALUSrcB = 2;
+        end
+
+        I_Bne_3:
+        begin
+            PCWriteCond = 1;
+        end
 
 		I_Lui:
 		begin
@@ -432,6 +444,21 @@ case (current_state)
     end
 
     I_LIW:
+    begin
+        next_state = Fetch;
+    end
+
+    I_Bne:
+    begin
+        next_state = I_Bne_2;
+    end
+
+    I_Bne_2:
+    begin
+        next_state = I_Bne_3;
+    end
+
+    I_Bne_3:
     begin
         next_state = Fetch;
     end
