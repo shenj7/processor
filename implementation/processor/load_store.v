@@ -5,7 +5,6 @@ module load_store(clock, read_in, rst, write_out);
     input rst;
 
     //internal wires
-    wire [15:0] pc_alusrca;
     wire [15:0] pc_pc2mem;
     wire [15:0] pc2mem_mem;
     wire [15:0] mem_ir;
@@ -13,7 +12,6 @@ module load_store(clock, read_in, rst, write_out);
     wire [3:0] ir_rs2_reg;
     wire [3:0] ir_rd_reg;
     wire [15:0] ir_inst;
-    wire [15:0] mem_mdr;
     wire [15:0] mdr_reg_in;
     wire [15:0] regwrite_in;
     wire [15:0] reg_a;
@@ -43,7 +41,7 @@ module load_store(clock, read_in, rst, write_out);
     wire irwrite;
 
     //outputs
-    output write_out;
+    output [15:0] write_out;
 
 
     //control
