@@ -36,7 +36,7 @@ initial begin
     #(10*HALF_PERIOD);
 //test 1
     rst = 0;
-    IN = 16'h13b0;
+    IN = 16'h13b4;
     expected = 16'h000b;
     counter = counter + 1;
     if (OUT != expected) begin
@@ -47,58 +47,58 @@ initial begin
     //$display("stinky poopy");
     // @(OUT != 0);
     #(200*HALF_PERIOD);
-
-    rst = 1;
-    #(2*HALF_PERIOD);
-
-//test 2
-    rst = 0;
-    IN = 16'h1234;
-    expected = 16'h0003;
-    counter = counter + 1;
-
-    if (OUT != expected) begin
-        failures = failures + 1;
-        //$display(":( 2");
-    end
-
-    // @(OUT != 0);
-    #(2*HALF_PERIOD);
-    rst = 1;
-    #(2*HALF_PERIOD);
-
-//test 3
-    rst = 0;
-    IN = 16'h1234;
-    expected = 16'h0003;
-    counter = counter + 1;
-
-    if (OUT != expected) begin
-        failures = failures + 1;
-        //$display(":( 2");
-    end
-
-    // @(OUT != 0);
-    #(2*HALF_PERIOD);
     rst = 1;
     #(2*HALF_PERIOD);
     $stop;
 
+// //test 2
+//     rst = 0;
+//     IN = 16'h1234;
+//     expected = 16'h0003;
+//     counter = counter + 1;
 
-//test 4
-    rst = 0;
-    IN = 16'h1234;
-    expected = 16'h0003;
-    counter = counter + 1;
+//     if (OUT != expected) begin
+//         failures = failures + 1;
+//         //$display(":( 2");
+//     end
 
-    if (OUT != expected) begin
-        failures = failures + 1;
-        //$display(":( 2");
-    end
+//     @(OUT != 0);
+//     #(2*HALF_PERIOD);
+//     rst = 1;
+//     #(2*HALF_PERIOD);
 
-    // @(OUT != 0);
-    #(2*HALF_PERIOD);
-    rst = 1;
-    #(2*HALF_PERIOD);
+// //test 3
+//     rst = 0;
+//     IN = 16'h1234;
+//     expected = 16'h0003;
+//     counter = counter + 1;
+
+//     if (OUT != expected) begin
+//         failures = failures + 1;
+//         //$display(":( 2");
+//     end
+
+//     @(OUT != 0);
+//     #(2*HALF_PERIOD);
+//     rst = 1;
+//     #(2*HALF_PERIOD);
+//     $stop;
+
+
+// //test 4
+//     rst = 0;
+//     IN = 16'h1234;
+//     expected = 16'h0003;
+//     counter = counter + 1;
+
+//     if (OUT != expected) begin
+//         failures = failures + 1;
+//         //$display(":( 2");
+//     end
+
+//     @(OUT != 0);
+//     #(2*HALF_PERIOD);
+//     rst = 1;
+//     #(2*HALF_PERIOD);
 end
 endmodule

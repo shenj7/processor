@@ -22,10 +22,13 @@ module load_store(clock, read_in, rst, write_out);
     wire [15:0] alusrc1_alu;
     wire [15:0] alusrc2_alu;    
     wire [15:0] alu_aluout;
-    wire alu_zero;
-    wire alu_pos;
+    wire [15:0] alu_zero;
+    wire [15:0] alu_pos;
     wire [15:0] aluout_pcsrc;
     wire [15:0] pcsrcout_pc;
+    reg iszeroorpos;
+    reg ispcwritecond;
+    reg actualpcwrite;
 
     //control wires
     wire pcwrite;
@@ -34,7 +37,7 @@ module load_store(clock, read_in, rst, write_out);
     wire [1:0] alusrcb;
     wire aluop;
     wire regwrite;
-    wire memtoreg;
+    wire [1:0] memtoreg;
     wire pcsrc;
     wire memwrite;
     wire memread;
@@ -208,7 +211,7 @@ module load_store(clock, read_in, rst, write_out);
 
     always @(posedge clock)
     begin
-        iszeroorpos = ~alu_zero || alu_pos;
+        iszeroorpos = ~alu_zero[0] || alu_pos[0];
         ispcwritecond = iszeroorpos && pcwritecond;
         actualpcwrite = pcwrite || ispcwritecond;
     end

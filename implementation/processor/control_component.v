@@ -24,7 +24,7 @@ output [1:0] ALUSrcA;
 output [1:0] ALUSrcB;
 output ALUOp;
 output RegWrite;
-output MemToReg;
+output [1:0] MemToReg;
 output PCSrc;
 output MemWrite;
 output MemRead;
@@ -43,7 +43,7 @@ reg [1:0] ALUSrcA;
 reg [1:0] ALUSrcB;
 reg ALUOp;
 reg RegWrite;
-reg MemToReg;
+reg [1:0] MemToReg;
 reg PCSrc;
 reg MemWrite;
 reg MemRead;
@@ -86,7 +86,7 @@ parameter I_Bne_2 = 20;
 parameter I_Bne_3 = 21;
 
 //register calculation
-always @ (posedge CLK, posedge Reset)
+always @ (posedge CLK)
 begin
     if (Reset)
         current_state = Fetch;
@@ -106,7 +106,7 @@ begin
     ALUSrcB = 2'b00; //0 = B, 1 = 2, 2 = imm
     ALUOp = 0; //0 = "+", 1 = "-"
     RegWrite = 0;
-    MemToReg = 0; //0 = aluout, 1 = mdr, 2 = zero, 3 = pos
+    MemToReg = 2'b00; //0 = aluout, 1 = mdr, 2 = zero, 3 = pos
     PCSrc = 0;
     MemWrite = 0;
     MemRead = 0;

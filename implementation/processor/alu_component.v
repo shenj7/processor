@@ -8,8 +8,8 @@ input [15:0] in1;
 input reset;
 
 output reg [15:0] out;
-output reg zero;
-output reg pos;
+output reg [15:0] zero;
+output reg [15:0] pos;
 
 always @(inst_id or in0 or in1 or reset)
 begin
@@ -22,11 +22,11 @@ begin
     end
 
     if (out > 0) begin //zero or positive
-        pos <= 1;
-        zero <= 0;
+        pos <= 4'h0001;
+        zero <= 4'h0000;
     end else if (out == 0) begin
-        zero <= 1;
-        pos <= 0;
+        zero <= 4'h0001;
+        pos <= 4'h0000;
     end
 end
 
