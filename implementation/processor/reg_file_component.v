@@ -39,7 +39,7 @@ begin
 
     //get out of rs2
     if (rs2 == 0) begin
-        reg1 <= 4'h0000;
+        reg2 <= 4'h0000;
     end
 
     //reset
