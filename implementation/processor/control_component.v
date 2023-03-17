@@ -209,8 +209,8 @@ begin
 
         I_Bne_2:
         begin
-            ALUSrcA = 2;
-            ALUSrcB = 2;
+            ALUSrcA = 3;
+            ALUSrcB = 3;
         end
 
         I_Bne_3:

@@ -45,7 +45,7 @@ initial begin
     end
     //$display("out: %d, expected: %d", OUT, expected);
     //$display("stinky poopy");
-    // @(OUT != 0);
+    @(OUT != 0);
     #(200*HALF_PERIOD);
     rst = 1;
     #(2*HALF_PERIOD);
