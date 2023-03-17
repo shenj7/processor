@@ -34,7 +34,7 @@ module mem_component
 				ram[addr[10:1]] = writedata;
 			end
 			else begin
-				write_out = out;
+				write_out <= writedata;
 			end
 		end
 	end
@@ -47,7 +47,7 @@ module mem_component
 			end
 			else begin
 				$display("plz dont come here");
-				out = read_in;
+				out <= read_in;
 			end
 		end
 	end

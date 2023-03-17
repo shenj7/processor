@@ -209,11 +209,13 @@ begin
 
         I_Bne_2:
         begin
+            ALUSrcA = 2;
             ALUSrcB = 2;
         end
 
         I_Bne_3:
         begin
+            PCSrc = 1;
             PCWriteCond = 1;
         end
 
@@ -430,7 +432,7 @@ case (current_state)
 		next_state = Fetch;
 	end
 
-    I_Lli:
+    I_Lui:
     begin
         next_state = I_LIW;
     end

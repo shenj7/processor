@@ -86,7 +86,7 @@ module load_store(clock, read_in, rst, write_out);
     );
     
     mem_component memory (
-        .writedata(b_alusrc2),
+        .writedata(reg_a),
         .addr(pc2mem_mem),
         .write(memwrite),
         .read(memread),
