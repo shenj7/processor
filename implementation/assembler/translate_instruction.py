@@ -67,7 +67,7 @@ def itype_parse(inst):
 
 def mtype_parse(inst):
     #TODO: add size checking for immmidiate
-    imm, rs1, rd, iid = make_4bin(inst[3]), make_4bin(inst[1]), make_4bin(inst[2]), ""
+    imm, rs1, rd, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
     func = inst[0]
 
     if func == "addi":
