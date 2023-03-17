@@ -162,7 +162,7 @@ module load_store(clock, read_in, rst, write_out);
 
     four_way_mux_component alusrc1_mux (
         .in0(pc_pc2mem),
-        .in1(a_alusrc1),
+        .in1(reg_a),
         .in2(0),
         .in3(0),
         .op(alusrca),
@@ -171,7 +171,7 @@ module load_store(clock, read_in, rst, write_out);
     );
 
     four_way_mux_component alusrc2_mux (
-        .in0(b_alusrc2),
+        .in0(reg_b),
         .in1(2),
         .in2(immgen_alusrc2),
         .in3(0),
