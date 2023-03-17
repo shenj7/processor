@@ -15,7 +15,7 @@ begin
     end else if (inst[3:0] == 4'b1000 ||
         inst[3:0] == 4'b1001 ||
         inst[3:0] == 4'b1010) begin
-        out <= {{12{inst[7]}},inst[7:4]};
+        out <= {{12{inst[15]}},inst[15:12]};
 	end else if (inst[3:0] == 4'b1111) begin
 		out <={{8{1'b0}}, inst[15:8]};
     end

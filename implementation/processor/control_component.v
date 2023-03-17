@@ -114,7 +114,6 @@ begin
 
 
     case (current_state)
-
         Fetch:
         begin
             MemRead = 1;
@@ -248,7 +247,6 @@ begin
 $display("The current state is %d", current_state);
 
 case (current_state)
-
     Fetch:
     begin
         next_state = Decode;

@@ -67,7 +67,7 @@ def itype_parse(inst):
 
 def mtype_parse(inst):
     #TODO: add size checking for immmidiate
-    imm, rs2, rs1, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
+    imm, rs1, rd, iid = make_4bin(inst[3]), make_4bin(inst[1]), make_4bin(inst[2]), ""
     func = inst[0]
 
     if func == "addi":
@@ -82,7 +82,7 @@ def mtype_parse(inst):
         iid == "1101"
     else:
         return f"instruction not found: {func}"
-    return rs2 + rs1 + imm + iid
+    return imm + rs1 + rd + iid
 
 
 def reg_trans(reg):
