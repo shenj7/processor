@@ -140,17 +140,17 @@ begin
         end
         R_W_AS:
         begin
-            IRWrite = 1;
+            RegWrite = 1;
         end
         R_W_G:
         begin
-            IRWrite = 1;
+            RegWrite = 1;
             MemToReg = 3;
         end
 
         R_W_E:
         begin
-            IRWrite = 1;
+            RegWrite = 1;
             MemToReg = 2;
         end
 
@@ -160,7 +160,6 @@ begin
         end
         R_E_Jal:
         begin
-            IRWrite = 1;
             ALUSrcB = 2;
             ALUSrcA = 1;
         end

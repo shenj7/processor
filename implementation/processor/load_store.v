@@ -72,7 +72,7 @@ module load_store(clock, read_in, rst, write_out);
     reg_component pc_reg (
         .clock(clock),
         .in(pcsrcout_pc),
-        .write(actualpcwrite),
+        .write(pcwrite || ((~alu_zero[0] || alu_pos[0]) && pcwritecond)),
         .reset(rst),
         .out(pc_pc2mem)
     );
@@ -211,9 +211,7 @@ module load_store(clock, read_in, rst, write_out);
 
     always @(posedge clock)
     begin
-        iszeroorpos = ~alu_zero[0] || alu_pos[0];
-        ispcwritecond = iszeroorpos && pcwritecond;
-        actualpcwrite = pcwrite || ispcwritecond;
+        // actualpcwrite <= pcwrite || ((~alu_zero[0] || alu_pos[0]) && pcwritecond);
     end
     
 endmodule

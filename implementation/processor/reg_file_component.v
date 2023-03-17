@@ -23,7 +23,7 @@ initial begin
 
 end
 
-always @(rs1, rs2, rd, writedata, write, reset)
+always @(posedge clock)
 begin
     //write to register
     if (write && rd != 4'b0000) begin
