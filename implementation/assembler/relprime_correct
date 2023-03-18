@@ -1,0 +1,47 @@
+lli x15, 32
+lui x1, 20
+add x15, x15, x1
+lw x1, x15, 0 //x15 is special mem address, x1 is n (input)
+lli x7, 1
+lli x11, ENDALL
+
+RELPRIME: addi x2, x0, 2 //x2 = m
+lli x14, GCD
+lli x13, WHILE
+lli x12, ENDWHILE
+WHILE: jalr x5, x14, x0 //assume we get result back in x3
+lli x13, WHILE
+lli x12, ENDWHILE
+bne x12, x3, x1
+addi x2, x2, 1
+jalr x0, x13, x0
+ENDWHILE: jalr x0, x11, x0
+
+
+
+
+
+GCD: addi x3, x2, 0 //a = m, b = n
+addi x4, x1, 0
+lli x13, WHILEG
+
+//if statement
+bne x13, x3, x0
+jalr x0, x5, x0
+
+lli x12, ENDG
+lli x13, CONG
+lli x10, IF
+//while loop
+WHILEG: jalr x0, x12, x0
+CONG: grt x8, x3, x4
+bne x10, x8, x0 //if x3 > x4
+ELSE: sub x4, x4, x3
+jalr x0, x13, x0
+IF: sub x3, x3, x4
+jalr x0, x13, x0
+
+ENDG: bne x13, x4, x0
+
+
+ENDALL: sw x2, x15, 0

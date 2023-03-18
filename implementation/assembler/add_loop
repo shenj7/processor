@@ -1,0 +1,11 @@
+lli x15, 32
+lui x1, 20
+lli x3, LOOP
+lli x4, 6
+add x15, x15, x1
+addi x1, x0, 7
+addi x2, x0, 0
+LOOP: addi x2, x2, 1
+sub x4, x4, x2
+bne x3, x2, x1
+sw x2, x15, 0
