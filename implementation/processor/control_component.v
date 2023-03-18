@@ -158,20 +158,18 @@ begin
         begin
             //Defaults are all correct
         end
-        R_E_Jal:
-        begin
-            ALUSrcB = 2;
-            ALUSrcA = 1;
-        end
-
         R_E_Jalr:
         begin
-            IRWrite = 1;
+            RegWrite = 1;
         end
 
         R_W_J:
         begin
             PCWrite = 1;
+            PCSrc = 0;
+            ALUSrcA = 1;
+            ALUSrcB = 3;
+            RegWrite = 1;
         end
      
         M_C:

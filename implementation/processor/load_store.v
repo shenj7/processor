@@ -42,6 +42,7 @@ module load_store(clock, read_in, rst, write_out);
     wire irwrite;
     wire pcwritecond;
     reg actualpcwrite;
+    wire branch_out;
 
     //outputs
     output [15:0] write_out;
@@ -71,7 +72,7 @@ module load_store(clock, read_in, rst, write_out);
     reg_component pc_reg (
         .clock(clock),
         .in(pcsrcout_pc),
-        .write(pcwrite || ((~alu_zero[0] || alu_pos[0]) && pcwritecond)),
+        .write(pcwrite || (branch_out && pcwritecond)),
         .reset(rst),
         .out(pc_pc2mem)
     );
@@ -85,7 +86,7 @@ module load_store(clock, read_in, rst, write_out);
     );
     
     mem_component memory (
-        .writedata(reg_a),
+        .writedata(reg_rd),
         .addr(pc2mem_mem),
         .write(memwrite),
         .read(memread),
@@ -188,6 +189,13 @@ module load_store(clock, read_in, rst, write_out);
         .out(alu_aluout), 
         .zero(alu_zero), 
         .pos(alu_pos)
+    );
+
+    delay_component delayer (
+        .should_branch(~alu_zero[0]),
+        .clock(clock),
+        .rst(rst),
+        .branch_out(branch_out)
     );
 
 
