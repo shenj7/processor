@@ -12,7 +12,7 @@ module load_store(clock, read_in, rst, write_out);
     wire [3:0] ir_rs2_reg;
     wire [3:0] ir_rd_reg;
     wire [15:0] ir_inst;
-    wire [15:0] mdr_reg_in;
+    // wire [15:0] mdr_reg_in;
     wire [15:0] regwrite_in;
     wire [15:0] reg_a;
     wire [15:0] reg_b;
@@ -106,17 +106,17 @@ module load_store(clock, read_in, rst, write_out);
         .rd(ir_rd_reg)
     );
 
-    reg_component mem_data_reg (
-        .clock(clock),
-        .in(mem_ir),
-        .write(1),
-        .reset(rst),
-        .out(mdr_reg_in)
-    );
+    // reg_component mem_data_reg (
+    //     .clock(clock),
+    //     .in(mem_ir),
+    //     .write(1),
+    //     .reset(rst),
+    //     .out(mdr_reg_in)
+    // );
 
     four_way_mux_component reg_in (
         .in0(aluout_pcsrc),
-        .in1(mdr_reg_in),
+        .in1(mem_ir),
         .in2(alu_zero),
         .in3(alu_pos),
         .op(memtoreg),

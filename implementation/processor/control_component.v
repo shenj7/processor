@@ -181,12 +181,24 @@ begin
         M_Lw_1:
         begin
             IorD = 1;
+            MemRead = 1;
         end
 
         M_Lw_2:
         begin
             MemToReg = 1;
+            RegWrite = 1;
         end
+        // M_Lw_1:
+        // begin
+        //     IorD = 1;
+        //     MemRead = 1;
+        // end
+
+        // M_Lw_2:
+        // begin
+        //     MemToReg = 1;
+        // end
 
 		M_Addi:
         begin
