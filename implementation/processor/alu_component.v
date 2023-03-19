@@ -21,12 +21,15 @@ begin
         out = in0 - in1;
     end
 
-    if (out > 0) begin //zero or positive
-        pos <= 4'h0001;
-        zero <= 4'h0000;
-    end else if (out == 0) begin
-        zero <= 4'h0001;
-        pos <= 4'h0000;
+    if (out == 0) begin
+        zero <= 16'h0001;
+        pos <= 16'h0000;
+    end else if (out[15] == 0) begin //zero or positive
+        pos <= 16'h0001;
+        zero <= 16'h0000;
+    end else if (out[15] == 1) begin
+        zero <= 16'h0000;
+        pos <= 16'h0000;
     end
 end
 
