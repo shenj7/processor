@@ -27,6 +27,8 @@ module load_store(clock, read_in, rst, write_out);
     wire [15:0] aluout_pcsrc;
     wire [15:0] pcsrcout_pc;
     wire [15:0] reg_rd;
+    wire [15:0] aluzero_out;
+    wire [15:0] alupos_out;
 
     //control wires
     wire pcwrite;
@@ -117,8 +119,8 @@ module load_store(clock, read_in, rst, write_out);
     four_way_mux_component reg_in (
         .in0(aluout_pcsrc),
         .in1(mem_ir),
-        .in2(alu_zero),
-        .in3(alu_pos),
+        .in2(aluzero_out),
+        .in3(alupos_out),
         .op(memtoreg),
         .reset(rst),
         .out(regwrite_in)
@@ -206,6 +208,23 @@ module load_store(clock, read_in, rst, write_out);
         .reset(rst),
         .out(aluout_pcsrc)
     );
+
+    reg_component aluzero_reg (
+        .clock(clock),
+        .in(alu_zero),
+        .write(1),
+        .reset(rst),
+        .out(aluzero_out)
+    );
+    reg_component alupos_reg (
+        .clock(clock),
+        .in(alu_pos),
+        .write(1),
+        .reset(rst),
+        .out(alupos_out)
+    );
+
+
     
 
     two_way_mux_component pcsrc_mux (
