@@ -95,6 +95,7 @@ module load_store(clock, read_in, rst, write_out);
         .clk(clock),
         .read_in(read_in),
         .write_out(write_out),
+        .reset(rst),
         .out(mem_ir)
     );
 
@@ -239,6 +240,9 @@ module load_store(clock, read_in, rst, write_out);
     always @(posedge clock)
     begin
         // actualpcwrite <= pcwrite || ((~alu_zero[0] || alu_pos[0]) && pcwritecond);
+        // if (rst) begin
+        //     write_out <= 16'h0000;
+        // end
 
     end
     
