@@ -1,0 +1,9 @@
+lli x15, 32
+lui x1, 20
+add x15, x15, x1
+lw x1, x15, 0
+lli x3, 10
+lli x4, 6
+grt x5, x3, x4
+addi x5, x5, 1
+sw x5, x15, 0

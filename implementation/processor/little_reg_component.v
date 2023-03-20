@@ -3,17 +3,17 @@
 module little_reg_component(clock, in, write, reset, out);
 
 input clock;
-input [1:0] in;
+input in;
 input write;
 input reset;
 
-output reg [1:0] out = 2'b00;
+output reg out = 0;
 
 
 always @(posedge clock)
 begin
 	if (reset) begin
-		out <= 2'b00;
+		out <= 0;
 	end else if (write) begin
 		out <= in;
 	end

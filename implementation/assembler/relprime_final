@@ -1,0 +1,31 @@
+lli x15, 32
+lui x1, 20
+add x15, x15, x1
+lw x1, x15, 0 //x15 is special mem address, x1 is n (input)
+lli x7, CONTINUE
+lli x10, IF
+lli x9, STARTWHILE
+lli x14, GCD
+lli x13, RWHILE
+lli x11, RCONTINUE
+lli x6, 1
+
+RELPRIME: addi x2, x0, 2 // m = 2
+RWHILE: jalr x5, x14, x0 // get back result in x3
+bne x11, x6, x3
+sw x2, x15, 0
+
+RCONTINUE: addi x2, x2, 1
+jalr x0, x13, x0
+
+GCD: addi x3, x2, 0// return x3
+addi x4, x1, 0
+STARTWHILE: bne x7, x4, x0
+DONE: add x15, x15, x1
+jalr x0, x5, x0 //jump back to relprime
+CONTINUE: grt x12, x3, x4
+bne x10, x12, x0
+ELSE: sub x4, x4, x3
+jalr x0, x9, x0
+IF: sub x3, x3, x4
+jalr x0, x9, x0

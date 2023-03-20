@@ -4,6 +4,10 @@ def typeswitch(inst):
     mlen = 4
     instlen = len(inst)
     func = inst[0]
+    if func == "rea":
+        return mtype_parse(["lw", "x15", inst[1], "0"])
+    if func == "wri":
+        return mtype_parse(["sw", "x15", inst[1], "0"])
     if func in ["add", "grt", "sub", "eq", "jalr", "bne"]:
         return rtype_parse(inst) if instlen == rlen else f"malformed instruction, should be length {rlen}"
     elif func in ["lui", "lli", "jal"]:
@@ -67,7 +71,7 @@ def itype_parse(inst):
 
 def mtype_parse(inst):
     #TODO: add size checking for immmidiate
-    imm, rs2, rs1, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
+    imm, rs1, rd, iid = make_4bin(inst[3]), make_4bin(inst[2]), make_4bin(inst[1]), ""
     func = inst[0]
 
     if func == "addi":
@@ -82,7 +86,7 @@ def mtype_parse(inst):
         iid == "1101"
     else:
         return f"instruction not found: {func}"
-    return rs2 + rs1 + imm + iid
+    return imm + rs1 + rd + iid
 
 
 def reg_trans(reg):
