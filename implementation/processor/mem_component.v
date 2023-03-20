@@ -29,7 +29,9 @@ module mem_component
 		// addr_reg = addr-4'h0280; //could also change to 2ff
 		//$display("data mem reading %d", addr_reg);
 		// Write
-		if (write) begin
+		if (reset) begin
+			write_out = 16'h0000;
+		end else if (write) begin
 			if (addr != 16'h1420) begin
 				ram[addr[10:1]] = writedata;
 			end
@@ -41,9 +43,7 @@ module mem_component
 
 	always @(posedge clk)
 	begin
-		if (reset) begin
-			write_out = 16'h0000;
-		end else if (read) begin
+		if (read) begin
 			if (addr != 16'h1420) begin
 				out = ram[addr[10:1]];
 			end
