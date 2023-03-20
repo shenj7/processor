@@ -36,7 +36,7 @@ initial begin
     #(10*HALF_PERIOD);
 //test 1
     rst = 0;
-    IN = 16'h13b4;
+    IN = 16'h0078;
     expected = 16'h000b;
     counter = counter + 1;
     if (OUT != expected) begin

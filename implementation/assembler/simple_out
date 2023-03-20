@@ -1,6 +1,0 @@
-lui x15, 3
-lli x14, 194
-add x15, x15, x14
-lw a0, x15, 0
-addi a0, a0, 15
-sw a0, x15, 0

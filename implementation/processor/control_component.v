@@ -255,18 +255,18 @@ end
 always @ (current_state, next_state, Opcode)
 begin         
 
-$display("The current state is %d", current_state);
+// $display("The current state is %d", current_state);
 
 case (current_state)
     Fetch:
     begin
         next_state = Decode;
-        $display("In Fetch, the next_state is %d", next_state);
+        // $display("In Fetch, the next_state is %d", next_state);
     end
 
     Decode: 
     begin       
-        $display("The opcode is %d", Opcode);
+        // $display("The opcode is %d", Opcode);
         case (Opcode)
             0:
             begin
@@ -326,12 +326,12 @@ case (current_state)
 			
             default:
             begin 
-                $display(" Wrong Opcode :( %d ", Opcode);  
+                // $display(" Wrong Opcode :( %d ", Opcode);  
                 next_state = Fetch; 
             end
 
         endcase  
-        $display("In Decode, the next_state is %d", next_state);
+        // $display("In Decode, the next_state is %d", next_state);
     end
 
     R_E_A:
@@ -474,13 +474,13 @@ case (current_state)
 
     default:
     begin
-        $display("Not implemented!");
+        // $display("Not implemented!");
         next_state = Fetch;
     end
 
     endcase
 
-    $display("After the tests, the next_state is %d", next_state);
+    // $display("After the tests, the next_state is %d", next_state);
 
     end
 

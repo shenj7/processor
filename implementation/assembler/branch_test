@@ -1,4 +1,0 @@
-addi x1, x0, 1
-LOOP: addi x1, x1, 1
-lli x2, LOOP
-bne x2, x1, x0

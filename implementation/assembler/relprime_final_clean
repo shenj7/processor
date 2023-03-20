@@ -2,26 +2,24 @@ lli x15, 32
 lui x1, 20
 add x15, x15, x1
 lw x1, x15, 0
-RELPRIME: addi x2, x0, 2
+lli x7, CONTINUE
+lli x10, IF
+lli x9, STARTWHILE
 lli x14, GCD
 lli x13, RWHILE
 lli x11, RCONTINUE
 lli x6, 1
+RELPRIME: addi x2, x0, 2
 RWHILE: jalr x5, x14, x0
 bne x11, x6, x3
 sw x2, x15, 0
+add x0, x0, x0
 RCONTINUE: addi x2, x2, 1
 jalr x0, x13, x0
 GCD: addi x3, x2, 0
 addi x4, x1, 0
-lli x13, CONTINUE
-lli x10, IF
-lli x9, STARTWHILE
-STARTWHILE: bne x13, x4, x0
-DONE: lli x15, 32
-lui x1, 20
-add x15, x15, x1
-jalr x0, x5, x0
+STARTWHILE: bne x7, x4, x0
+DONE: jalr x0, x5, x0
 CONTINUE: grt x12, x3, x4
 bne x10, x12, x0
 ELSE: sub x4, x4, x3

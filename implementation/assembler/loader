@@ -1,8 +1,0 @@
-lui x1, 20
-lli x2, 32
-ADDSMTH: add x0, x0, x0
-addi x4, x0, ADDSMTH
-add x3, x1, x2
-add x0, x1, x1
-add x0, x2, x2
-sw x1, x3, 0
