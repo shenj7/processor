@@ -31,6 +31,12 @@ begin
         zero <= 16'h0000;
         pos <= 16'h0000;
     end
+
+    if (reset) begin
+        zero <= 0;
+        out <= 0;
+        pos <= 0;
+    end
 end
 
 endmodule

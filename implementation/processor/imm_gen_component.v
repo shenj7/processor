@@ -8,6 +8,9 @@ output reg [15:0] out;
 
 always @(inst, reset)
 begin
+    if (reset) begin
+        out = 0;
+    end else
     if (inst[3:0] == 4'b0101) begin
         out <= {{8{inst[15]}},inst[15:8]} << 8;
     end else if(inst[3:0] == 4'b0110) begin

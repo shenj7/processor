@@ -7,7 +7,7 @@ module mem_component
 	input [(DATA_WIDTH-1):0] writedata,
 	input [15:0] addr,
 	input read,
-	input write, clk,
+	input write, clk, reset,
 	input [15:0] read_in,
 	output reg [15:0] write_out,
 	output reg [(DATA_WIDTH-1):0] out
@@ -29,7 +29,9 @@ module mem_component
 		// addr_reg = addr-4'h0280; //could also change to 2ff
 		//$display("data mem reading %d", addr_reg);
 		// Write
-		if (write) begin
+		if (reset) begin
+			write_out = 16'h0000;
+		end else if (write) begin
 			if (addr != 16'h1420) begin
 				ram[addr[10:1]] = writedata;
 			end
@@ -46,7 +48,7 @@ module mem_component
 				out = ram[addr[10:1]];
 			end
 			else begin
-				$display("plz dont come here");
+				// $display("plz dont come here");
 				out <= read_in;
 			end
 		end
